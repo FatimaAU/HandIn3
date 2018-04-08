@@ -31,7 +31,8 @@ namespace AirTrafficMonitoring.Application
 
                     // Create track object and print info
                     Track myTrack = new Track(date);
-                    myTrack.Print();
+                    Output myOutput = new Output();
+                    myOutput.Print(myTrack);
                 }
             }
         } 
