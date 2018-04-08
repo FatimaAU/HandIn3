@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AirTrafficMonitoring.Classes.Interfaces;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class Output
+    public class Output : IOutput
     {
         public void Print(Track track)
         {
