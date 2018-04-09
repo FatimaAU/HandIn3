@@ -9,10 +9,10 @@ namespace AirTrafficMonitoring.Application
     {
         static MonitoredArea monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
         static ParseTrackInfo parseTrack = new ParseTrackInfo();
-        static ExtractPosition extractPos = new ExtractPosition();
-        static ExtractTimestamp extractTime = new ExtractTimestamp();
+        static Position extractPos = new Position();
+        static Timestamp extractTime = new Timestamp();
         static TimestampFormatter timestampFormatter = new TimestampFormatter();
-        static ExtractFlight extractFlight = new ExtractFlight();
+        static Flight extractFlight = new Flight();
 
 
         static void Main(string[] args)

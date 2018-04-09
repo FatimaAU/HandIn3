@@ -18,7 +18,7 @@ namespace AirTrafficMonitoring.Classes
             _altitudeLower = aL;
         }
 
-        public bool InsideMonitoredArea(ExtractPosition position)
+        public bool InsideMonitoredArea(Position position)
         {
             return InsideMonitoredCoordinates(position.XCoor, position.YCoor)
                    && InsideMonitoredAltitude(position.Altitude);

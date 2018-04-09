@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class ExtractFlight
+    public class Flight
     {
-        public void Flight(List<string> data, 
-            out string tag, ref ExtractPosition pos, ref ExtractTimestamp time)
+        public void ExtractFlight(List<string> data, 
+            out string tag, ref Position pos, ref Timestamp time)
         {
             tag = data[0];
             string x = data[1];
@@ -17,8 +17,8 @@ namespace AirTrafficMonitoring.Classes
             string al = data[3];
             string timeStamp = data[4];
 
-            pos.Position(x, y, al);
-            time.Timestamp = timeStamp;
+            pos.SetPosition(x, y, al);
+            time.UnformattedTimestamp = timeStamp;
         }
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class ExtractTimestamp
+    public class Timestamp
     {
-        public string Timestamp { get; set; }
+        public string UnformattedTimestamp { get; set; }
         //public void Timestamp(string time)
         //{
         //    FormattedTimestamp = time;

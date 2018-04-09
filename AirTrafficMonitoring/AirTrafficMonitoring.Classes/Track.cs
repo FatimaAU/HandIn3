@@ -12,7 +12,7 @@ namespace AirTrafficMonitoring.Classes
         public string Altitude { get; }
         public string TimeStamp { get; }
 
-        public Track(string tag, ExtractPosition pos, string time)
+        public Track(string tag, Position pos, string time)
         {
             Tag = tag;
             XCoordinate = pos.XCoor;

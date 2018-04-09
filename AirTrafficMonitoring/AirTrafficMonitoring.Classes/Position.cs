@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class ExtractPosition
+    public class Position
     {
         public string XCoor { get; private set; }
         public string YCoor { get; private set; }
         public string Altitude { get; private set; }
 
-        public void Position(string x, string y, string alt)
+        public void SetPosition(string x, string y, string alt)
         {
             XCoor = x;
             YCoor = y;
