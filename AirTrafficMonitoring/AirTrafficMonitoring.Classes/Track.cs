@@ -6,13 +6,13 @@ namespace AirTrafficMonitoring.Classes
     public class Track
     {
         //private IOutput myOutput;
-        public string Tag;
-        public string XCoordinate;
-        public string YCoordinate;
-        public string Altitude;
-        public string TimeStamp;
+        private string Tag;
+        private string XCoordinate;
+        private string YCoordinate;
+        private string Altitude;
+        private string TimeStamp;
 
-        public Track(List<string> strList)
+        public Track(string tag, string x, string y, string al, string time)
         {
             Tag = strList[0];
             XCoordinate = strList[1];
