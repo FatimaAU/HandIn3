@@ -33,11 +33,12 @@ namespace AirTrafficMonitoring.Test.Unit
         [TestCase("12", "December")]
         public void Date_NumberOfMonthConverts_ReturnsFormattedOutput(string number, string month)
         {
-            _flightList.Add($"{month} 11th, 2018, at 11:11:11 and 111 milliseconds"); 
+            //_flightList.Add($"{month} 11th, 2018, at 11:11:11 and 111 milliseconds"); 
+            string _flightString = ($"{month} 11th, 2018, at 11:11:11 and 111 milliseconds");
             _flightPosition.Add($"2018{number}11111111111");
 
             FormatTimestamp _formatTimestamp = new FormatTimestamp(_flightPosition[4], "yyyyMMddHHmmssfff");
-            Assert.AreEqual(_flightList, _formatTimestamp(_flightPosition));
+            Assert.AreEqual(_flightString, _formatTimestamp.FormattedDate);
         }
 
         [TestCase("01", "st", "1")]

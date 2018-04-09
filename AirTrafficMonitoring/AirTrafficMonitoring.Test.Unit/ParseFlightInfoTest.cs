@@ -37,7 +37,7 @@ namespace AirTrafficMonitoring.Test.Unit
         public void ParseFlightInfo_DelimitorNotCorrect_ReturnsFalseOutput()
         {
             _flightString = "TAGGGG,50000,50000,5000,20181111111111111";
-            Assert.AreNotEqual(_flightList, ParseFlightInfo.Parse(_flightString));
+            Assert.AreNotEqual(_flightList, ParseTrackInfo.Parse(_flightString));
         }
 
     }
