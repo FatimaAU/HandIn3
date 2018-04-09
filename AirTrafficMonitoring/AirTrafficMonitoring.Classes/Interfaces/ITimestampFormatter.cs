@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring.Classes.Interfaces
 {
-    interface ITimestampFormatter
+    public interface ITimestampFormatter
     {
         string FormatTimestamp(string time, string format = "yyyyMMddHHmmssfff");
-        string GetDaySuffix(DateTime dateToCheck);
     }
 }

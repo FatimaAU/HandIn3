@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using AirTrafficMonitoring.Classes.Interfaces;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class MonitoredArea
+    public class MonitoredArea : IMonitoredArea
     {
         private readonly int _coordinateHigher;
         private readonly int _coordinateLower;
@@ -18,33 +19,33 @@ namespace AirTrafficMonitoring.Classes
             _altitudeLower = aL;
         }
 
-        public bool InsideMonitoredArea(Position position)
+        public bool InsideMonitoredArea(IPosition position)
         {
-            return InsideMonitoredCoordinates(position.XCoor, position.YCoor)
-                   && InsideMonitoredAltitude(position.Altitude);
+            return InsideMonitoredCoordinates(int.Parse(position.XCoor), int.Parse(position.YCoor))
+                   && InsideMonitoredAltitude(int.Parse(position.Altitude));
         }
 
-        private bool InsideMonitoredCoordinates(string x, string y)
+        private bool InsideMonitoredCoordinates(int x, int y)
         {
             return InsideMonitoredXCoor(x) && InsideMonitoredYCoor(y);
         }
 
-        private bool InsideMonitoredXCoor(string x)
+        private bool InsideMonitoredXCoor(int x)
         {
-            return int.Parse(x) <= _coordinateHigher 
-                   && int.Parse(x) >= _coordinateLower;
+            return x <= _coordinateHigher 
+                   && x >= _coordinateLower;
         }
 
-        private bool InsideMonitoredYCoor(string y)
+        private bool InsideMonitoredYCoor(int y)
         {
-            return int.Parse(y) <= _coordinateHigher
-                   && int.Parse(y) >= _coordinateLower;
+            return y <= _coordinateHigher
+                   && y >= _coordinateLower;
         }
 
-        private bool InsideMonitoredAltitude(string alt)
+        private bool InsideMonitoredAltitude(int alt)
         {
-            return int.Parse(alt) >= _altitudeLower
-                   && int.Parse(alt) <= _altitudeHigher;
+            return alt >= _altitudeLower
+                   && alt <= _altitudeHigher;
         }
 
     }

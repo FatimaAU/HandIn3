@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring.Classes.Interfaces
 {
-    public interface IPosition
+    public interface ITrackObject
     {
-        string XCoor { get; }
-        string YCoor { get; }
+        string Tag { get; }
+        string XCoordinate { get; }
+        string YCoordinate { get; }
         string Altitude { get; }
-        void SetPosition(string x, string y, string alt);
+        string TimeStamp { get; }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IOutput
     {
-        void Print(Track track);
+        void Print(ITrackObject track);
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using AirTrafficMonitoring.Classes.Interfaces;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class Track
+    public class TrackObject : ITrackObject
     {
         //private IOutput myOutput;
         public string Tag { get; }
@@ -12,7 +13,7 @@ namespace AirTrafficMonitoring.Classes
         public string Altitude { get; }
         public string TimeStamp { get; }
 
-        public Track(string tag, Position pos, string time)
+        public TrackObject(string tag, IPosition pos, string time)
         {
             Tag = tag;
             XCoordinate = pos.XCoor;

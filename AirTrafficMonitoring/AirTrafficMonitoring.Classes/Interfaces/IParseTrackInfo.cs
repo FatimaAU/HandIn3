@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring.Classes.Interfaces
 {
-    interface IParseTrackInfo
+    public interface IParseTrackInfo
     {
+        List<string> Parse(string data);
     }
 }

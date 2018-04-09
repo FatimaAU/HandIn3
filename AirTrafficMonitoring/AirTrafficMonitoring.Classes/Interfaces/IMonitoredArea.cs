@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring.Classes.Interfaces
 {
-    interface IMonitoredArea
+    public interface IMonitoredArea
     {
-        bool InsideMonitoredArea(Position position);
-        bool InsideMonitoredCoordinates(string x, string y);
-        bool InsideMonitoredXCoor(string x);
-        bool InsideMonitoredYCoor(string y);
-        bool InsideMonitoredAltitude(string alt);
+        bool InsideMonitoredArea(IPosition position);
+        //bool InsideMonitoredCoordinates(string x, string y);
+        //bool InsideMonitoredXCoor(string x);
+        //bool InsideMonitoredYCoor(string y);
+        //bool InsideMonitoredAltitude(string alt);
     }
 }

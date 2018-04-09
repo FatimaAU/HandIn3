@@ -9,7 +9,7 @@ namespace AirTrafficMonitoring.Classes
 {
     public class Output : IOutput
     {
-        public void Print(Track track)
+        public void Print(ITrackObject track)
         {
             Console.WriteLine("Tag:\t\t" + track.Tag);
             Console.WriteLine("X coordinate:\t" + track.XCoordinate + " meters");

@@ -50,15 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Flight.cs" />
-    <Compile Include="Interfaces\IExtractPosition.cs" />
-    <Compile Include="Interfaces\IFlight.cs" />
+    <Compile Include="FlightData.cs" />
+    <Compile Include="Interfaces\IFlighDatat.cs" />
     <Compile Include="Interfaces\IMonitoredArea.cs" />
     <Compile Include="Interfaces\IParseTrackInfo.cs" />
     <Compile Include="Interfaces\IPosition.cs" />
     <Compile Include="Interfaces\ITimestamp.cs" />
     <Compile Include="Interfaces\ITimestampFormatter.cs" />
-    <Compile Include="Interfaces\ITrack.cs" />
+    <Compile Include="Interfaces\ITrackObject.cs" />
     <Compile Include="TimestampFormatter.cs" />
     <Compile Include="Timestamp.cs" />
     <Compile Include="MonitoredArea.cs" />
@@ -67,7 +66,7 @@
     <Compile Include="ParseTrackInfo.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Track.cs" />
+    <Compile Include="TrackObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

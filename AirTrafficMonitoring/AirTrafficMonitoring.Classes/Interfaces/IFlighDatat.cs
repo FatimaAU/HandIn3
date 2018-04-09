@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring.Classes.Interfaces
 {
-    public interface IExtractPosition
+    public interface IFlightData
     {
-        void Position(string x, string y, string alt);
+        void ExtractFlight(List<string> data,
+            out string tag, ref IPosition pos, ref ITimestamp time);
     }
 }

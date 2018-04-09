@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring.Classes.Interfaces
 {
-    interface ITimestamp
+    public interface ITimestamp
     {
         string UnformattedTimestamp { get; set; }
     }

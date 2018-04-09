@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AirTrafficMonitoring.Classes;
+using AirTrafficMonitoring.Classes.Interfaces;
 using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
@@ -7,16 +8,12 @@ namespace AirTrafficMonitoring.Test.Unit
     [TestFixture]
     class DateTest
     {
-        private List<string> _flightPosition;
-        private List<string> _flightList;
+        private ITimestampFormatter _formatter;
 
         [SetUp]
         public void Setup()
         {
-            _flightPosition = new List<string> { "TAGGGG", "50000", "50000", "5000" };
-            // For testing that correct string is returned
-            _flightList = new List<string> { "TAGGGG", "50000", "50000", "5000" };
-
+            _formatter = new TimestampFormatter();
         }
 
         [TestCase("01", "January")]
@@ -33,19 +30,16 @@ namespace AirTrafficMonitoring.Test.Unit
         [TestCase("12", "December")]
         public void Date_NumberOfMonthConverts_ReturnsFormattedOutput(string number, string month)
         {
-            //_flightList.Add($"{month} 11th, 2018, at 11:11:11 and 111 milliseconds"); 
-            string _flightString = $"{month} 11th, 2018, at 11:11:11 and 111 milliseconds";
-            _flightPosition.Add($"2018{number}11111111111");
+            string expectedTimestamp= $"{month} 11th, 2018, at 11:11:11 and 111 milliseconds";
 
-            TimestampFormatter _formatTimestamp = new TimestampFormatter();
-            Assert.AreEqual(_flightString, _formatTimestamp.FormatTimestamp(_flightPosition[4], "yyyyMMddHHmmssfff"));
+            Assert.AreEqual(expectedTimestamp, _formatter.FormatTimestamp($"2018{number}11111111111"));
         }
 
-        [TestCase("01", "st", "1")]
-        [TestCase("02", "nd", "2")]
-        [TestCase("03", "rd", "3")]
-        [TestCase("04", "th", "4")]
-        [TestCase("05", "th", "5")]
+        [TestCase("01", "st")]
+        [TestCase("02", "nd")]
+        [TestCase("03", "rd")]
+        [TestCase("04", "th")]
+        [TestCase("05", "th")]
         [TestCase("10", "th")]
         [TestCase("11", "th")]
         [TestCase("12", "th")]
@@ -55,17 +49,15 @@ namespace AirTrafficMonitoring.Test.Unit
         [TestCase("23", "rd")]
         [TestCase("24", "th")]
         [TestCase("30", "th")]
-        public void Date_DateOutputCorrect_ReturnsFormattedOutput(string number, string postfix, string shortNumber = null)
+        [TestCase("31", "st")]
+        public void Date_DateOutputCorrect_ReturnsFormattedOutput(string number, string postfix)
         {
             // If shortNumber is null assign "number" to it
-            shortNumber = shortNumber ?? number;
-
+            string shortNumber = $"{int.Parse(number)}";
+            string expectedTimestamp = $"December {shortNumber}{postfix}, 2018, at 11:11:11 and 111 milliseconds";
             //_flightList.Add($"November {shortNumber}{postfix}, 2018, at 11:11:11 and 111 milliseconds");
-            string _flightString = $"November {shortNumber}{postfix}, 2018, at 11:11:11 and 111 milliseconds";
-            _flightPosition.Add($"201811{number}111111111");
 
-            TimestampFormatter _formatTimestamp = new TimestampFormatter();
-            Assert.AreEqual(_flightString, _formatTimestamp.FormatTimestamp(_flightPosition[4]));
+            Assert.AreEqual(expectedTimestamp, _formatter.FormatTimestamp($"201812{number}111111111"));
         }
 
     }

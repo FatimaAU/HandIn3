@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using AirTrafficMonitoring.Classes;
+using AirTrafficMonitoring.Classes.Interfaces;
 using TransponderReceiver;
 
 namespace AirTrafficMonitoring.Application
 {
     class Program
     {
-        static MonitoredArea monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
-        static ParseTrackInfo parseTrack = new ParseTrackInfo();
-        static Position extractPos = new Position();
-        static Timestamp extractTime = new Timestamp();
-        static TimestampFormatter timestampFormatter = new TimestampFormatter();
-        static Flight extractFlight = new Flight();
+        public static readonly IMonitoredArea MonitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+        public static readonly IParseTrackInfo ParseTrack = new ParseTrackInfo();
+        public static IPosition Position = new Position();
+        public static ITimestamp Timestamp = new Timestamp();
+        public static ITimestampFormatter TimestampFormatter = new TimestampFormatter();
+        public static IFlightData ExtractedFlight = new FlightData();
 
 
         static void Main(string[] args)
@@ -29,9 +30,9 @@ namespace AirTrafficMonitoring.Application
             foreach (var data in e.TransponderData)
             {
                 // Return list of parsed flight info
-                List<string> parsedData = parseTrack.Parse(data);
+                List<string> parsedData = ParseTrack.Parse(data);
 
-                extractFlight.ExtractFlight(parsedData, out var Tag, ref extractPos, ref extractTime);
+                ExtractedFlight.ExtractFlight(parsedData, out var tag, ref Position, ref Timestamp);
 
                 //extractPos.Position(parsedData, out var xPos, out var yPos, out var Alt);
                 //string timeStamp = extractTime.Timestamp(parsedData);
@@ -40,16 +41,16 @@ namespace AirTrafficMonitoring.Application
                 //var parsedFlightList = ParseFlightInfo.Parse(data);
 
                 // If inside the monitored area
-                if (monitoredArea.InsideMonitoredArea(extractPos))
+                if (MonitoredArea.InsideMonitoredArea(Position))
                 {
                     // Format and return the date
-                    string formattedTimeStamp = timestampFormatter.FormatTimestamp(extractTime.UnformattedTimestamp);
+                    string formattedTimeStamp = TimestampFormatter.FormatTimestamp(Timestamp.UnformattedTimestamp);
 
                     //var date = FormatDate.FormatDate(parsedFlightList);
 
                     // Create track object and print info
-                    Track myTrack = new Track(Tag, extractPos, formattedTimeStamp);
-                    Output myOutput = new Output();
+                    ITrackObject myTrack = new TrackObject(tag, Position, formattedTimeStamp);
+                    IOutput myOutput = new Output();
                     myOutput.Print(myTrack);
                 }
             }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using AirTrafficMonitoring.Classes.Interfaces;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class Position
+    public class Position : IPosition
     {
         public string XCoor { get; private set; }
         public string YCoor { get; private set; }
