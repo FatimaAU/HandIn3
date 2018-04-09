@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace AirTrafficMonitoring.Test.Unit
 {
     [TestFixture]
-    class ParseFlightInfoTest
+    class ParseTrackInfoTest
     {
         private List<string> _flightList;
         private string _flightString; 

@@ -10,9 +10,8 @@ using TransponderReceiver;
 namespace AirTrafficMonitoring.Test.Unit
 {
     [TestFixture]
-    class EventTest
+    class TransponderDataEventReceived
     {
-
         private ITransponderReceiver _transponderReceiver;
         private List<string> _argList;
 
@@ -25,7 +24,7 @@ namespace AirTrafficMonitoring.Test.Unit
         }
         
         [Test]
-        public void Testevent()
+        public void TransponderDataReady_EventFired_EventReceived()
         {
             var args = new RawTransponderDataEventArgs(_argList);
 
@@ -34,7 +33,19 @@ namespace AirTrafficMonitoring.Test.Unit
             Assert.That(args.TransponderData, Is.EqualTo(_argList));
 
         }
-        
+
+
+        [Test]
+        public void TransponderDataReady_EventFired_EventDataNotEqualToTest()
+        {
+            List<string> testList = new List<string> { "ATR423;39045;12932;15000;20151006213456789" };
+            var args = new RawTransponderDataEventArgs(_argList);
+
+            _transponderReceiver.TransponderDataReady += Raise.EventWith(args);
+
+            Assert.AreNotEqual(args.TransponderData, testList);
+
+        }
 
     }
 }
