@@ -31,7 +31,7 @@ namespace AirTrafficMonitoring.Application
                 // Return list of parsed flight info
                 List<string> parsedData = parseTrack.Parse(data);
 
-                extractFlight.Flight(parsedData, out var Tag, ref extractPos, ref extractTime);
+                extractFlight.ExtractFlight(parsedData, out var Tag, ref extractPos, ref extractTime);
 
                 //extractPos.Position(parsedData, out var xPos, out var yPos, out var Alt);
                 //string timeStamp = extractTime.Timestamp(parsedData);
@@ -43,7 +43,7 @@ namespace AirTrafficMonitoring.Application
                 if (monitoredArea.InsideMonitoredArea(extractPos))
                 {
                     // Format and return the date
-                    string formattedTimeStamp = timestampFormatter.FormatTimestamp(extractTime.Timestamp);
+                    string formattedTimeStamp = timestampFormatter.FormatTimestamp(extractTime.UnformattedTimestamp);
 
                     //var date = FormatDate.FormatDate(parsedFlightList);
 
