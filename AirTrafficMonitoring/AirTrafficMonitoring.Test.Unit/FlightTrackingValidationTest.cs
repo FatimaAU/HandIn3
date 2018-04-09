@@ -1,109 +1,96 @@
-﻿//using System.Collections.Generic;
-//using AirTrafficMonitoring.Classes;
-//using NUnit.Framework;
+﻿using System.Collections.Generic;
+using AirTrafficMonitoring.Classes;
+using NUnit.Framework;
 
-//namespace AirTrafficMonitoring.Test.Unit
-//{
-//    [TestFixture]
-//    public class FlightTrackingValidationTest
-//    {
-//        private List<string> _flightPosition;
+namespace AirTrafficMonitoring.Test.Unit
+{
+    [TestFixture]
+    public class FlightTrackingValidationTest
+    {
+        [Test]
+        public void FlightTrackingValidation_XCoordinateInsideUpperMonitor_ReturnsTrue()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000,10000,20000,500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("90000","50000","5000"), Is.EqualTo(true));
+        }
 
-//        [SetUp]
-//        public void Setup()
-//        {
-//            _flightPosition = new List<string>();
-//            _flightPosition.Add("TAGGGG");
-//            _flightPosition.Add("50000");
-//            _flightPosition.Add("50000");
-//            _flightPosition.Add("5000");
-//            _flightPosition.Add("202012121212121");
-//        }
+        [Test]
+        public void FlightTrackingValidation_XCoordinateOutsideUpperMonitor_ReturnsFalse()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("90001", "50000", "5000"), Is.EqualTo(false));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_XCoordinateInsideUpperMonitor_ReturnsTrue()
-//        {
-//            _flightPosition[1] = "90000";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(true));
-//        }
+        [Test]
+        public void FlightTrackingValidation_XCoordinateOutsideLowerMonitor_ReturnsFalse()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("9999", "50000", "5000"), Is.EqualTo(false));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_XCoordinateOutsideUpperMonitor_ReturnsFalse()
-//        {
-//            _flightPosition[1] = "90001";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(false));
-//        }
+        [Test]
+        public void FlightTrackingValidation_XCoordinateInsideLowerMonitor_ReturnsTrue()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("10000", "50000", "5000"), Is.EqualTo(true));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_XCoordinateOutsideLowerMonitor_ReturnsFalse()
-//        {
-//            _flightPosition[1] = "9999";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(false));
-//        }
+        [Test]
+        public void FlightTrackingValidation_YCoordinateInsideUpperMonitor_ReturnsTrue()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("50000", "90000", "5000"), Is.EqualTo(true));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_XCoordinateInsideLowerMonitor_ReturnsTrue()
-//        {
-//            _flightPosition[1] = "10000";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(true));
-//        }
+        [Test]
+        public void FlightTrackingValidation_YCoordinateOutsideUpperMonitor_ReturnsFalse()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("50000", "90001", "5000"), Is.EqualTo(false));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_YCoordinateInsideUpperMonitor_ReturnsTrue()
-//        {
-//            _flightPosition[2] = "90000";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(true));
-//        }
+        [Test]
+        public void FlightTrackingValidation_YCoordinateOutsideLowerMonitor_ReturnsFalse()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("50000", "9999", "5000"), Is.EqualTo(false));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_YCoordinateOutsideUpperMonitor_ReturnsFalse()
-//        {
-//            _flightPosition[2] = "90001";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(false));
-//        }
+        [Test]
+        public void FlightTrackingValidation_YCoordinateInsideLowerMonitor_ReturnsTrue()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("50000", "10000", "5000"), Is.EqualTo(true));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_YCoordinateOutsideLowerMonitor_ReturnsFalse()
-//        {
-//            _flightPosition[2] = "9999";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(false));
-//        }
+        [Test]
+        public void FlightTrackingValidation_AltitudeInsideUpperMonitor_ReturnsTrue()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("50000", "50000", "20000"), Is.EqualTo(true));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_YCoordinateInsideLowerMonitor_ReturnsTrue()
-//        {
-//            _flightPosition[2] = "10000";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(true));
-//        }
+        [Test]
+        public void FlightTrackingValidation_AltitudeOutsideUpperMonitor_ReturnsFalse()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("50000", "50000", "20001"), Is.EqualTo(false));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_AltitudeInsideUpperMonitor_ReturnsTrue()
-//        {
-//            _flightPosition[3] = "20000";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(true));
-//        }
+        [Test]
+        public void FlightTrackingValidation_AltitudeOutsideLowerMonitor_ReturnsFalse()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("50000", "50000", "499"), Is.EqualTo(false));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_AltitudeOutsideUpperMonitor_ReturnsFalse()
-//        {
-//            _flightPosition[3] = "20001";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(false));
-//        }
+        [Test]
+        public void FlightTrackingValidation_AltitudeInsideLowerMonitor_ReturnsTrue()
+        {
+            MonitoredArea _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+            Assert.That(_monitoredArea.InsideMonitoredArea("50000", "50000", "500"), Is.EqualTo(true));
+        }
 
-//        [Test]
-//        public void FlightTrackingValidation_AltitudeOutsideLowerMonitor_ReturnsFalse()
-//        {
-//            _flightPosition[3] = "499";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(false));
-//        }
-
-//        [Test]
-//        public void FlightTrackingValidation_AltitudeInsideLowerMonitor_ReturnsTrue()
-//        {
-//            _flightPosition[3] = "500";
-//            Assert.That(FlightTrackingValidation.MonitoredFlightData(_flightPosition), Is.EqualTo(true));
-//        }
-
-//    }
-//}
+    }
+}
 
