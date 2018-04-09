@@ -1,40 +1,47 @@
-﻿//using System;
-//using AirTrafficMonitoring.Classes;
-//using TransponderReceiver;
+﻿using System;
+using System.Collections.Generic;
+using AirTrafficMonitoring.Classes;
+using TransponderReceiver;
 
-//namespace AirTrafficMonitoring.Application
-//{
-//    class Program
-//    {
-//        static void Main(string[] args)
-//        {
-//            ITransponderReceiver receiver = TransponderReceiverFactory.CreateTransponderDataReceiver();
-//            receiver.TransponderDataReady += receiver_TransponderDataReady;
+namespace AirTrafficMonitoring.Application
+{
+    class Program
+    {
+        static MonitoredArea monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
+        static ParseTrackInfo parseTrack = new ParseTrackInfo();
 
-//            while (true) { }
-//        }
 
-//        private static void receiver_TransponderDataReady(object sender, RawTransponderDataEventArgs e)
-//        {
-//            Console.Clear();
-//            //Traverse all elements
-//            foreach (var data in e.TransponderData)
-//            {
-//                // Return list of parsed flight info
-//                var parsedFlightList = ParseFlightInfo.Parse(data);
+        static void Main(string[] args)
+        {
+            ITransponderReceiver receiver = TransponderReceiverFactory.CreateTransponderDataReceiver();
+            receiver.TransponderDataReady += receiver_TransponderDataReady;
+            while (true) { }
+        }
 
-//                // If inside the monitored area
-//                if (FlightTrackingValidation.MonitoredFlightData(parsedFlightList))
-//                {
-//                    // Format and return the date
-//                    var date = FormatDate.FormatDate(parsedFlightList);
+        public static void receiver_TransponderDataReady(object sender, RawTransponderDataEventArgs e)
+        {
+            Console.Clear();
+            //Traverse all elements
+            foreach (var data in e.TransponderData)
+            {
+                // Return list of parsed flight info
+                List<string> parsedData = parseTrack.Parse(data);
 
-//                    // Create track object and print info
-//                    Track myTrack = new Track(date);
-//                    Output myOutput = new Output();
-//                    myOutput.Print(myTrack);
-//                }
-//            }
-//        } 
-//    }
-//}
+
+                //var parsedFlightList = ParseFlightInfo.Parse(data);
+
+                // If inside the monitored area
+                if (monitoredArea.InsideMonitoredArea())
+                {
+                    // Format and return the date
+                    var date = FormatDate.FormatDate(parsedFlightList);
+
+                    // Create track object and print info
+                    Track myTrack = new Track(date);
+                    Output myOutput = new Output();
+                    myOutput.Print(myTrack);
+                }
+            }
+        } 
+    }
+}
