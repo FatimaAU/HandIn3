@@ -7,7 +7,7 @@ using AirTrafficMonitoring.Classes.Interfaces;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class FlightData : IFlightData
+    public class FlightDataExtractor : IFlightDataExtractor
     {
         public void ExtractFlight(List<string> data, 
             out string tag, ref IPosition pos, ref ITimestamp time)

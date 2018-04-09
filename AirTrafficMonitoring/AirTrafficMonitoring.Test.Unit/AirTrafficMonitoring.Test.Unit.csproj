@@ -60,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTest.cs" />
-    <Compile Include="FlightTest.cs" />
+    <Compile Include="FlightDataExtractorTest.cs" />
     <Compile Include="PositionTest.cs" />
     <Compile Include="TimestampTest.cs" />
     <Compile Include="TransponderDataEventReceived.cs" />

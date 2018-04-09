@@ -9,8 +9,8 @@ namespace AirTrafficMonitoring.Test.Unit
     [TestFixture]
     public class MonitoredAreaTest
     {
-        private Position _position;
-        private MonitoredArea _monitoredArea;
+        private IPosition _position;
+        private IMonitoredArea _monitoredArea;
 
         [SetUp]
         public void Setup()

@@ -13,7 +13,7 @@ namespace AirTrafficMonitoring.Application
         public static IPosition Position = new Position();
         public static ITimestamp Timestamp = new Timestamp();
         public static ITimestampFormatter TimestampFormatter = new TimestampFormatter();
-        public static IFlightData ExtractedFlight = new FlightData();
+        public static IFlightDataExtractor ExtractedFlight = new FlightDataExtractor();
 
 
         static void Main(string[] args)
@@ -29,24 +29,26 @@ namespace AirTrafficMonitoring.Application
             //Traverse all elements
             foreach (var data in e.TransponderData)
             {
+
+                //NÆSTE STEP:
+                //Create track objekt som wrapper alting:
+                //parse en liste af data.
+                //denne skal extractes:
+                //position og formateret timestamp findes
+                //tjek på om flyet er inde i MonitoredArea
+                //hvis ja, create trackobject
+                //herefter kan lave MonitorAirspace som netop er denne klasse?
+
                 // Return list of parsed flight info
                 List<string> parsedData = ParseTrack.Parse(data);
 
                 ExtractedFlight.ExtractFlight(parsedData, out var tag, ref Position, ref Timestamp);
-
-                //extractPos.Position(parsedData, out var xPos, out var yPos, out var Alt);
-                //string timeStamp = extractTime.Timestamp(parsedData);
-
-
-                //var parsedFlightList = ParseFlightInfo.Parse(data);
 
                 // If inside the monitored area
                 if (MonitoredArea.InsideMonitoredArea(Position))
                 {
                     // Format and return the date
                     string formattedTimeStamp = TimestampFormatter.FormatTimestamp(Timestamp.UnformattedTimestamp);
-
-                    //var date = FormatDate.FormatDate(parsedFlightList);
 
                     // Create track object and print info
                     ITrackObject myTrack = new TrackObject(tag, Position, formattedTimeStamp);

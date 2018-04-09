@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Classes;
 using AirTrafficMonitoring.Classes.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 
 namespace AirTrafficMonitoring.Test.Unit
 {
     [TestFixture]
-    class FlightTest
+    class FlightDataExtractorTest
     {
         private List<string> _flightList;
         private string _tag;
@@ -22,15 +23,17 @@ namespace AirTrafficMonitoring.Test.Unit
 
         private IPosition _position;
         private ITimestamp _timestampObj;
-        private IFlightData _flightData;
+        private IFlightDataExtractor _flightData;
 
         [SetUp]
         public void Setup()
         {
             _position = new Position();
             _timestampObj = new Timestamp();
-            _flightData = new FlightData();
+            _flightData = new FlightDataExtractor();
+
             _flightList = new List<string>{ "TAGGGG", "50000", "50000", "5000", "20181111111111111" };
+
             _tag = _flightList[0];
             _x = _flightList[1];
             _y = _flightList[2];
@@ -41,35 +44,35 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void Flight_SetTag_ReturnsTag()
         {
-            _flightData.ExtractFlight(_flightList,out var tag, ref _position, ref _timestampObj);
+            _flightData.ExtractFlight(_flightList, out var tag, ref _position, ref _timestampObj);
             Assert.AreEqual(_tag, tag);
         }
 
         [Test]
         public void Flight_SetX_ReturnsX()
         {
-            _flightData.ExtractFlight(_flightList, out string tag, ref _position, ref _timestampObj);
+            _flightData.ExtractFlight(_flightList, out var tag, ref _position, ref _timestampObj);
             Assert.AreEqual(_x, _position.XCoor);
         }
 
         [Test]
         public void Flight_SetY_ReturnsY()
         {
-            _flightData.ExtractFlight(_flightList, out string tag, ref _position, ref _timestampObj);
+            _flightData.ExtractFlight(_flightList, out var tag, ref _position, ref _timestampObj);
             Assert.AreEqual(_y, _position.YCoor);
         }
 
         [Test]
         public void Flight_SetAltitude_ReturnsAltitude()
         {
-            _flightData.ExtractFlight(_flightList, out string tag, ref _position, ref _timestampObj);
+            _flightData.ExtractFlight(_flightList, out var tag, ref _position, ref _timestampObj);
             Assert.AreEqual(_altitude, _position.Altitude);
         }
 
         [Test]
         public void Flight_SetTime_ReturnsTime()
         {
-            _flightData.ExtractFlight(_flightList, out string tag, ref _position, ref _timestampObj);
+            _flightData.ExtractFlight(_flightList, out var tag, ref _position, ref _timestampObj);
             Assert.AreEqual(_timestamp, _timestampObj.UnformattedTimestamp);
         }
     }

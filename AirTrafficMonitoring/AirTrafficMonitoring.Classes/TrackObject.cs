@@ -6,7 +6,6 @@ namespace AirTrafficMonitoring.Classes
 {
     public class TrackObject : ITrackObject
     {
-        //private IOutput myOutput;
         public string Tag { get; }
         public string XCoordinate { get; }
         public string YCoordinate { get; }
