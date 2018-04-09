@@ -3,20 +3,48 @@ using System.Collections.Generic;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class FlightTrackingValidation
+    public class MonitoredArea
     {
-        public static bool MonitoredFlightData(List<string> data)
+        private int _coordinateHigher;
+        private int _coordinateLower;
+        private int _altitudeHigher;
+        private int _altitudeLower;
+
+        public MonitoredArea(int cH, int cL, int aH, int aL)
         {
-            return MonitoredC
-                   && Int32.Parse(data[2]) <= 90000
-                   && Int32.Parse(data[2]) >= 10000
-                   && Int16.Parse(data[3]) >= 500
-                   && Int16.Parse(data[3]) <= 20000;
+            _coordinateHigher = cH;
+            _coordinateLower = cL;
+            _altitudeHigher = aH;
+            _altitudeLower = aL;
         }
 
-        public bool MonitoredCoordinates(string x, string y)
+        public bool InsideMonitoredArea(List<string> data)
         {
-            return Int32.Parse(x) <= 90000 && Int32.Parse(y) >= 10000;
+            return InsideMonitoredYCoor()
         }
+
+        private bool InsideMonitoredCoordinates(string x, string y)
+        {
+            return InsideMonitoredXCoor(x) && InsideMonitoredYCoor(y);
+        }
+
+        private bool InsideMonitoredXCoor(string x)
+        {
+            return int.Parse(x) <= _coordinateHigher 
+                   && int.Parse(x) >= _coordinateLower;
+        }
+
+        private bool InsideMonitoredYCoor(string y)
+        {
+            return int.Parse(y) <= _coordinateHigher
+                   && int.Parse(y) >= _coordinateLower;
+        }
+
+        private bool InsideMonitoredAltitude(string alLower, string alHigher)
+        {
+            return int.Parse(alLower) >= _altitudeLower
+                   && int.Parse(alHigher) <= _altitudeHigher;
+        }
+
     }
 }
