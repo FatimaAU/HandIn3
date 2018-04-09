@@ -36,7 +36,8 @@ namespace AirTrafficMonitoring.Test.Unit
             _flightList.Add($"{month} 11th, 2018, at 11:11:11 and 111 milliseconds"); 
             _flightPosition.Add($"2018{number}11111111111");
 
-            Assert.AreEqual(_flightList, FormatDate.FormatDate(_flightPosition));
+            FormatTimestamp _formatTimestamp = new FormatTimestamp(_flightPosition[4], "yyyyMMddHHmmssfff");
+            Assert.AreEqual(_flightList, _formatTimestamp(_flightPosition));
         }
 
         [TestCase("01", "st", "1")]

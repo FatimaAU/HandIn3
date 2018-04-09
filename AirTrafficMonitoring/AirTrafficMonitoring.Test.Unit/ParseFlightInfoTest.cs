@@ -24,7 +24,7 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void ParseFlightInfo_StringConverts_ReturnsParsedOutput()
         {
-            Assert.AreEqual(_flightList,ParseFlightInfo.Parse(_flightString));
+            Assert.AreEqual(_flightList, ParseFlightInfo.Parse(_flightString));
         }
 
         [Test]
