@@ -8,7 +8,7 @@ namespace AirTrafficMonitoring.Classes
     {
         //private string format = "yyyyMMddHHmmssfff";
         private string _format;
-        private string FormattedDate { get; }
+        public string FormattedDate { get; }
 
         public FormatTimestamp(string time, string format)
         {
