@@ -36,7 +36,7 @@ namespace AirTrafficMonitoring.Test.Unit
             _flightList.Add($"{month} 11th, 2018, at 11:11:11 and 111 milliseconds"); 
             _flightPosition.Add($"2018{number}11111111111");
 
-            Assert.AreEqual(_flightList, Date.FormatDate(_flightPosition));
+            Assert.AreEqual(_flightList, FormatDate.FormatDate(_flightPosition));
         }
 
         [TestCase("01", "st", "1")]
@@ -61,7 +61,7 @@ namespace AirTrafficMonitoring.Test.Unit
             _flightList.Add($"November {shortNumber}{postfix}, 2018, at 11:11:11 and 111 milliseconds");
             _flightPosition.Add($"201811{number}111111111");
 
-            Assert.AreEqual(_flightList, Date.FormatDate(_flightPosition));
+            Assert.AreEqual(_flightList, FormatDate.FormatDate(_flightPosition));
         }
 
     }
