@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="DateTest.cs" />
     <Compile Include="FlightTrackingValidationTest.cs" />
+    <Compile Include="ParseFlightInfoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrackTest.cs" />
   </ItemGroup>

@@ -24,7 +24,6 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void TrackTest_TagInserted_ReturnsCorrectOutput()
         {
-            //_trackList[0] = "ERERER";
             _output.Received().Print(Arg.Is<Track>(str => str.Tag.Contains("223")));
         }
 
