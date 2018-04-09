@@ -8,9 +8,10 @@ namespace AirTrafficMonitoring.Classes
 {
     public class ExtractTimestamp
     {
-        public string Timestamp(List<string> data)
-        {
-            return data[4];
-        }
+        public string Timestamp { get; set; }
+        //public void Timestamp(string time)
+        //{
+        //    FormattedTimestamp = time;
+        //}
     }
 }

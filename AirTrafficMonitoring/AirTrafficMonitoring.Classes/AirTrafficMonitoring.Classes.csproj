@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtractFlight.cs" />
     <Compile Include="TimestampFormatter.cs" />
     <Compile Include="ExtractTimestamp.cs" />
     <Compile Include="MonitoredArea.cs" />

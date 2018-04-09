@@ -12,12 +12,12 @@ namespace AirTrafficMonitoring.Classes
         public string Altitude { get; }
         public string TimeStamp { get; }
 
-        public Track(string tag, string x, string y, string al, string time)
+        public Track(string tag, ExtractPosition pos, string time)
         {
             Tag = tag;
-            XCoordinate = x;
-            YCoordinate = y;
-            Altitude = al;
+            XCoordinate = pos.XCoor;
+            YCoordinate = pos.YCoor;
+            Altitude = pos.Altitude;
             TimeStamp = time;
         }
     }
