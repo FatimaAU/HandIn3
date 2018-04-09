@@ -4,17 +4,16 @@ using System.Globalization;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class FormatTimestamp
+    public class TimestampFormatter
     {
         //private string format = "yyyyMMddHHmmssfff";
         private string _format;
-        public string FormattedDate { get; }
 
-        public FormatTimestamp(string time, string format)
+        public string FormatTimestamp(string time, string format = "yyyyMMddHHmmssfff")
         {
             _format = format;
             DateTime date = DateTime.ParseExact(time, _format, CultureInfo.CreateSpecificCulture("en-US"));
-            FormattedDate = String.Format(new CultureInfo("en-US"),
+            return String.Format(new CultureInfo("en-US"),
                 "{0:MMMM d}{1}{0:, yyyy, 'at' HH:mm:ss 'and' fff 'milliseconds'}", date, GetDaySuffix(date));
         }
 
