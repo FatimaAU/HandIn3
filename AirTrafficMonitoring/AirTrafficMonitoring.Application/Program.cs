@@ -12,6 +12,7 @@ namespace AirTrafficMonitoring.Application
         static ExtractPosition extractPos = new ExtractPosition();
         static ExtractTimestamp extractTime = new ExtractTimestamp();
         static TimestampFormatter timestampFormatter = new TimestampFormatter();
+        static ExtractFlight extractFlight = new ExtractFlight();
 
 
         static void Main(string[] args)
@@ -30,22 +31,24 @@ namespace AirTrafficMonitoring.Application
                 // Return list of parsed flight info
                 List<string> parsedData = parseTrack.Parse(data);
 
-                extractPos.Position(parsedData, out var xPos, out var yPos, out var Alt);
-                string timeStamp = extractTime.Timestamp(parsedData);
+                extractFlight.Flight(parsedData, out var Tag, ref extractPos, ref extractTime);
+
+                //extractPos.Position(parsedData, out var xPos, out var yPos, out var Alt);
+                //string timeStamp = extractTime.Timestamp(parsedData);
 
 
                 //var parsedFlightList = ParseFlightInfo.Parse(data);
 
                 // If inside the monitored area
-                if (monitoredArea.InsideMonitoredArea(xPos, yPos, Alt))
+                if (monitoredArea.InsideMonitoredArea(extractPos))
                 {
                     // Format and return the date
-                    string formattedTimeStamp = timestampFormatter.FormatTimestamp(timeStamp);
+                    string formattedTimeStamp = timestampFormatter.FormatTimestamp(extractTime.Timestamp);
 
                     //var date = FormatDate.FormatDate(parsedFlightList);
 
                     // Create track object and print info
-                    Track myTrack = new Track(parsedData[0], xPos, yPos, Alt, formattedTimeStamp);
+                    Track myTrack = new Track(Tag, extractPos, formattedTimeStamp);
                     Output myOutput = new Output();
                     myOutput.Print(myTrack);
                 }

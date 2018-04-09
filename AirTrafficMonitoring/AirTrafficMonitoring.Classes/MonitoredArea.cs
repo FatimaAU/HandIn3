@@ -18,10 +18,10 @@ namespace AirTrafficMonitoring.Classes
             _altitudeLower = aL;
         }
 
-        public bool InsideMonitoredArea(string x, string y, string alt)
+        public bool InsideMonitoredArea(ExtractPosition position)
         {
-            return InsideMonitoredCoordinates(x, y)
-                   && InsideMonitoredAltitude(alt);
+            return InsideMonitoredCoordinates(position.XCoor, position.YCoor)
+                   && InsideMonitoredAltitude(position.Altitude);
         }
 
         private bool InsideMonitoredCoordinates(string x, string y)
