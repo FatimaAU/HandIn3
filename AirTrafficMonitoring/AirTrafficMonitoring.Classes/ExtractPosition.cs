@@ -9,7 +9,7 @@ namespace AirTrafficMonitoring.Classes
 {
     public class ExtractPosition
     {
-        public ExtractPosition(List<string> fullFlightInfo, out string x, out string y, out string alt)
+        public void Position(List<string> fullFlightInfo, out string x, out string y, out string alt)
         {
             x = fullFlightInfo[1];
             y = fullFlightInfo[2];

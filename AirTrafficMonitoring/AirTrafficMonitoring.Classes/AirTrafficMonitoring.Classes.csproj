@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormatTimestamp.cs" />
+    <Compile Include="TimestampFormatter.cs" />
     <Compile Include="ExtractTimestamp.cs" />
     <Compile Include="MonitoredArea.cs" />
     <Compile Include="Interfaces\IOutput.cs" />

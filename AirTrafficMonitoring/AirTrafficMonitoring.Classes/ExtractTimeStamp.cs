@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace AirTrafficMonitoring.Classes
 {
-    class ExtractTimestamp
+    public class ExtractTimestamp
     {
-        private string Timestamp { get; }
-        public ExtractTimestamp(List<string> data)
+        public string Timestamp(List<string> data)
         {
-            Timestamp = data[4];
+            return data[4];
         }
     }
 }
