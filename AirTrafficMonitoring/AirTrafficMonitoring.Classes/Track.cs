@@ -16,7 +16,7 @@ namespace AirTrafficMonitoring.Classes
         {
             Tag = tag;
             XCoordinate = x;
-            YCoordinate = x;
+            YCoordinate = y;
             Altitude = al;
             TimeStamp = time;
         }
