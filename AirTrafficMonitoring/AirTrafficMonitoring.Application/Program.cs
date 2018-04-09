@@ -27,7 +27,7 @@ namespace AirTrafficMonitoring.Application
                 if (FlightTrackingValidation.MonitoredFlightData(parsedFlightList))
                 {
                     // Format and return the date
-                    var date = Date.FormatDate(parsedFlightList);
+                    var date = FormatDate.FormatDate(parsedFlightList);
 
                     // Create track object and print info
                     Track myTrack = new Track(date);

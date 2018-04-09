@@ -5,10 +5,10 @@ namespace AirTrafficMonitoring.Classes
 {
     public class MonitoredArea
     {
-        private int _coordinateHigher;
-        private int _coordinateLower;
-        private int _altitudeHigher;
-        private int _altitudeLower;
+        private readonly int _coordinateHigher;
+        private readonly int _coordinateLower;
+        private readonly int _altitudeHigher;
+        private readonly int _altitudeLower;
 
         public MonitoredArea(int cH, int cL, int aH, int aL)
         {
@@ -18,10 +18,11 @@ namespace AirTrafficMonitoring.Classes
             _altitudeLower = aL;
         }
 
-        //public bool InsideMonitoredArea(List<string> data)
-        //{
-        //    return InsideMonitoredYCoor()
-        //}
+        public bool InsideMonitoredArea(string x, string y, string alt)
+        {
+            return InsideMonitoredCoordinates(x, y)
+                   && InsideMonitoredAltitude(alt);
+        }
 
         private bool InsideMonitoredCoordinates(string x, string y)
         {
@@ -40,10 +41,10 @@ namespace AirTrafficMonitoring.Classes
                    && int.Parse(y) >= _coordinateLower;
         }
 
-        private bool InsideMonitoredAltitude(string alLower, string alHigher)
+        private bool InsideMonitoredAltitude(string alt)
         {
-            return int.Parse(alLower) >= _altitudeLower
-                   && int.Parse(alHigher) <= _altitudeHigher;
+            return int.Parse(alt) >= _altitudeLower
+                   && int.Parse(alt) <= _altitudeHigher;
         }
 
     }

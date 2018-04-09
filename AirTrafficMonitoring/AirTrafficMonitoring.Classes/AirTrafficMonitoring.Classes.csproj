@@ -50,12 +50,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Date.cs" />
-    <Compile Include="FlightTrackingValidation.cs" />
+    <Compile Include="FormatTimestamp.cs" />
+    <Compile Include="ExtractTimestamp.cs" />
+    <Compile Include="MonitoredArea.cs" />
     <Compile Include="Interfaces\IOutput.cs" />
     <Compile Include="Output.cs" />
-    <Compile Include="ParseFlightInfo.cs" />
-    <Compile Include="Position.cs" />
+    <Compile Include="ParseTrackInfo.cs" />
+    <Compile Include="ExtractPosition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Track.cs" />
   </ItemGroup>
