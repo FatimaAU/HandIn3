@@ -65,7 +65,7 @@ namespace AirTrafficMonitoring.Test.Unit
             _flightPosition.Add($"201811{number}111111111");
 
             TimestampFormatter _formatTimestamp = new TimestampFormatter();
-            Assert.AreEqual(_flightString, _formatTimestamp.FormatTimestamp(_flightPosition[4], "yyyyMMddHHmmssfff"));
+            Assert.AreEqual(_flightString, _formatTimestamp.FormatTimestamp(_flightPosition[4]));
         }
 
     }
