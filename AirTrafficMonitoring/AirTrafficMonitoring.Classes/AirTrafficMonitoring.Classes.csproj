@@ -61,7 +61,7 @@
     <Compile Include="Interfaces\ITimestamp.cs" />
     <Compile Include="Interfaces\ITimestampFormatter.cs" />
     <Compile Include="Interfaces\ITrackObject.cs" />
-    <Compile Include="MonitorAirspace.cs" />
+    <Compile Include="TrackObjectSystem.cs" />
     <Compile Include="TimestampFormatter.cs" />
     <Compile Include="Timestamp.cs" />
     <Compile Include="MonitoredArea.cs" />

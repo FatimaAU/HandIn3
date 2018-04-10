@@ -21,6 +21,9 @@ namespace AirTrafficMonitoring.Application
         {
             ITransponderReceiver receiver = TransponderReceiverFactory.CreateTransponderDataReceiver();
             receiver.TransponderDataReady += receiver_TransponderDataReady;
+
+            //TrackObjectSystem.CreateTrackObjectSystem(receiver, MonitoredArea, ParseTrack, Position, Timestamp, TimestampFormatter, ExtractedFlight, Output);
+
             while (true) { }
         }
 
@@ -56,6 +59,6 @@ namespace AirTrafficMonitoring.Application
                     Output.Print(TrackObj);
                 }
             }
-        } 
+        }
     }
 }
