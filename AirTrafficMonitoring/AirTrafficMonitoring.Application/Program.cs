@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 using AirTrafficMonitoring.Classes;
 using AirTrafficMonitoring.Classes.Interfaces;
 using TransponderReceiver;
@@ -14,7 +15,7 @@ namespace AirTrafficMonitoring.Application
         public static ITimestamp Timestamp = new Timestamp();
         public static ITimestampFormatter TimestampFormatter = new TimestampFormatter();
         public static IFlightDataExtractor ExtractedFlight = new FlightDataExtractor();
-
+        public static IOutput Output = new Output();
 
         static void Main(string[] args)
         {
@@ -31,7 +32,7 @@ namespace AirTrafficMonitoring.Application
             {
 
                 //NÆSTE STEP:
-                //Create track objekt som wrapper alting:
+                //CreateTrackObjekt som wrapper alting:
                 //parse en liste af data.
                 //denne skal extractes:
                 //position og formateret timestamp findes
@@ -51,9 +52,8 @@ namespace AirTrafficMonitoring.Application
                     string formattedTimeStamp = TimestampFormatter.FormatTimestamp(Timestamp.UnformattedTimestamp);
 
                     // Create track object and print info
-                    ITrackObject myTrack = new TrackObject(tag, Position, formattedTimeStamp);
-                    IOutput myOutput = new Output();
-                    myOutput.Print(myTrack);
+                    ITrackObject TrackObj = new TrackObject(tag, Position, formattedTimeStamp);
+                    Output.Print(TrackObj);
                 }
             }
         } 

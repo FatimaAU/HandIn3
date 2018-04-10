@@ -9,6 +9,11 @@ using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
 {
+    /*
+    * UNIT TEST DESCRIPTION
+    * Unit tests on ParseTrackInfo that test that
+    * the parsed info is parsed into a correct list
+    */
     [TestFixture]
     class ParseTrackInfoTest
     {
@@ -21,9 +26,8 @@ namespace AirTrafficMonitoring.Test.Unit
         public void Setup()
         {
             _parser = new ParseTrackInfo();
-
-            _flightList = new List<string> { "TAGGGG", "50000", "50000", "5000", "20181111111111111" };
-            _flightString = "TAGGGG;50000;50000;5000;20181111111111111";
+            _flightList = new List<string> { "TAGGGG", "50000", "40000", "5000", "20181111111111111" };
+            _flightString = "TAGGGG;50000;40000;5000;20181111111111111";
         }
 
         [Test]

@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
-using AirTrafficMonitoring.Classes;
+﻿using AirTrafficMonitoring.Classes;
 using AirTrafficMonitoring.Classes.Interfaces;
-using NSubstitute;
 using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
 {
+    /*
+     * UNIT TEST DESCRIPTION
+     * Unit tests on MonitorArea that test the upper
+     * and lower boundary of the monitored area 
+     */
     [TestFixture]
     public class MonitoredAreaTest
     {

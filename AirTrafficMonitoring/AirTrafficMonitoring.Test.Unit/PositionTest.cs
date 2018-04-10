@@ -9,6 +9,11 @@ using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
 {
+    /*
+    * UNIT TEST DESCRIPTION
+    * Unit tests on Position that test the correct
+    * position is returned when assigned
+    */
     [TestFixture]
     class PositionTest
     {

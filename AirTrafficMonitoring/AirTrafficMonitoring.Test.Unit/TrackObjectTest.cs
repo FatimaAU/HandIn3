@@ -6,8 +6,13 @@ using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
 {
+    /*
+    * UNIT TEST DESCRIPTION
+    * Unit tests on TrackObject that test
+    * the correct information is received when assigned
+    */
     [TestFixture]
-    class TrackTest
+    class TrackObjectTest
     {
         private List<string> _flightList;
         private string _tag;
@@ -23,11 +28,6 @@ namespace AirTrafficMonitoring.Test.Unit
         public void Setup()
         {
             _flightList = new List<string> { "TAGGGG", "50000", "40000", "5000", "20181111111111111" };
-            _tag = _flightList[0];
-            _x = _flightList[1];
-            _y = _flightList[2];
-            _altitude = _flightList[3];
-            _timestamp = _flightList[4];
 
             _position = new Position();
             _position.SetPosition(_x, _y, _altitude);
@@ -37,30 +37,35 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void Track_SetTag_ReturnsTag()
         {
+            _tag = _flightList[0];
             Assert.AreEqual(_tag, _trackObject.Tag);
         }
 
         [Test]
         public void Track_SetXCoordinate_ReturnsXCoordinate()
         {
+            _x = _flightList[1];
             Assert.AreEqual(_x, _trackObject.XCoordinate);
         }
 
         [Test]
         public void Track_SetYCoordinate_ReturnYCoordinate()
         {
+            _y = _flightList[2];
             Assert.AreEqual(_y, _trackObject.YCoordinate);
         }
 
         [Test]
         public void Track_SetAltitude_ReturnAltitude()
         {
+            _altitude = _flightList[3];
             Assert.AreEqual(_altitude, _trackObject.Altitude);
         }
 
         [Test]
         public void Track_SetTimestamp_ReturnTimestamp()
         {
+            _timestamp = _flightList[4];
             Assert.AreEqual(_timestamp, _trackObject.TimeStamp);
         }
 

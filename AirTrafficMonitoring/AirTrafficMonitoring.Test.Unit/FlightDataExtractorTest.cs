@@ -14,13 +14,13 @@ namespace AirTrafficMonitoring.Test.Unit
     [TestFixture]
     class FlightDataExtractorTest
     {
+        /*
+        * UNIT TEST DESCRIPTION
+        * Unit tests on FlightDataExtractor that test that the
+        * flight data is extracted correctly from the string
+        */
         private List<string> _flightList;
-        private string _tag;
-        private string _x;
-        private string _y;
-        private string _altitude;
-        private string _timestamp;
-
+ 
         private IPosition _position;
         private ITimestamp _timestampObj;
         private IFlightDataExtractor _flightData;
@@ -33,47 +33,51 @@ namespace AirTrafficMonitoring.Test.Unit
             _flightData = new FlightDataExtractor();
 
             _flightList = new List<string>{ "TAGGGG", "50000", "50000", "5000", "20181111111111111" };
-
-            _tag = _flightList[0];
-            _x = _flightList[1];
-            _y = _flightList[2];
-            _altitude = _flightList[3];
-            _timestamp = _flightList[4];
         }
 
         [Test]
         public void Flight_SetTag_ReturnsTag()
         {
+            // Define tag and check correct tag returned
+            string expectedTag = _flightList[0];
             _flightData.ExtractFlight(_flightList, out var tag, ref _position, ref _timestampObj);
-            Assert.AreEqual(_tag, tag);
+            Assert.AreEqual(expectedTag, tag);
         }
 
         [Test]
         public void Flight_SetX_ReturnsX()
         {
+            // Define x coodrinate and check correct x coordinate returned
+            string expectedXCoor = _flightList[1];
             _flightData.ExtractFlight(_flightList, out var tag, ref _position, ref _timestampObj);
-            Assert.AreEqual(_x, _position.XCoor);
+            Assert.AreEqual(expectedXCoor, _position.XCoor);
         }
 
         [Test]
         public void Flight_SetY_ReturnsY()
         {
+            // Define y coordinate and check correct y coordinate returned
+            string expectedYCoor = _flightList[2];
             _flightData.ExtractFlight(_flightList, out var tag, ref _position, ref _timestampObj);
-            Assert.AreEqual(_y, _position.YCoor);
+            Assert.AreEqual(expectedYCoor, _position.YCoor);
         }
 
         [Test]
         public void Flight_SetAltitude_ReturnsAltitude()
         {
+            // Define altitude and check correct altitude returned
+            string expectedAltitude = _flightList[3];
             _flightData.ExtractFlight(_flightList, out var tag, ref _position, ref _timestampObj);
-            Assert.AreEqual(_altitude, _position.Altitude);
+            Assert.AreEqual(expectedAltitude, _position.Altitude);
         }
 
         [Test]
         public void Flight_SetTime_ReturnsTime()
         {
+            // Define timestamp and check correct timestamp returned
+            string expectedTimestamp = _flightList[4];
             _flightData.ExtractFlight(_flightList, out var tag, ref _position, ref _timestampObj);
-            Assert.AreEqual(_timestamp, _timestampObj.UnformattedTimestamp);
+            Assert.AreEqual(expectedTimestamp, _timestampObj.UnformattedTimestamp);
         }
     }
 }

@@ -9,8 +9,13 @@ using TransponderReceiver;
 
 namespace AirTrafficMonitoring.Test.Unit
 {
+    /*
+    * UNIT TEST DESCRIPTION
+    * Unit tests on TransponderDataReady that test
+    * the event is received with the assigned argument (list of flight information)
+    */
     [TestFixture]
-    class TransponderDataEventReceived
+    class TransponderDataReadyEventTest
     {
         private ITransponderReceiver _transponderReceiver;
         private List<string> _argList;
@@ -24,7 +29,7 @@ namespace AirTrafficMonitoring.Test.Unit
         }
         
         [Test]
-        public void TransponderDataReady_EventFired_EventReceived()
+        public void TransponderDataReady_EventFired_EventReceivedCorrectArgs()
         {
             var args = new RawTransponderDataEventArgs(_argList);
 

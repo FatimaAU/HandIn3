@@ -62,12 +62,11 @@
     <Compile Include="DateTest.cs" />
     <Compile Include="FlightDataExtractorTest.cs" />
     <Compile Include="PositionTest.cs" />
-    <Compile Include="TimestampTest.cs" />
-    <Compile Include="TransponderDataEventReceived.cs" />
+    <Compile Include="TransponderDataReadyEventTest.cs" />
     <Compile Include="MonitoredAreaTest.cs" />
     <Compile Include="ParseTrackInfoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrackTest.cs" />
+    <Compile Include="TrackObjectTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
