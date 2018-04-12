@@ -41,7 +41,7 @@ namespace AirTrafficMonitoring.Application
                 //position og formateret timestamp findes
                 //tjek på om flyet er inde i MonitoredArea
                 //hvis ja, create trackobject
-                //herefter kan lave MonitorAirspace som netop er denne klasse?
+                //herefter kan lave TrackObjectSystem som netop er denne klasse?
 
                 // Return list of parsed flight info
                 List<string> parsedData = ParseTrack.Parse(data);
@@ -55,8 +55,8 @@ namespace AirTrafficMonitoring.Application
                     string formattedTimeStamp = TimestampFormatter.FormatTimestamp(Timestamp.UnformattedTimestamp);
 
                     // Create track object and print info
-                    ITrackObject TrackObj = new TrackObject(tag, Position, formattedTimeStamp);
-                    Output.Print(TrackObj);
+                    ITrackObject trackObj = new TrackObject(tag, Position, formattedTimeStamp);
+                    Output.Print(trackObj);
                 }
             }
         }

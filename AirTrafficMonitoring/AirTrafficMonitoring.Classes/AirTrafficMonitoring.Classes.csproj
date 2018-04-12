@@ -53,7 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlightData.cs" />
+    <Compile Include="FlightDataExtractor.cs" />
     <Compile Include="Interfaces\IFlightDataExtractor.cs" />
     <Compile Include="Interfaces\IMonitoredArea.cs" />
     <Compile Include="Interfaces\IParseTrackInfo.cs" />
@@ -61,7 +61,8 @@
     <Compile Include="Interfaces\ITimestamp.cs" />
     <Compile Include="Interfaces\ITimestampFormatter.cs" />
     <Compile Include="Interfaces\ITrackObject.cs" />
-    <Compile Include="TrackObjectSystem.cs" />
+    <Compile Include="TrackListReadyEvent\ITrackEvent.cs" />
+    <Compile Include="TrackObjectifier.cs" />
     <Compile Include="TimestampFormatter.cs" />
     <Compile Include="Timestamp.cs" />
     <Compile Include="MonitoredArea.cs" />

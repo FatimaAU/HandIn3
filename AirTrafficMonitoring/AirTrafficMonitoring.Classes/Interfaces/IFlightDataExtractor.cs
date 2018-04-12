@@ -8,7 +8,6 @@ namespace AirTrafficMonitoring.Classes.Interfaces
 {
     public interface IFlightDataExtractor
     {
-        void ExtractFlight(List<string> data,
-            out string tag, ref IPosition pos, ref ITimestamp time);
+        void ExtractFlight(List<string> data, out string tag, ref IPosition pos, ref ITimestamp time);
     }
 }

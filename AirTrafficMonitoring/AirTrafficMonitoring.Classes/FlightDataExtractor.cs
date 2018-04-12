@@ -20,6 +20,8 @@ namespace AirTrafficMonitoring.Classes
 
             pos.SetPosition(x, y, al);
             time.UnformattedTimestamp = timeStamp;
+
+            
         }
     }
 }
