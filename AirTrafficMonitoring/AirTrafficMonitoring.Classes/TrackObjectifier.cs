@@ -22,8 +22,8 @@ namespace AirTrafficMonitoring.Classes
 
         public event EventHandler<TrackListUpdatedArgs> TrackListReady;
 
-        public void CreateTrackObject(ITransponderReceiver rec, IMonitoredArea monitoredArea, IParseTrackInfo parser, IPosition pos,
-            ITimestamp timestamp, ITimestampFormatter formatter, IFlightDataExtractor flightExtractor, IOutput output)
+        public TrackObjectifier(ITransponderReceiver rec, IMonitoredArea monitoredArea, IParseTrackInfo parser, IPosition pos,
+            ITimestamp timestamp, ITimestampFormatter formatter, IFlightDataExtractor flightExtractor)
         {
             rec.TransponderDataReady += OnTransponderDataReceived;
 

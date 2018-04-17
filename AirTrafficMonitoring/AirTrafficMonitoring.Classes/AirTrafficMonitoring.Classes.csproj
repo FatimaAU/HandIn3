@@ -64,7 +64,7 @@
     <Compile Include="Interfaces\ITimestamp.cs" />
     <Compile Include="Interfaces\ITimestampFormatter.cs" />
     <Compile Include="Interfaces\ITrackObject.cs" />
-    <Compile Include="Interfaces\ITrackObjetifier.cs" />
+    <Compile Include="Interfaces\ITrackObjectifier.cs" />
     <Compile Include="TrackListReadyEvent\ITrackEvent.cs" />
     <Compile Include="TrackObjectifier.cs" />
     <Compile Include="TimestampFormatter.cs" />
