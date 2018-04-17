@@ -53,6 +53,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculateCourse.cs" />
+    <Compile Include="CalcutateVelocity.cs" />
     <Compile Include="FlightDataExtractor.cs" />
     <Compile Include="Interfaces\IFlightDataExtractor.cs" />
     <Compile Include="Interfaces\IMonitoredArea.cs" />

@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalculateCourseTest.cs" />
     <Compile Include="DateTest.cs" />
     <Compile Include="FlightDataExtractorTest.cs" />
     <Compile Include="PositionTest.cs" />
