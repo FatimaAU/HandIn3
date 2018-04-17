@@ -12,8 +12,9 @@ namespace AirTrafficMonitoring.Classes
         {
             int x = Math.Abs(newX - oldX);
             int y = Math.Abs(newY - oldY);
+            
 
-            return (int)Math.Sqrt(x*x  + y*y);
+            return (int)(Math.Sqrt(x*x + y*y));
         }
     }
 }
