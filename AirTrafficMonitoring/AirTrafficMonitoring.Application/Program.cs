@@ -52,10 +52,10 @@ namespace AirTrafficMonitoring.Application
                 if (MonitoredArea.InsideMonitoredArea(Position))
                 {
                     // Format and return the date
-                    string formattedTimeStamp = TimestampFormatter.FormatTimestamp(Timestamp.UnformattedTimestamp);
+                    TimestampFormatter.FormatTimestamp(Timestamp.UnformattedTimestamp);
 
                     // Create track object and print info
-                    ITrackObject trackObj = new TrackObject(tag, Position, formattedTimeStamp);
+                    ITrackObject trackObj = new TrackObject(tag, Position, TimestampFormatter.InFormatted);
                     Output.Print(trackObj);
                 }
             }

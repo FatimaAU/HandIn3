@@ -17,7 +17,8 @@ namespace AirTrafficMonitoring.Classes
         private static ITimestamp _timestamp;
         private static ITimestampFormatter _timestampFormatter;
         private static IFlightDataExtractor _extractedFlight;
-        private static IOutput _output;
+
+        private List<TrackObject> TrackList = new List<TrackObject>();
 
         public event EventHandler<TrackListUpdatedArgs> TrackListReady;
 
@@ -32,18 +33,14 @@ namespace AirTrafficMonitoring.Classes
             _timestamp = timestamp;
             _timestampFormatter = formatter;
             _extractedFlight = flightExtractor;
-            _output = output;
         }
 
-        private static void OnTransponderDataReceived(object sender, RawTransponderDataEventArgs rawTransponderDataEventArgs)
+        private void OnTransponderDataReceived(object sender, RawTransponderDataEventArgs rawTransponderDataEventArgs)
         {
-            List<TrackObject> TrackList = new List<TrackObject>();
-            
-            Console.Clear();
+            TrackList.Clear();
             //Traverse all elements
             foreach (var data in rawTransponderDataEventArgs.TransponderData)
             {
-
                 // Return list of parsed flight info
                 List<string> parsedData = _parseTrack.Parse(data);
 
@@ -53,25 +50,22 @@ namespace AirTrafficMonitoring.Classes
                 if (_monitoredArea.InsideMonitoredArea(_position))
                 {
                     // Format and return the date
-                    string formattedTimeStamp = _timestampFormatter.FormatTimestamp(_timestamp.UnformattedTimestamp);
+                    _timestampFormatter.FormatTimestamp(_timestamp.UnformattedTimestamp);
 
-                    TrackList.Add(new TrackObject(tag, _position, formattedTimeStamp));
-                    // Create track object and print info
-                    //ITrackObject TrackObj = new TrackObject(tag, _position, formattedTimeStamp);
-                    
-                    //On
-
-
-                    //_output.Print(TrackObj);
+                    TrackList.Add(new TrackObject(tag, _position, _timestampFormatter.InFormatted));
                 }
+            }
+
+            if (TrackList.Count != 0)
+            {
+                OnTrackListReady(new TrackListUpdatedArgs(TrackList));
             }
         }
 
-        
-
         protected virtual void OnTrackListReady(TrackListUpdatedArgs e)
         {
-            TrackListReady?.Invoke(this, e);
+            var handler = TrackListReady;
+            handler?.Invoke(this, e);
         }
     }
 }

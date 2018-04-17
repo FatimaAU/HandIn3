@@ -8,6 +8,8 @@ namespace AirTrafficMonitoring.Classes.Interfaces
 {
     public interface ITimestampFormatter
     {
-        string FormatTimestamp(string time, string format = "yyyyMMddHHmmssfff");
+        DateTime InDateTime { get; set; }
+        string InFormatted { get; set; }
+        void FormatTimestamp(string time, string format = "yyyyMMddHHmmssfff");
     }
 }
