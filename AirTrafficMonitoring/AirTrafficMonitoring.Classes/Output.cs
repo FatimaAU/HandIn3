@@ -17,6 +17,9 @@ namespace AirTrafficMonitoring.Classes
             Console.WriteLine("Altitide:\t" + track.Altitude + " meters");
             Console.WriteLine("Timestamp:\t" + track.TimeStamp);
             Console.WriteLine();
+
         }
+
+        
     }
 }

@@ -54,7 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculateCourse.cs" />
-    <Compile Include="CalculateVelocity.cs" />
+    <Compile Include="CalcutateVelocity.cs" />
+    <Compile Include="ATMSystem.cs" />
     <Compile Include="FlightDataExtractor.cs" />
     <Compile Include="Interfaces\IFlightDataExtractor.cs" />
     <Compile Include="Interfaces\IMonitoredArea.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Interfaces\ITimestamp.cs" />
     <Compile Include="Interfaces\ITimestampFormatter.cs" />
     <Compile Include="Interfaces\ITrackObject.cs" />
+    <Compile Include="Interfaces\ITrackObjetifier.cs" />
     <Compile Include="TrackListReadyEvent\ITrackEvent.cs" />
     <Compile Include="TrackObjectifier.cs" />
     <Compile Include="TimestampFormatter.cs" />
