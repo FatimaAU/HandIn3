@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculateCourse.cs" />
-    <Compile Include="CalcutateVelocity.cs" />
+    <Compile Include="CalculateVelocity.cs" />
     <Compile Include="ATMSystem.cs" />
     <Compile Include="FlightDataExtractor.cs" />
     <Compile Include="Interfaces\IFlightDataExtractor.cs" />

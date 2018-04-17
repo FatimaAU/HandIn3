@@ -11,17 +11,29 @@ namespace AirTrafficMonitoring.Test.Unit
     [TestFixture]
     class CalculateCourseTest
     {
-        [TestCase("10","20","10","20")]
-        [TestCase("10", "-20", "-10", "20")]
-        [TestCase("-10", "-20", "-10", "-20")]
-        [TestCase("-10", "20", "10", "-20")]
-        public void CalculateCourse_CalculateCourse_ReturnsCourse(string oldX, string newX, string oldY, string newY)
-        {
-            double _testX = Math.Abs(int.Parse(newX) - int.Parse(oldX));
-            double _testY = Math.Abs(int.Parse(newY) - int.Parse(oldY));
+        private CalculateCourse _testCalculateCourse;
 
-            double _test = Math.Atan(_testY/_testX);
-            Assert.AreEqual(_test,new CalculateCourse().Course(oldX,newX,oldY,newY));
+        [SetUp]
+        public void Setup()
+        {
+            _testCalculateCourse = new CalculateCourse();
+        }
+
+        [TestCase(10, 20, 10, 20, 45)]
+        [TestCase(10, -20, -10, 20, 45)]
+        [TestCase(-10, -20, -10, -20, 45)]
+        [TestCase(33322, 33241, 20000, 20341, 75)]
+        
+
+        public void CalculateCourse_CalculateCourse_ReturnsCourse(int oldX, int newX, int oldY, int newY, int result)
+        {
+            Assert.AreEqual(_testCalculateCourse.Course(oldX, newX, oldY, newY),result);
+        }
+
+        [Test]
+        public void CalculateCourse_DivideByZero_ExceptionThrown()
+        {
+            Assert.Throws<DivideByZeroException>(() => _testCalculateCourse.Course(0,0,0,0));
         }
     }
 }

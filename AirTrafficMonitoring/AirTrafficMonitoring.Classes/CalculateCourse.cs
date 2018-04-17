@@ -8,12 +8,18 @@ namespace AirTrafficMonitoring.Classes
 {
     public class CalculateCourse
     {
-        public double Course(string oldX, string newX, string oldY, string newY)
+        public int Course(int oldX, int newX, int oldY, int newY)
         {
-            double x = Math.Abs(int.Parse(newX) - int.Parse(oldX));
-            double y = Math.Abs(int.Parse(newY) - int.Parse(oldY));
+            int x = Math.Abs(newX - oldX);
+            int y = Math.Abs(newY - oldY);
+            int result = 0;
 
-            return Math.Atan(y / x);
+            if (x == 0)
+            {
+                throw new DivideByZeroException();
+            }
+
+            return (int)((Math.Atan(y / x))*360/(2*Math.PI));
         }
     }
 }
