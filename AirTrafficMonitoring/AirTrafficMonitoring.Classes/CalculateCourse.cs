@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AirTrafficMonitoring.Classes.Interfaces;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class CalculateCourse
+    public class CalculateCourse : ICalculateCourse
     {
         public int Course(int oldX, int newX, int oldY, int newY)
         {

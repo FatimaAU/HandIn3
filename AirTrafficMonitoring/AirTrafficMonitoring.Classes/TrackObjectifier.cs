@@ -12,47 +12,48 @@ namespace AirTrafficMonitoring.Classes
         // ------ UDVIND DENNE KLASSE NÅR DET HELE ER OPDELT KORREKT.DENNE SKAL JO IKKE HAVE ALT TILDELT SOM MAIN HAR LIGE NU ------
 
         private static IMonitoredArea _monitoredArea;
-        private static IParseTrackInfo _parseTrack;
+        private static IParseTrackInfo _parser;
         private static IPosition _position;
-        private static ITimestamp _timestamp;
         private static ITimestampFormatter _timestampFormatter;
-        private static IFlightDataExtractor _extractedFlight;
+        private static IFlightDataHandler _flightHandler;
 
-        private List<TrackObject> TrackList = new List<TrackObject>();
+        private List<ITrackObject> TrackList = new List<ITrackObject>();
 
         public event EventHandler<TrackListUpdatedArgs> TrackListReady;
 
-        public TrackObjectifier(ITransponderReceiver rec, IMonitoredArea monitoredArea, IParseTrackInfo parser, IPosition pos,
-            ITimestamp timestamp, ITimestampFormatter formatter, IFlightDataExtractor flightExtractor)
+        public TrackObjectifier(
+            ITransponderReceiver rec, 
+            IMonitoredArea monitoredArea, 
+            IParseTrackInfo parser, 
+            IPosition pos,
+            ITimestampFormatter formatter, 
+            IFlightDataHandler flightHandler)
         {
-            rec.TransponderDataReady += OnTransponderDataReceived;
+            rec.TransponderDataReady += CreateTrack;
 
             _monitoredArea = monitoredArea;
-            _parseTrack = parser;
+            _parser = parser;
             _position = pos;
-            _timestamp = timestamp;
             _timestampFormatter = formatter;
-            _extractedFlight = flightExtractor;
+            _flightHandler = flightHandler;
         }
 
-        private void OnTransponderDataReceived(object sender, RawTransponderDataEventArgs rawTransponderDataEventArgs)
+        private void CreateTrack(object sender, RawTransponderDataEventArgs rawTransponderDataEventArgs)
         {
             TrackList.Clear();
             //Traverse all elements
             foreach (var data in rawTransponderDataEventArgs.TransponderData)
             {
-                // Return list of parsed flight info
-                List<string> parsedData = _parseTrack.Parse(data);
-
-                _extractedFlight.ExtractFlight(parsedData, out var tag, ref _position, ref _timestamp);
+                // Distribute data to relevant classes
+                _flightHandler.Distribute(_parser.Parse(data), out var tag);
 
                 // If inside the monitored area
                 if (_monitoredArea.InsideMonitoredArea(_position))
                 {
                     // Format and return the date
-                    _timestampFormatter.FormatTimestamp(_timestamp.UnformattedTimestamp);
+                    _timestampFormatter.FormatTimestamp();
 
-                    TrackList.Add(new TrackObject(tag, _position, _timestampFormatter.InFormatted));
+                    TrackList.Add(new TrackObject(tag, _position, _timestampFormatter.InPretty));
                 }
             }
 

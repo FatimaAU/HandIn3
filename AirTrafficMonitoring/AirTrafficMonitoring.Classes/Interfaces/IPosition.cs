@@ -8,9 +8,9 @@ namespace AirTrafficMonitoring.Classes.Interfaces
 {
     public interface IPosition
     {
-        string XCoor { get; }
-        string YCoor { get; }
-        string Altitude { get; }
-        void SetPosition(string x, string y, string alt);
+        int XCoor { get; }
+        int YCoor { get; }
+        int Altitude { get; }
+        void SetPosition(int x, int y, int alt);
     }
 }

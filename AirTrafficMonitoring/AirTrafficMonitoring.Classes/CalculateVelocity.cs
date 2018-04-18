@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AirTrafficMonitoring.Classes.Interfaces;
 
 namespace AirTrafficMonitoring.Classes
 {
-    public class CalculateVelocity
+    public class CalculateVelocity : ICalculateVelocity
     {
         public int Velocity(int oldX, int newX, int oldY, int newY)
         {

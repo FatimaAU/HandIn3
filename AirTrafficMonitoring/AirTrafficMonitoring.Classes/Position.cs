@@ -10,11 +10,11 @@ namespace AirTrafficMonitoring.Classes
 {
     public class Position : IPosition
     {
-        public string XCoor { get; private set; }
-        public string YCoor { get; private set; }
-        public string Altitude { get; private set; }
+        public int XCoor { get; private set; }
+        public int YCoor { get; private set; }
+        public int Altitude { get; private set; }
 
-        public void SetPosition(string x, string y, string alt)
+        public void SetPosition(int x, int y, int alt)
         {
             XCoor = x;
             YCoor = y;

@@ -21,8 +21,8 @@ namespace AirTrafficMonitoring.Classes
 
         public bool InsideMonitoredArea(IPosition position)
         {
-            return InsideMonitoredCoordinates(int.Parse(position.XCoor), int.Parse(position.YCoor))
-                   && InsideMonitoredAltitude(int.Parse(position.Altitude));
+            return InsideMonitoredCoordinates(position.XCoor, position.YCoor)
+                   && InsideMonitoredAltitude(position.Altitude);
         }
 
         private bool InsideMonitoredCoordinates(int x, int y)

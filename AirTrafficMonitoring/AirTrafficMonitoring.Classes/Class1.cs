@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirTrafficMonitoring.Classes.Interfaces
+namespace AirTrafficMonitoring.Classes
 {
-    public interface ITimestamp
+    class Class1
     {
-        string UnformattedTimestamp { get; set; }
     }
 }
