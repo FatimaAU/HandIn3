@@ -45,7 +45,9 @@ namespace AirTrafficMonitoring.Classes
             foreach (var data in rawTransponderDataEventArgs.TransponderData)
             {
                 // Distribute data to relevant classes
-                _flightHandler.Distribute(_parser.Parse(data), out var tag);
+                string tag;
+
+                _flightHandler.Distribute(_parser.Parse(data), out tag);
 
                 // If inside the monitored area
                 if (_monitoredArea.InsideMonitoredArea(_position))

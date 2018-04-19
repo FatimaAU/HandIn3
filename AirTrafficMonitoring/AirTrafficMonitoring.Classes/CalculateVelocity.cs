@@ -11,6 +11,7 @@ namespace AirTrafficMonitoring.Classes
     {
         public int Velocity(int oldX, int newX, int oldY, int newY)
         {
+            //Distance is calculated but no velocity. Use deltaTime pls
             int x = Math.Abs(newX - oldX);
             int y = Math.Abs(newY - oldY);
             

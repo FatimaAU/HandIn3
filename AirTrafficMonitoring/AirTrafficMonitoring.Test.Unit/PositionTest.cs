@@ -30,7 +30,7 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             string x = "20000";
             _position.SetPosition(x, "50000", "5000");
-            Assert.AreEqual(x,_position.XCoor);
+            Assert.AreEqual(x, _position.XCoor);
         }
 
         [Test]

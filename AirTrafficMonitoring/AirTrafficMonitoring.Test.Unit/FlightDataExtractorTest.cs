@@ -20,7 +20,7 @@ namespace AirTrafficMonitoring.Test.Unit
         * flight data is extracted correctly from the string
         */
         private List<string> _flightList;
- 
+
         private IPosition _position;
         private ITimestamp _timestampObj;
         private IFlightDataExtractor _flightData;
@@ -32,7 +32,7 @@ namespace AirTrafficMonitoring.Test.Unit
             _timestampObj = new Timestamp();
             _flightData = new FlightDataExtractor();
 
-            _flightList = new List<string>{ "TAGGGG", "50000", "50000", "5000", "20181111111111111" };
+            _flightList = new List<string> { "TAGGGG", "50000", "50000", "5000", "20181111111111111" };
         }
 
         [Test]

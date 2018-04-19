@@ -20,19 +20,20 @@ namespace AirTrafficMonitoring.Application
         public static ICalculateCourse Course = new CalculateCourse();
         public static ICalculateVelocity Velocity = new CalculateVelocity();
 
-        public static List<ITrackObject> TrackObjectList;
+        public static List<ITrackObject> NewTrackList = new List<ITrackObject>();
+        public static List<ITrackObject> OldTrackList;
 
         //public static TrackObjectifier Objectifier = new TrackObjectifier(receiver, MonitoredArea, Parser, Position, Formatter, Handler);
 
         static void Main(string[] args)
         {
             receiver = TransponderReceiverFactory.CreateTransponderDataReceiver();
-            TrackObjectifier Objectifier =
+            TrackObjectifier objectifier =
                 new TrackObjectifier(receiver, MonitoredArea, Parser, Position, Formatter, Handler);
 
             //receiver.TransponderDataReady += receiver_TransponderDataReady;
 
-            Objectifier.TrackListReady += ObjectifierOnTrackListReady;
+            objectifier.TrackListReady += ObjectifierOnTrackListReady;
 
             //TrackObjectSystem.CreateTrackObjectSystem(receiver, MonitoredArea, ParseTrack, Position, Timestamp, TimestampFormatter, ExtractedFlight, Output);
 
@@ -41,14 +42,63 @@ namespace AirTrafficMonitoring.Application
 
         private static void ObjectifierOnTrackListReady(object sender, TrackListUpdatedArgs trackListUpdatedArgs)
         {
+            NewTrackList = trackListUpdatedArgs.TrackList;
 
-            foreach (var data in trackListUpdatedArgs.TrackList)
+            if (OldTrackList == null)
             {
-                foreach (var track in TrackObjectList)
+                OldTrackList = NewTrackList;
+
+                foreach (var track in OldTrackList)
+                    Console.WriteLine(track);
+
+                return;
+
+            }
+            
+            foreach (var data in NewTrackList)
+            {
+                foreach (var track in OldTrackList)
                 {
-                    if(data.Tag)
+
                 }
             }
+
+
+
+            // Same size
+            //while (TrackObjectList.Count < trackListUpdatedArgs.TrackList.Count)
+            //    TrackObjectList.Add(null);
+
+            //foreach (var data in trackListUpdatedArgs.TrackList)
+            //{
+            //    for (int i = 0; i < TrackObjectList.Count; i++)
+            //    {
+            //        if (TrackObjectList[i] == null)
+            //        {
+            //            Console.WriteLine("add");
+            //            TrackObjectList[i] = data;
+            //        }
+            //        else if (TrackObjectList[i].Tag == data.Tag)
+            //        {
+            //            Console.WriteLine("update things");
+            //        }
+            //        else if (TrackObjectList[i].Tag == data.Tag)
+            //        {
+
+            //        }
+            //        //else
+            //        //{
+            //        //    Console.WriteLine("remove");
+            //        //    TrackObjectList.Remove(TrackObjectList[i]);
+            //        //}
+
+            //    }
+            //}
+
+            //foreach (var track in TrackObjectList)
+            //    Console.WriteLine(track);
+
+
             //Console.Clear();
             //if (TrackObjectList == null)
             //{
@@ -64,7 +114,7 @@ namespace AirTrafficMonitoring.Application
             //while (TrackObjectList.Count < eventListLength)
             //{
             //    TrackObjectList.Add(null);
-                
+
             //    Console.WriteLine($"length: {TrackObjectList.Count}");
             //}
 
@@ -87,11 +137,8 @@ namespace AirTrafficMonitoring.Application
             //    //    TrackObjectList.Remove(TrackObjectList[i]);
             //    //    Console.WriteLine(" not equal, removing");
             //    //}
-                
-            //}
 
-            foreach (var trackEvent in trackListUpdatedArgs.TrackList)
-                Console.WriteLine(trackEvent);
+            //}
 
             //foreach (var track in TrackObjectList)
             //    Console.WriteLine(track);
