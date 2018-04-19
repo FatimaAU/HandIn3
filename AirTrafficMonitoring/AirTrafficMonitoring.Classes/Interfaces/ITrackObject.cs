@@ -9,11 +9,11 @@ namespace AirTrafficMonitoring.Classes.Interfaces
     public interface ITrackObject
     {
         string Tag { get; }
-        int XCoordinate { get; }
-        int YCoordinate { get; }
-        int Altitude { get; }
+        IPosition Position { get; set; }
         string Timestamp { get; }
-        int Course { get; }
+        int Course { get; set; }
         int Velocity { get; set; }
+
+        DateTime InDateTime { get; set; }
     }
 }

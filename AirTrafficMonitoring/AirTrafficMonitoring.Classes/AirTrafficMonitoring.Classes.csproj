@@ -56,7 +56,6 @@
     <Compile Include="CalculateCourse.cs" />
     <Compile Include="CalculateVelocity.cs" />
     <Compile Include="ATMSystem.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="FlightDataHandler.cs" />
     <Compile Include="Interfaces\ICalculateCourse.cs" />
     <Compile Include="Interfaces\ICalculateVelocity.cs" />

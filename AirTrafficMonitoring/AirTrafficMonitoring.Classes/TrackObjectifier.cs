@@ -55,7 +55,7 @@ namespace AirTrafficMonitoring.Classes
                     // Format and return the date
                     _timestampFormatter.FormatTimestamp();
 
-                    TrackList.Add(new TrackObject(tag, _position, _timestampFormatter.InPretty));
+                    TrackList.Add(new TrackObject(tag, _position, _timestampFormatter.InPretty, _timestampFormatter.InDateTime));
                 }
             }
 

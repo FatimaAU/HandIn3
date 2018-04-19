@@ -14,15 +14,9 @@ namespace AirTrafficMonitoring.Classes
             int x = newX - oldX;
             int y = newY - oldY;
 
-            if (x == 0)
-            {
-                if (newY >= oldY)
-                    return 0;
-                else
-                    return 180;
-            }
+            double inRad = Math.Atan2(y, x);
 
-            return (int)((Math.Atan(y / x))*360/(2*Math.PI));
+            return (int)(inRad*(180/Math.PI));
         }
     }
 }

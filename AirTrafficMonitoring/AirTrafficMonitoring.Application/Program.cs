@@ -17,11 +17,11 @@ namespace AirTrafficMonitoring.Application
         public static IPosition Position = new Position();
         public static ITimestampFormatter Formatter = new TimestampFormatter();
         public static IFlightDataHandler Handler = new FlightDataHandler(Position, Formatter);
-        public static ICalculateCourse Course = new CalculateCourse();
-        public static ICalculateVelocity Velocity = new CalculateVelocity();
+        public static ICalculateCourse CourseCalc = new CalculateCourse();
+        public static CalculateVelocity VelocityCalc = new CalculateVelocity();
 
         public static List<ITrackObject> NewTrackList = new List<ITrackObject>();
-        public static List<ITrackObject> OldTrackList;
+        public static List<ITrackObject> OldTrackList = new List<ITrackObject>();
 
         //public static TrackObjectifier Objectifier = new TrackObjectifier(receiver, MonitoredArea, Parser, Position, Formatter, Handler);
 
@@ -44,104 +44,25 @@ namespace AirTrafficMonitoring.Application
         {
             NewTrackList = trackListUpdatedArgs.TrackList;
 
-            if (OldTrackList == null)
-            {
-                OldTrackList = NewTrackList;
-
-                foreach (var track in OldTrackList)
-                    Console.WriteLine(track);
-
-                return;
-
-            }
-            
             foreach (var data in NewTrackList)
             {
                 foreach (var track in OldTrackList)
                 {
-
+                    if (track.Tag == data.Tag)
+                    {
+                        track.Velocity = VelocityCalc.Velocity(data, track);
+                        //need to pass track object, new and old 
+                        Console.WriteLine("update stuff");
+                    }
                 }
             }
 
+            foreach (var track in OldTrackList)
+                Console.WriteLine(track);
 
+            OldTrackList.Clear();
 
-            // Same size
-            //while (TrackObjectList.Count < trackListUpdatedArgs.TrackList.Count)
-            //    TrackObjectList.Add(null);
-
-            //foreach (var data in trackListUpdatedArgs.TrackList)
-            //{
-            //    for (int i = 0; i < TrackObjectList.Count; i++)
-            //    {
-            //        if (TrackObjectList[i] == null)
-            //        {
-            //            Console.WriteLine("add");
-            //            TrackObjectList[i] = data;
-            //        }
-            //        else if (TrackObjectList[i].Tag == data.Tag)
-            //        {
-            //            Console.WriteLine("update things");
-            //        }
-            //        else if (TrackObjectList[i].Tag == data.Tag)
-            //        {
-
-            //        }
-            //        //else
-            //        //{
-            //        //    Console.WriteLine("remove");
-            //        //    TrackObjectList.Remove(TrackObjectList[i]);
-            //        //}
-
-            //    }
-            //}
-
-            //foreach (var track in TrackObjectList)
-            //    Console.WriteLine(track);
-
-
-            //Console.Clear();
-            //if (TrackObjectList == null)
-            //{
-            //    TrackObjectList = new List<ITrackObject>();
-            //    foreach (var track in trackListUpdatedArgs.TrackList)
-            //            TrackObjectList.Add(track);
-
-            //    Console.WriteLine("init");
-            //}
-
-            //int eventListLength = trackListUpdatedArgs.TrackList.Count;
-
-            //while (TrackObjectList.Count < eventListLength)
-            //{
-            //    TrackObjectList.Add(null);
-
-            //    Console.WriteLine($"length: {TrackObjectList.Count}");
-            //}
-
-            //for (int i = 0; i < eventListLength; i++)
-            //{
-            //    var newTrack = trackListUpdatedArgs.TrackList[i];
-
-            //    // Compare lists, fill 'TrackObjectList'
-            //    if (TrackObjectList[i] == null) //throws exception 
-            //    {
-            //        TrackObjectList[i] = newTrack;
-            //        Console.WriteLine("adding");
-            //    }
-            //    else if (TrackObjectList[i].Tag == newTrack.Tag)
-            //    {
-            //        Console.WriteLine("calculate things .. or validate them first");
-            //    }
-            //    //else if (TrackObjectList[i].Tag != newTrack.Tag)
-            //    //{
-            //    //    TrackObjectList.Remove(TrackObjectList[i]);
-            //    //    Console.WriteLine(" not equal, removing");
-            //    //}
-
-            //}
-
-            //foreach (var track in TrackObjectList)
-            //    Console.WriteLine(track);
+            OldTrackList = NewTrackList;
         }
     }
 }

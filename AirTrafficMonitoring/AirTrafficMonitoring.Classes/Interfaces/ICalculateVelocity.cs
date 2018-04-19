@@ -2,6 +2,6 @@
 {
     public interface ICalculateVelocity
     {
-        int Velocity(int oldX, int newX, int oldY, int newY);
+        int Velocity(ITrackObject newTrack, ITrackObject oldTrack);
     }
 }

@@ -9,14 +9,30 @@ namespace AirTrafficMonitoring.Classes
 {
     public class CalculateVelocity : ICalculateVelocity
     {
-        public int Velocity(int oldX, int newX, int oldY, int newY)
+        public int Velocity(ITrackObject newTrack, ITrackObject oldTrack)
         {
-            //Distance is calculated but no velocity. Use deltaTime pls
-            int x = Math.Abs(newX - oldX);
-            int y = Math.Abs(newY - oldY);
-            
+            TimeSpan diff = newTrack.InDateTime - oldTrack.InDateTime;
 
-            return (int)(Math.Sqrt(x*x + y*y));
+            if (diff.Seconds == 0)
+            {
+                return 0;
+            }
+
+            return 0;
+            // return Distance(newTrack.Position, oldTrack) * 1000 / diff.Milliseconds ;
+        }
+
+        public int Distance(IPosition newTrack, IPosition oldTrack)
+        {
+            int x = Length(oldTrack.XCoor, newTrack.XCoor);
+            int y = Length(oldTrack.YCoor, newTrack.YCoor);
+
+            return (int)Math.Sqrt((x * x) + (y * y));
+        }
+
+        public int Length(int first, int second)
+        {
+            return Math.Abs(Math.Abs(second) - Math.Abs(first));
         }
     }
 }
