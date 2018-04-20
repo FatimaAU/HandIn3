@@ -31,8 +31,8 @@ namespace AirTrafficMonitoring.Classes
                 "Y coordinate:\t" + Position.YCoor + " meters\n" +
                 "Altitide:\t" + Position.Altitude + " meters\n" +
                 "Timestamp:\t" + Timestamp + "\n" +
-                "Velocity:\t" + Velocity + "\n" +
-                "Course:\t\t" + Course + "\n";
+                "Velocity:\t" + Velocity + " m/s\n" +
+                "Course:\t\t" + Course + " degrees\n";
         }
     }
 

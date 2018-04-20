@@ -19,50 +19,53 @@ namespace AirTrafficMonitoring.Test.Unit
         private IPosition _oldPos;
         private IPosition _newPos;
 
+        private IDistance _distance;
 
         [SetUp]
         public void Setup()
         {
             _oldPos = new Position();
-            //_oldPos.SetPosition(40000, 40000, 3000);
-
             _newPos = new Position();
-            //_newPos.SetPosition(44000, 40000, 3000);
+            _distance = new Distance();
 
             _oldObj = new TrackObject("TAGGGG", _oldPos, "", new DateTime(2018, 04, 19, 15, 28, 30, 700));
-            _newObj = new TrackObject("TAGGGG", _newPos, "", new DateTime(2018, 04, 19, 15, 28, 30, 900));
+            _newObj = new TrackObject("TAGGGG", _newPos, "", new DateTime(2018, 04, 19, 15, 28, 30, 700));
 
             _testCalculateVelocity = new CalculateVelocity();
         }
 
-        [TestCase(0, 0, 0, 0, 0)]
-        [TestCase(0, -20000, 0, 0, 20000)]
-        [TestCase(0, -0, -12322, 0, 12322)]
-        [TestCase(0, -0, -0, 32313, 32313)]
-        [TestCase(31233, 23132, 80000, 0, 53980)]
-        [TestCase(33322, 33241, 20000, 20341, 350)]
-        [TestCase(0, 2000, 0, 0, 0)]
-        public void CalculateVelocity_CalculateDistance_ReturnsResult(int xOld, int yOld, int xNew, int yNew, int result)
+        [TestCase(20000, 50000, 20400, 55000, 
+            2018, 04, 19, 15, 29, 30, 100, 
+            2018, 04, 19, 15, 29, 30, 800, 
+            7165.67)]
+        [TestCase(0, 50000, 0, 55000,
+            2018, 04, 19, 15, 29, 29, 100,
+            2018, 04, 19, 15, 29, 30, 800,
+            2941.18)]
+        [TestCase(50000, 50000, 0, 55000,
+            2018, 04, 19, 15, 29, 29, 100,
+            2018, 04, 19, 15, 30, 29, 800,
+            827.83)]
+        [TestCase(89500, 0, 0, 90000,
+            2018, 04, 19, 15, 29, 29, 100,
+            2018, 04, 19, 16, 29, 29, 800,
+            35.25)]
+        public void CalculateVelocity_Velocity_ReturnsVelocity(
+            int xOld, int yOld, int xNew, int yNew, 
+            int yearOld, int monthOld, int dayOld, int hoursOld, int minutesOld, int secondsOld, int milliOld,
+            int yearNew, int monthNew, int dayNew, int hoursNew, int minutesNew, int secondsNew, int milliNew,
+            double velocity)
         {
-            _oldPos.SetPosition(xOld, yOld, 3000);
-            _newPos.SetPosition(xNew, yNew, 3000);
+            _oldObj.Position.SetPosition(xOld, yOld, 500);
+            _newObj.Position.SetPosition(xNew, yNew, 500);
 
-            Assert.AreEqual(result, _testCalculateVelocity.Distance(_newPos, _oldPos));
-        }
+            DateTime oldTimestamp = new DateTime(yearOld, monthOld, dayOld, hoursOld, minutesOld, secondsOld, milliOld);
+            DateTime newTimestamp = new DateTime(yearNew, monthNew, dayNew, hoursNew, minutesNew, secondsNew, milliNew);
 
-        [TestCase(0, 0, 0)]
-        [TestCase(20000, 0, 20000)]
-        [TestCase(0, 50000, 50000)]
-        [TestCase(-23333, 0, 23333)]
-        [TestCase(0, -40303, 40303)]
-        [TestCase(50003, 30223, 19780)]
-        [TestCase(-10002, 31232, 21230)]
-        [TestCase(23212, -90000, 66788)]
-        [TestCase(-90000, -90000, 0)]
-        [TestCase(-40000, -50000, 10000)]
-        public void CalculateVelocity_DistanceOneDimension_ReturnsDistance(int first, int second, int result)
-        {
-            Assert.AreEqual(result, _testCalculateVelocity.Length(first, second));
+            _oldObj.InDateTime = oldTimestamp;
+            _newObj.InDateTime = newTimestamp;
+            
+            Assert.AreEqual(velocity, _testCalculateVelocity.Velocity(_newObj, _oldObj, _distance));
         }
     }
 }

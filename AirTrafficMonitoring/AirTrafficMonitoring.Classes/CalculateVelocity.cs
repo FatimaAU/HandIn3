@@ -9,30 +9,33 @@ namespace AirTrafficMonitoring.Classes
 {
     public class CalculateVelocity : ICalculateVelocity
     {
-        public int Velocity(ITrackObject newTrack, ITrackObject oldTrack)
+        public double Velocity(ITrackObject newTrack, ITrackObject oldTrack, IDistance dist)
         {
             TimeSpan diff = newTrack.InDateTime - oldTrack.InDateTime;
 
-            if (diff.Seconds == 0)
+            if ((int) diff.TotalMilliseconds == 0)
             {
                 return 0;
             }
 
-            return 0;
-            // return Distance(newTrack.Position, oldTrack) * 1000 / diff.Milliseconds ;
+            return Math.Round(
+                dist.DistanceTwoDim(newTrack.Position, oldTrack.Position)
+                / diff.TotalMilliseconds * 1000, 2);
         }
 
-        public int Distance(IPosition newTrack, IPosition oldTrack)
-        {
-            int x = Length(oldTrack.XCoor, newTrack.XCoor);
-            int y = Length(oldTrack.YCoor, newTrack.YCoor);
+        //public double DistanceTwoDim(IPosition newTrack, IPosition oldTrack)
+        //{
+        //    Int64 x = DistanceOneDim(oldTrack.XCoor, newTrack.XCoor);
+        //    Int64 y = DistanceOneDim(oldTrack.YCoor, newTrack.YCoor);
 
-            return (int)Math.Sqrt((x * x) + (y * y));
-        }
+        //    return Math.Round(
+        //        Math.Sqrt((x * x) + (y * y)), 2);
+        //}
 
-        public int Length(int first, int second)
-        {
-            return Math.Abs(Math.Abs(second) - Math.Abs(first));
-        }
+        //public int DistanceOneDim(int first, int second)
+        //{
+        //    return Math.Abs(second - first);
+        //}
     }
 }
+

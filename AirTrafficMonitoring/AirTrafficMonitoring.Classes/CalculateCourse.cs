@@ -9,14 +9,28 @@ namespace AirTrafficMonitoring.Classes
 {
     public class CalculateCourse : ICalculateCourse
     {
-        public int Course(int oldX, int newX, int oldY, int newY)
+        public int Course(IPosition oldTrack, IPosition newTrack, IDistance dist)
         {
-            int x = newX - oldX;
-            int y = newY - oldY;
+            int x = dist.Point(oldTrack.XCoor, newTrack.XCoor);
+            int y = dist.Point(oldTrack.YCoor, newTrack.YCoor);
 
-            double inRad = Math.Atan2(y, x);
+            //double inRad = CalculateInRadians(x, y);
 
-            return (int)(inRad*(180/Math.PI));
+            return (int) CalculateInDegrees(x,y);
+        }
+
+        //public int Length(int first, int second)
+        //{
+        //    return second - first;
+        //}
+
+        public double CalculateInDegrees(int x, int y)
+        {
+            double angle = Math.Atan2(-y, x) * (180 / Math.PI) + 90;
+
+            if (angle < 0)
+                angle += 360;
+            return Math.Round(angle, 2);
         }
     }
 }

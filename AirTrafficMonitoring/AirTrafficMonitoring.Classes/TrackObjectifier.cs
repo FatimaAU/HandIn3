@@ -13,9 +13,9 @@ namespace AirTrafficMonitoring.Classes
 
         private static IMonitoredArea _monitoredArea;
         private static IParseTrackInfo _parser;
-        private static IPosition _position;
-        private static ITimestampFormatter _timestampFormatter;
         private static IFlightDataHandler _flightHandler;
+        private static IPosition _position;
+        private static ITimestampFormatter _formatter;
 
         private List<ITrackObject> TrackList = new List<ITrackObject>();
 
@@ -25,17 +25,17 @@ namespace AirTrafficMonitoring.Classes
             ITransponderReceiver rec, 
             IMonitoredArea monitoredArea, 
             IParseTrackInfo parser, 
-            IPosition pos,
-            ITimestampFormatter formatter, 
-            IFlightDataHandler flightHandler)
+            IFlightDataHandler flightHandler,
+            IPosition position,
+            ITimestampFormatter formatter)
         {
             rec.TransponderDataReady += CreateTrack;
 
             _monitoredArea = monitoredArea;
             _parser = parser;
-            _position = pos;
-            _timestampFormatter = formatter;
             _flightHandler = flightHandler;
+            _position = position;
+            _formatter = formatter;
         }
 
         private void CreateTrack(object sender, RawTransponderDataEventArgs rawTransponderDataEventArgs)
@@ -45,17 +45,22 @@ namespace AirTrafficMonitoring.Classes
             foreach (var data in rawTransponderDataEventArgs.TransponderData)
             {
                 // Distribute data to relevant classes
-                string tag;
 
-                _flightHandler.Distribute(_parser.Parse(data), out tag);
+                _flightHandler.Distribute(_parser.Parse(data), out var tag, ref _position, ref _formatter);
 
                 // If inside the monitored area
                 if (_monitoredArea.InsideMonitoredArea(_position))
                 {
                     // Format and return the date
-                    _timestampFormatter.FormatTimestamp();
+                    _formatter.FormatTimestamp();
 
-                    TrackList.Add(new TrackObject(tag, _position, _timestampFormatter.InPretty, _timestampFormatter.InDateTime));
+                    var pos = new Position();
+                    pos.SetPosition(_position.XCoor, _position.YCoor, _position.Altitude);
+
+
+                    var newTrack = new TrackObject(tag, pos, _formatter.InPretty, _formatter.InDateTime);
+
+                    TrackList.Add(newTrack);
                 }
             }
 

@@ -62,6 +62,7 @@
     <Compile Include="CalculateCourseTest.cs" />
     <Compile Include="CalculateVelocityTest.cs" />
     <Compile Include="DateTest.cs" />
+    <Compile Include="DistanceTest.cs" />
     <Compile Include="FlightDataExtractorTest.cs" />
     <Compile Include="PositionTest.cs" />
     <Compile Include="TransponderDataReadyEventTest.cs" />

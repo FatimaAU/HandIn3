@@ -2,6 +2,6 @@
 {
     public interface ICalculateCourse
     {
-        int Course(int oldX, int newX, int oldY, int newY);
+        int Course(IPosition oldTrack, IPosition newTrack, IDistance dist);
     }
 }
