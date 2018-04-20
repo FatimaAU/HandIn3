@@ -76,7 +76,7 @@ namespace AirTrafficMonitoring.Application
                 Console.WriteLine(track);
 
             Console.WriteLine($"Amount of flights currently being monitored: {OldTrackList.Count}");
-            Console.WriteLine("SEPARATION EVENTS:");
+            Console.WriteLine("Current separation events:");
 
             for (int i = 0; i < OldTrackList.Count; i++)
             {
