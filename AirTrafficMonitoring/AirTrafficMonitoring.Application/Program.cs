@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.AccessControl;
 using System.Security.Policy;
 using AirTrafficMonitoring.Classes;
@@ -18,7 +19,9 @@ namespace AirTrafficMonitoring.Application
         public static ITimestampFormatter Formatter = new TimestampFormatter();
         public static IFlightDataHandler Handler = new FlightDataHandler();
         public static ICalculateCourse CourseCalc = new CalculateCourse();
-        public static CalculateVelocity VelocityCalc = new CalculateVelocity();
+        public static ICalculateVelocity VelocityCalc = new CalculateVelocity();
+        public static IDistance Distance = new Distance();
+        public static Separation Separation = new Separation();
 
         public static List<ITrackObject> NewTrackList = new List<ITrackObject>();
         public static List<ITrackObject> OldTrackList;
@@ -62,15 +65,41 @@ namespace AirTrafficMonitoring.Application
                 {
                     if (track.Tag == data.Tag)
                     {
-                       // track.Velocity = (int)VelocityCalc.Velocity(data, track);
-                        track.Course = CourseCalc.Course(data.Position, track.Position);
+                        track.Velocity = (int) VelocityCalc.Velocity(data, track, Distance);
+                        track.Course = CourseCalc.Course(track.Position, data.Position, Distance);
                         break;
                     }
                 }
             }
 
-            foreach (var track in OldTrackList)
+           foreach (var track in OldTrackList)
                 Console.WriteLine(track);
+
+            Console.WriteLine($"Amount of flights currently being monitored: {OldTrackList.Count}");
+            Console.WriteLine("SEPARATION EVENTS:");
+
+            for (int i = 0; i < OldTrackList.Count; i++)
+            {
+                var trackOne = OldTrackList[i];
+
+                for (int j = i + 1; j < OldTrackList.Count; j++)
+                {
+                    var trackTwo = OldTrackList[j];
+
+                    if (Separation.IsConflicting(trackOne, trackTwo, Distance))
+                    {
+                        string info =
+                            $"{trackOne.Tag} and {trackTwo.Tag} at {trackOne.Timestamp}";
+
+                        Console.WriteLine($"{info}");
+
+                        using (StreamWriter file = File.AppendText("seperationlog.txt"))
+                        {
+                            file.WriteLine($"{info}");
+                        }
+                    }
+                }
+            }
 
             OldTrackList.Clear();
 

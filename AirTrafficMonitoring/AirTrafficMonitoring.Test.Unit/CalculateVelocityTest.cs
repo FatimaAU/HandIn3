@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Classes;
 using AirTrafficMonitoring.Classes.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
@@ -24,12 +25,14 @@ namespace AirTrafficMonitoring.Test.Unit
         [SetUp]
         public void Setup()
         {
-            _oldPos = new Position();
-            _newPos = new Position();
+            //_oldPos = Substitute.For<IPosition>(); 
+            //_newPos = Substitute.For<IPosition>();
             _distance = new Distance();
 
-            _oldObj = new TrackObject("TAGGGG", _oldPos, "", new DateTime(2018, 04, 19, 15, 28, 30, 700));
-            _newObj = new TrackObject("TAGGGG", _newPos, "", new DateTime(2018, 04, 19, 15, 28, 30, 700));
+            _oldObj = Substitute.For<ITrackObject>();
+            _newObj = Substitute.For<ITrackObject>();
+            //_oldObj = new TrackObject("TAGGGG", _oldPos, "", new DateTime(2018, 04, 19, 15, 28, 30, 700));
+            //_newObj = new TrackObject("TAGGGG", _newPos, "", new DateTime(2018, 04, 19, 15, 28, 30, 700));
 
             _testCalculateVelocity = new CalculateVelocity();
         }
@@ -56,15 +59,26 @@ namespace AirTrafficMonitoring.Test.Unit
             int yearNew, int monthNew, int dayNew, int hoursNew, int minutesNew, int secondsNew, int milliNew,
             double velocity)
         {
-            _oldObj.Position.SetPosition(xOld, yOld, 500);
-            _newObj.Position.SetPosition(xNew, yNew, 500);
+            //_oldObj.Position.SetPosition(xOld, yOld, 500);
+            _oldObj.Position.XCoor.Returns(xOld);
+            _oldObj.Position.YCoor.Returns(yOld);
+            _oldObj.Position.Altitude.Returns(500);
+
+            _newObj.Position.XCoor.Returns(xNew);
+            _newObj.Position.YCoor.Returns(yNew);
+            _newObj.Position.Altitude.Returns(500);
+
+            //_newObj.Position.SetPosition(xNew, yNew, 500);
 
             DateTime oldTimestamp = new DateTime(yearOld, monthOld, dayOld, hoursOld, minutesOld, secondsOld, milliOld);
             DateTime newTimestamp = new DateTime(yearNew, monthNew, dayNew, hoursNew, minutesNew, secondsNew, milliNew);
 
+            //_oldObj.InDateTime.Returns(oldTimestamp);
+            //_newObj.InDateTime.Returns(newTimestamp);
+
             _oldObj.InDateTime = oldTimestamp;
             _newObj.InDateTime = newTimestamp;
-            
+
             Assert.AreEqual(velocity, _testCalculateVelocity.Velocity(_newObj, _oldObj, _distance));
         }
     }

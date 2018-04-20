@@ -14,15 +14,8 @@ namespace AirTrafficMonitoring.Classes
             int x = dist.Point(oldTrack.XCoor, newTrack.XCoor);
             int y = dist.Point(oldTrack.YCoor, newTrack.YCoor);
 
-            //double inRad = CalculateInRadians(x, y);
-
             return (int) CalculateInDegrees(x,y);
         }
-
-        //public int Length(int first, int second)
-        //{
-        //    return second - first;
-        //}
 
         public double CalculateInDegrees(int x, int y)
         {

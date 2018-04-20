@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Classes;
 using AirTrafficMonitoring.Classes.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
@@ -21,10 +22,11 @@ namespace AirTrafficMonitoring.Test.Unit
         [SetUp]
         public void Setup()
         {
+            // SKAL DENNE SUBBES ??
             _distance = new Distance();
 
-            _oldPosition = new Position();
-            _newPosition = new Position();
+            _oldPosition = Substitute.For<IPosition>();
+            _newPosition = Substitute.For<IPosition>();
 
             _testCalculateCourse = new CalculateCourse();
         }
@@ -54,12 +56,18 @@ namespace AirTrafficMonitoring.Test.Unit
         [TestCase(33322, 33241, 20000, 20341, 346)]
         public void CalculateCourse_CalculateCourse_ReturnsCourse(int oldX, int newX, int oldY, int newY, int result)
         {
-            _oldPosition.SetPosition(oldX, oldY, 3000);
-            _newPosition.SetPosition(newX, newY, 3000);
-            
+            //_oldPosition.SetPosition(oldX, oldY, 400);
+            _oldPosition.XCoor.Returns(oldX);
+            _oldPosition.YCoor.Returns(oldY);
+            _oldPosition.Altitude.Returns(3000);
+
+            _newPosition.SetPosition(newX, newY, 400);
+
+            _newPosition.XCoor.Returns(newX);
+            _newPosition.YCoor.Returns(newY);
+            _newPosition.Altitude.Returns(3000);
+
             Assert.AreEqual(result, _testCalculateCourse.Course(_oldPosition, _newPosition, _distance));
         }
-
-
     }
 }
