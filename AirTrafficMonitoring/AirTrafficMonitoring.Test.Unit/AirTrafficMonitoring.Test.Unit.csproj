@@ -66,6 +66,7 @@
     <Compile Include="FlightDataHandlerTest.cs" />
     <Compile Include="PositionTest.cs" />
     <Compile Include="SeparationTest.cs" />
+    <Compile Include="TrackObjectifierTest.cs" />
     <Compile Include="TransponderDataReadyEventTest.cs" />
     <Compile Include="MonitoredAreaTest.cs" />
     <Compile Include="ParseTrackInfoTest.cs" />

@@ -32,7 +32,7 @@ namespace AirTrafficMonitoring.Test.Unit
         [TestCase("10", "October")]
         [TestCase("11", "November")]
         [TestCase("12", "December")]
-        public void Date_NumberOfMonthConverts_ReturnsFormattedOutput(string number, string month)
+        public void TimestampFormatter_NumberOfMonthConverts_ReturnsFormattedOutput(string number, string month)
         {
             // Define expected time stamp
             string expectedTimestamp= $"{month} 11th, 2018, at 11:11:11 and 111 milliseconds";
@@ -55,7 +55,7 @@ namespace AirTrafficMonitoring.Test.Unit
         [TestCase("24", "th")]
         [TestCase("30", "th")]
         [TestCase("31", "st")]
-        public void Date_DateOutputCorrect_ReturnsWithCorrectSuffix(string number, string postfix)
+        public void TimestampFormatter_TimestampOutputCorrect_ReturnsWithCorrectSuffix(string number, string postfix)
         {
             // Parse "number" to be only one number
             string shortNumber = $"{int.Parse(number)}";
