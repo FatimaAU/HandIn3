@@ -57,7 +57,6 @@ namespace AirTrafficMonitoring.Classes
                     var pos = new Position();
                     pos.SetPosition(_position.XCoor, _position.YCoor, _position.Altitude);
 
-
                     var newTrack = new TrackObject(tag, pos, _formatter.InPretty, _formatter.InDateTime);
 
                     TrackList.Add(newTrack);

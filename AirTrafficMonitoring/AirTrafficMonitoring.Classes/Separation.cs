@@ -22,7 +22,5 @@ namespace AirTrafficMonitoring.Classes
 
             return horizontalDistance <= horizontalConflict && verticalDistance <= verticalConflict;
         }
-
-
     }
 }

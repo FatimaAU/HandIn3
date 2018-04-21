@@ -22,6 +22,7 @@ namespace AirTrafficMonitoring.Application
         public static ICalculateVelocity VelocityCalc = new CalculateVelocity();
         public static IDistance Distance = new Distance();
         public static Separation Separation = new Separation();
+        public static HandleLists ListHandler = new HandleLists();
 
         public static List<ITrackObject> NewTrackList = new List<ITrackObject>();
         public static List<ITrackObject> OldTrackList;
@@ -46,37 +47,21 @@ namespace AirTrafficMonitoring.Application
        
         private static void ObjectifierOnTrackListReady(object sender, TrackListUpdatedArgs trackListUpdatedArgs)
         {
+            
             Console.Clear();
             NewTrackList = trackListUpdatedArgs.TrackList;
 
-            if (OldTrackList == null)
-            {
-                OldTrackList = new List<ITrackObject>();
-
-                foreach (var track in NewTrackList)
-                    OldTrackList.Add(track);
-
+            if (ListHandler.Initiate(ref OldTrackList, NewTrackList))
                 return;
-            }
+            
+           ListHandler.Update(ref OldTrackList, NewTrackList, VelocityCalc, CourseCalc, Distance);
 
-            foreach (var data in NewTrackList)
-            {
-                foreach (var track in OldTrackList)
-                {
-                    if (track.Tag == data.Tag)
-                    {
-                        track.Velocity = (int) VelocityCalc.Velocity(data, track, Distance);
-                        track.Course = CourseCalc.Course(track.Position, data.Position, Distance);
-                        break;
-                    }
-                }
-            }
-
+            
            foreach (var track in OldTrackList)
                 Console.WriteLine(track);
 
-            Console.WriteLine($"Amount of flights currently being monitored: {OldTrackList.Count}");
-            Console.WriteLine("Current separation events:");
+           Console.WriteLine($"Amount of flights currently being monitored: {OldTrackList.Count}");
+           Console.WriteLine("Current separation events:");
 
             for (int i = 0; i < OldTrackList.Count; i++)
             {

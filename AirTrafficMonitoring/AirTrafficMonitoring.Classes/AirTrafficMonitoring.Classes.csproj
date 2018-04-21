@@ -56,6 +56,8 @@
     <Compile Include="CalculateCourse.cs" />
     <Compile Include="CalculateVelocity.cs" />
     <Compile Include="ATMSystem.cs" />
+    <Compile Include="HandleLists.cs" />
+    <Compile Include="Interfaces\ISeparation.cs" />
     <Compile Include="Separation.cs" />
     <Compile Include="Distance.cs" />
     <Compile Include="FlightDataHandler.cs" />

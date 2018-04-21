@@ -79,6 +79,8 @@ namespace AirTrafficMonitoring.Test.Unit
             _oldObj.InDateTime = oldTimestamp;
             _newObj.InDateTime = newTimestamp;
 
+            _distance.
+
             Assert.AreEqual(velocity, _testCalculateVelocity.Velocity(_newObj, _oldObj, _distance));
         }
     }
