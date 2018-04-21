@@ -10,7 +10,7 @@ namespace AirTrafficMonitoring.Test.Unit
      * Unit tests on DateTest that test the time stamp is formatted correctly in all cases
      */
     [TestFixture]
-    class DateTest
+    class TimestampFormatterTest
     {
         private ITimestampFormatter _formatter;
 

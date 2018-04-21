@@ -59,7 +59,7 @@
     <Compile Include="Separation.cs" />
     <Compile Include="Distance.cs" />
     <Compile Include="FlightDataHandler.cs" />
-    <Compile Include="IDistance.cs" />
+    <Compile Include="Interfaces\IDistance.cs" />
     <Compile Include="Interfaces\ICalculateCourse.cs" />
     <Compile Include="Interfaces\ICalculateVelocity.cs" />
     <Compile Include="Interfaces\IFlightDataHandler.cs" />
