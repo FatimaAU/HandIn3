@@ -17,8 +17,8 @@ namespace AirTrafficMonitoring.Test.Unit
 
         private ITrackObject _oldObj;
         private ITrackObject _newObj;
-        private IPosition _oldPos;
-        private IPosition _newPos;
+        //private IPosition _oldPos;
+        //private IPosition _newPos;
 
         private IDistance _distance;
 

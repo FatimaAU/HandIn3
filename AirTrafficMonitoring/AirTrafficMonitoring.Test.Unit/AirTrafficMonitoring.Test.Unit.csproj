@@ -61,10 +61,12 @@
   <ItemGroup>
     <Compile Include="CalculateCourseTest.cs" />
     <Compile Include="CalculateVelocityTest.cs" />
-    <Compile Include="DateTest.cs" />
+    <Compile Include="TimestampFormatterTest.cs" />
     <Compile Include="DistanceTest.cs" />
-    <Compile Include="FlightDataExtractorTest.cs" />
+    <Compile Include="FlightDataHandlerTest.cs" />
     <Compile Include="PositionTest.cs" />
+    <Compile Include="SeparationTest.cs" />
+    <Compile Include="TrackObjectifierTest.cs" />
     <Compile Include="TransponderDataReadyEventTest.cs" />
     <Compile Include="MonitoredAreaTest.cs" />
     <Compile Include="ParseTrackInfoTest.cs" />
