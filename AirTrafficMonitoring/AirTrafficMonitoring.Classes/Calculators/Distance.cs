@@ -1,7 +1,8 @@
 ﻿using System;
-using AirTrafficMonitoring.Classes.Interfaces;
+using AirTrafficMonitoring.Classes.Calculators.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 
-namespace AirTrafficMonitoring.Classes
+namespace AirTrafficMonitoring.Classes.Calculators
 {
     public class Distance : IDistance
     {

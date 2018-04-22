@@ -4,16 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Classes;
-using AirTrafficMonitoring.Classes.Interfaces;
+using AirTrafficMonitoring.Classes.Calculators;
+using AirTrafficMonitoring.Classes.Calculators.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
 {
     [TestFixture]
-    class CalculateCourseTest
+    class CourseTest
     {
-        private CalculateCourse _testCalculateCourse;
+        private Course _uut;
 
         private IDistance _distance;
         private IPosition _oldPosition;
@@ -22,13 +24,15 @@ namespace AirTrafficMonitoring.Test.Unit
         [SetUp]
         public void Setup()
         {
-            // SKAL DENNE SUBBES ??
+            /****************************
+            // THIS MUST BE SUB - NEED FIX - ELSE OK
+             *****************************/
+            _uut = new Course();
+
             _distance = new Distance();
 
             _oldPosition = Substitute.For<IPosition>();
             _newPosition = Substitute.For<IPosition>();
-
-            _testCalculateCourse = new CalculateCourse();
         }
 
         [TestCase(0, 0, 90)]
@@ -47,7 +51,7 @@ namespace AirTrafficMonitoring.Test.Unit
         [TestCase(-90000, 90000, 315)]
         public void CalculateCourse_CalculateInRadians_ReturnsCorrect(int x, int y, double result)
         {
-            Assert.AreEqual(result, _testCalculateCourse.CalculateInDegrees(x, y));
+            Assert.AreEqual(result, _uut.CalculateInDegrees(x, y));
         }
 
         [TestCase(10000, 20000, 10000, 20000, 45)]
@@ -56,7 +60,6 @@ namespace AirTrafficMonitoring.Test.Unit
         [TestCase(33322, 33241, 20000, 20341, 346)]
         public void CalculateCourse_CalculateCourse_ReturnsCourse(int oldX, int newX, int oldY, int newY, int result)
         {
-            //_oldPosition.SetPosition(oldX, oldY, 400);
             _oldPosition.XCoor.Returns(oldX);
             _oldPosition.YCoor.Returns(oldY);
             _oldPosition.Altitude.Returns(3000);
@@ -67,7 +70,7 @@ namespace AirTrafficMonitoring.Test.Unit
             _newPosition.YCoor.Returns(newY);
             _newPosition.Altitude.Returns(3000);
 
-            Assert.AreEqual(result, _testCalculateCourse.Course(_oldPosition, _newPosition, _distance));
+            Assert.AreEqual(result, _uut.CurrentCourse(_oldPosition, _newPosition, _distance));
         }
     }
 }

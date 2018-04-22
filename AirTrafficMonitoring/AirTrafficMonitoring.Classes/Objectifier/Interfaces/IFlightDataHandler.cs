@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace AirTrafficMonitoring.Classes.Interfaces
+namespace AirTrafficMonitoring.Classes.Objectifier.Interfaces
 {
     public interface IFlightDataHandler
     {

@@ -1,84 +1,90 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AirTrafficMonitoring.Classes;
-using AirTrafficMonitoring.Classes.Interfaces;
+﻿using System.Collections.Generic;
+using AirTrafficMonitoring.Classes.Objectifier;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace AirTrafficMonitoring.Test.Unit
 {
     [TestFixture]
-    class FlightDataExtractorTest
+    class FlightDataHandlerTest
     {
         /*
         * UNIT TEST DESCRIPTION
-        * Unit tests on FlightDataExtractor that test that the
-        * flight data is extracted correctly from the string
+        * Unit tests on FlightDataHandler that test that the
+        * flight data is extracted correctly from the string and given back to classes
         */
-        private List<string> _flightList;
-
+        private IFlightDataHandler _uut;
 
         private IPosition _position;
         private ITimestampFormatter _timestampObj;
-        private IFlightDataHandler _flightData;
+
+        private List<string> _flightList;
 
         [SetUp]
         public void Setup()
         {
-            _position = new Position();
-            _timestampObj = new TimestampFormatter();
-            _flightData = new FlightDataHandler();
+            _uut = new FlightDataHandler();
 
-            _flightList = new List<string> { "TAGGGG", "50000", "50000", "5000", "20181111111111111" };
+            _position = Substitute.For<IPosition>();
+            _timestampObj = Substitute.For<ITimestampFormatter>();
+
+            _flightList = new List<string> { "TAGGGG", "50000", "50032", "4000", "20181111111111111" };
         }
 
         [Test]
         public void Flight_SetTag_ReturnsTag()
         {
             // Define tag and check correct tag returned
-            string expectedTag = _flightList[0];
-            _flightData.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
+            string expectedTag = "TAGGGG";
+            _uut.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
+
             Assert.AreEqual(expectedTag, tag);
         }
+
 
         [Test]
         public void Flight_SetX_ReturnsX()
         {
-            // Define x coodrinate and check correct x coordinate returned
-            int expectedXCoor = int.Parse(_flightList[1]);
-            _flightData.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
-            Assert.AreEqual(expectedXCoor, _position.XCoor);
+            // Define x coordinate and check correct x coordinate returned
+
+            int expectedXCoor = 50000;
+
+            _uut.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
+
+            _position.Received().SetPosition(expectedXCoor, 50032, 4000);
         }
 
         [Test]
         public void Flight_SetY_ReturnsY()
         {
             // Define y coordinate and check correct y coordinate returned
-            int expectedYCoor = int.Parse(_flightList[2]);
-            _flightData.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
-            Assert.AreEqual(expectedYCoor, _position.YCoor);
+            int expectedYCoor = 50000;
+
+            _uut.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
+
+            _position.Received().SetPosition(expectedYCoor, 50032, 4000);
         }
 
         [Test]
         public void Flight_SetAltitude_ReturnsAltitude()
         {
             // Define altitude and check correct altitude returned
-            int expectedAltitude = int.Parse(_flightList[3]);
-            _flightData.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
-            Assert.AreEqual(expectedAltitude, _position.Altitude);
+            int expectedAltitude = 4000;
+            _uut.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
+
+            _position.Received().SetPosition(50000, 50032, expectedAltitude);
         }
 
         [Test]
         public void Flight_SetTime_ReturnsTime()
         {
             // Define timestamp and check correct timestamp returned
-            string expectedTimestamp = _flightList[4];
-            _flightData.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
-            Assert.AreEqual(expectedTimestamp, _timestampObj.Unformatted);
+            string expectedTimestamp = "20181111111111111";
+
+            _uut.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
+
+            _timestampObj.Received().Unformatted = expectedTimestamp;
         }
     }
 }

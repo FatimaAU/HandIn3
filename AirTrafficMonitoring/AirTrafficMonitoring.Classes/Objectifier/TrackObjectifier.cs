@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using AirTrafficMonitoring.Classes.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using AirTrafficMonitoring.Classes.TrackListReadyEvent;
 using TransponderReceiver;
 
-namespace AirTrafficMonitoring.Classes
+namespace AirTrafficMonitoring.Classes.Objectifier
 {
     public class TrackObjectifier : ITrackList
     {
@@ -45,7 +45,6 @@ namespace AirTrafficMonitoring.Classes
             foreach (var data in rawTransponderDataEventArgs.TransponderData)
             {
                 // Distribute data to relevant classes
-
                 _flightHandler.Distribute(_parser.Parse(data), out var tag, ref _position, ref _formatter);
 
                 // If inside the monitored area

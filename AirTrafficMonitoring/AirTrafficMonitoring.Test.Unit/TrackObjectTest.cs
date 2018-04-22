@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using AirTrafficMonitoring.Classes;
-using AirTrafficMonitoring.Classes.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
 

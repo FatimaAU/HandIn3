@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using AirTrafficMonitoring.Classes.Interfaces;
+﻿using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 
-namespace AirTrafficMonitoring.Classes
+namespace AirTrafficMonitoring.Classes.Objectifier
 {
     public class MonitoredArea : IMonitoredArea
     {

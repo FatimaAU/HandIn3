@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AirTrafficMonitoring.Classes.Interfaces;
+using AirTrafficMonitoring.Classes.Calculators.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 
-namespace AirTrafficMonitoring.Classes
+namespace AirTrafficMonitoring.Classes.Calculators
 {
-    public class CalculateCourse : ICalculateCourse
+    public class Course : ICourse
     {
-        public int Course(IPosition oldTrack, IPosition newTrack, IDistance dist)
+        public int CurrentCourse(IPosition oldTrack, IPosition newTrack, IDistance dist)
         {
             int x = dist.Point(oldTrack.XCoor, newTrack.XCoor);
             int y = dist.Point(oldTrack.YCoor, newTrack.YCoor);

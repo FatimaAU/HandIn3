@@ -59,8 +59,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CalculateCourseTest.cs" />
-    <Compile Include="CalculateVelocityTest.cs" />
+    <Compile Include="CourseTest.cs" />
+    <Compile Include="VelocityTest.cs" />
     <Compile Include="TimestampFormatterTest.cs" />
     <Compile Include="DistanceTest.cs" />
     <Compile Include="FlightDataHandlerTest.cs" />

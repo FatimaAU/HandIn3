@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Classes;
-using AirTrafficMonitoring.Classes.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
@@ -17,36 +18,36 @@ namespace AirTrafficMonitoring.Test.Unit
     [TestFixture]
     class PositionTest
     {
-        private IPosition _position;
+        private IPosition _uut;
 
         [SetUp]
         public void Setup()
         {
-            _position = new Position();
+            _uut = new Position();
         }
 
         [Test]
         public void Timestamp_SetXCoordinate_ReturnsXCoordinate()
         {
             int x = 20000;
-            _position.SetPosition(x, 50000, 5000);
-            Assert.AreEqual(x, _position.XCoor);
+            _uut.SetPosition(x, 50000, 5000);
+            Assert.AreEqual(x, _uut.XCoor);
         }
 
         [Test]
         public void Timestamp_SetYCoordinate_ReturnsYCoordinate()
         {
             int y = 20000;
-            _position.SetPosition(50000, y, 5000);
-            Assert.AreEqual(y, _position.YCoor);
+            _uut.SetPosition(50000, y, 5000);
+            Assert.AreEqual(y, _uut.YCoor);
         }
 
         [Test]
         public void Timestamp_SetAltitude_ReturnsAltitude()
         {
             int altitude = 2000;
-            _position.SetPosition(50000, 50000, altitude);
-            Assert.AreEqual(altitude, _position.Altitude);
+            _uut.SetPosition(50000, 50000, altitude);
+            Assert.AreEqual(altitude, _uut.Altitude);
         }
     }
 }

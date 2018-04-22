@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AirTrafficMonitoring.Classes;
-using AirTrafficMonitoring.Classes.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit

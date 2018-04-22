@@ -1,6 +1,6 @@
-﻿using AirTrafficMonitoring.Classes.Interfaces;
+﻿using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 
-namespace AirTrafficMonitoring.Classes
+namespace AirTrafficMonitoring.Classes.Calculators.Interfaces
 {
     public interface IDistance
     {

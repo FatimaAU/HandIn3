@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AirTrafficMonitoring.Classes.Interfaces
+namespace AirTrafficMonitoring.Classes.Objectifier.Interfaces
 {
     public interface ITrackObject
     {
@@ -13,7 +9,6 @@ namespace AirTrafficMonitoring.Classes.Interfaces
         string Timestamp { get; }
         int Course { get; set; }
         int Velocity { get; set; }
-
         DateTime InDateTime { get; set; }
     }
 }

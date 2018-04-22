@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using AirTrafficMonitoring.Classes.Interfaces;
+﻿using System.Collections.Generic;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 
-namespace AirTrafficMonitoring.Classes
+namespace AirTrafficMonitoring.Classes.Objectifier
 {
     public class FlightDataHandler : IFlightDataHandler
     {
@@ -20,7 +15,6 @@ namespace AirTrafficMonitoring.Classes
 
             pos.SetPosition(x, y, al);
             formatter.Unformatted = timestamp;
-
         }
     }
 }

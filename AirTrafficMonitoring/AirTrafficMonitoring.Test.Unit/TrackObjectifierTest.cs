@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AirTrafficMonitoring.Classes.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using TransponderReceiver;
 
 namespace AirTrafficMonitoring.Test.Unit
 {
     [TestFixture]
     class TrackObjectifierTest
     {
+        private ITransponderReceiver _receiver;
         private IMonitoredArea _monitoredArea;
         private IParseTrackInfo _parser;
         private IFlightDataHandler _flightHandler;

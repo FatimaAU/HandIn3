@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Classes;
-using AirTrafficMonitoring.Classes.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
@@ -17,15 +18,16 @@ namespace AirTrafficMonitoring.Test.Unit
     [TestFixture]
     class ParseTrackInfoTest
     {
+        private IParseTrackInfo _uut;
+
         private List<string> _flightList;
         private string _flightString;
 
-        private IParseTrackInfo _parser;
 
         [SetUp]
         public void Setup()
         {
-            _parser = new ParseTrackInfo();
+            _uut = new ParseTrackInfo();
             _flightList = new List<string> { "TAGGGG", "50000", "40000", "5000", "20181111111111111" };
             _flightString = "TAGGGG;50000;40000;5000;20181111111111111";
         }
@@ -33,7 +35,7 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void ParseFlightInfo_StringConverts_ReturnsParsedOutput()
         {
-            Assert.AreEqual(_flightList, _parser.Parse(_flightString));
+            Assert.AreEqual(_flightList, _uut.Parse(_flightString));
         }
 
         [Test]
@@ -46,7 +48,7 @@ namespace AirTrafficMonitoring.Test.Unit
         public void ParseFlightInfo_DelimitorNotCorrect_ReturnsFalseOutput()
         {
             _flightString = "TAGGGG,50000,50000,5000,20181111111111111";
-            Assert.AreNotEqual(_flightList, _parser.Parse(_flightString));
+            Assert.AreNotEqual(_flightList, _uut.Parse(_flightString));
         }
 
     }

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AirTrafficMonitoring.Classes.Interfaces;
+﻿using AirTrafficMonitoring.Classes.Calculators.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
+using AirTrafficMonitoring.Classes.UpdateAndCheck.Interfaces;
 
-namespace AirTrafficMonitoring.Classes
+namespace AirTrafficMonitoring.Classes.UpdateAndCheck
 {
-    public class Separation
+    public class Separation : ISeparation
     {
         int horizontalConflict = 5000;
         int verticalConflict = 300;

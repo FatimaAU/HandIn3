@@ -4,7 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Classes;
-using AirTrafficMonitoring.Classes.Interfaces;
+using AirTrafficMonitoring.Classes.Calculators;
+using AirTrafficMonitoring.Classes.Calculators.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier;
+using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
+using AirTrafficMonitoring.Classes.UpdateAndCheck;
+using AirTrafficMonitoring.Classes.UpdateAndCheck.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace AirTrafficMonitoring.Test.Unit
@@ -12,25 +18,24 @@ namespace AirTrafficMonitoring.Test.Unit
     [TestFixture]
     class SeparationTest
     {
-        private Separation _separation;
-        private IDistance _distance;
+        private ISeparation _uut;
 
+        private IDistance _distance;
         private ITrackObject _oldObj;
         private ITrackObject _newObj;
-        private IPosition _oldPos;
-        private IPosition _newPos;
 
         [SetUp]
         public void Setup()
         {
-            _separation = new Separation();
+            _uut = new Separation();
+
+            /****************************
+            // THIS MUST BE SUB - NEED FIX - ELSE OK
+             *****************************/
             _distance = new Distance();
 
-            _oldPos = new Position();
-            _newPos = new Position();
-
-            _oldObj = new TrackObject("TAGGGG", _oldPos, "", new DateTime(2018, 04, 19, 15, 28, 30, 700));
-            _newObj = new TrackObject("TAGGGG", _newPos, "", new DateTime(2018, 04, 19, 15, 28, 30, 700));
+            _oldObj = Substitute.For<ITrackObject>();
+            _newObj = Substitute.For<ITrackObject>();
         }
 
         [TestCase(10000, 20000, 5000, 11000, 21000, 5200, true)]
@@ -41,10 +46,15 @@ namespace AirTrafficMonitoring.Test.Unit
         public void Distance_DistanceThreeDim_ReturnsResult(int t1X, int t1Y, int t1Alt, int t2X, int t2Y,
             int t2Alt, bool result)
         {
-            _oldPos.SetPosition(t1X, t1Y, t1Alt);
-            _newPos.SetPosition(t2X, t2Y, t2Alt);
+            _oldObj.Position.XCoor.Returns(t1X);
+            _oldObj.Position.YCoor.Returns(t1Y);
+            _oldObj.Position.Altitude.Returns(t1Alt);
 
-            Assert.AreEqual(result, _separation.IsConflicting(_oldObj, _newObj, _distance));
+            _newObj.Position.XCoor.Returns(t2X);
+            _newObj.Position.YCoor.Returns(t2Y);
+            _newObj.Position.Altitude.Returns(t2Alt);
+
+            Assert.AreEqual(result, _uut.IsConflicting(_oldObj, _newObj, _distance));
         }
     }
 }
