@@ -61,11 +61,11 @@
     <Compile Include="UpdateAndCheck\Interfaces\ISeparation.cs" />
     <Compile Include="UpdateAndCheck\Separation.cs" />
     <Compile Include="Calculators\Distance.cs" />
-    <Compile Include="Objectifier\FlightDataHandler.cs" />
+    <Compile Include="Objectifier\FlightExtractor.cs" />
     <Compile Include="Calculators\Interfaces\IDistance.cs" />
     <Compile Include="Calculators\Interfaces\ICourse.cs" />
     <Compile Include="Calculators\Interfaces\IVelocity.cs" />
-    <Compile Include="Objectifier\Interfaces\IFlightDataHandler.cs" />
+    <Compile Include="Objectifier\Interfaces\IFlightExtractor.cs" />
     <Compile Include="Objectifier\Interfaces\IMonitoredArea.cs" />
     <Compile Include="Objectifier\Interfaces\IParseTrackInfo.cs" />
     <Compile Include="Objectifier\Interfaces\IPosition.cs" />

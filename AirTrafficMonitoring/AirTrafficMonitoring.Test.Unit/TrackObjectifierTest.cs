@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Classes.Objectifier;
 using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using AirTrafficMonitoring.Classes.TrackListReadyEvent;
+using Castle.Core.Smtp;
 using NSubstitute;
+using NSubstitute.Extensions;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using TransponderReceiver;
@@ -21,13 +24,12 @@ namespace AirTrafficMonitoring.Test.Unit
         private ITransponderReceiver _receiver;
         private IMonitoredArea _monitoredArea;
         private IParseTrackInfo _parser;
-        private IFlightDataHandler _flightHandler;
-        private IPosition _position;
+        private IFlightExtractor _flightHandler;
         private ITimestampFormatter _formatter;
-        //private List<ITrackObject> TrackList;
 
+        private List<ITrackObject> _trackList;
         private List<string> _argList;
-        private RawTransponderDataEventArgs args;
+        private RawTransponderDataEventArgs _args;
 
         [SetUp]
         public void Setup()
@@ -35,19 +37,24 @@ namespace AirTrafficMonitoring.Test.Unit
             _receiver = Substitute.For<ITransponderReceiver>();
             _monitoredArea = Substitute.For<IMonitoredArea>();
             _parser = Substitute.For<IParseTrackInfo>();
-            _flightHandler = Substitute.For<IFlightDataHandler>();
-            _position = Substitute.For<IPosition>();
+            _flightHandler = Substitute.For<IFlightExtractor>();
             _formatter = Substitute.For<ITimestampFormatter>();
             //TrackList = new List<ITrackObject>();
-            _uut = new TrackObjectifier(_receiver, _monitoredArea, _parser, _flightHandler, _position, _formatter);
+
+            _uut = new TrackObjectifier(_receiver, _monitoredArea, _parser, _flightHandler, _formatter);
 
             _argList = new List<string> { "ATR423;39045;12932;14000;20151006213456789" };
-            args = new RawTransponderDataEventArgs(_argList);
+            _args = new RawTransponderDataEventArgs(_argList);
+
+            _uut.TrackListReady += (sender, updatedArgs) =>
+            {
+                _trackList = updatedArgs.TrackList;
+            };
         }
 
         public void RaiseFakeEvent()
         {
-            _receiver.TransponderDataReady += Raise.EventWith(args);
+            _receiver.TransponderDataReady += Raise.EventWith(_args);
         }
 
         [Test]
@@ -55,7 +62,7 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             RaiseFakeEvent();
 
-            _flightHandler.Received().Distribute(_parser.Parse(_argList[0]), out var tag, ref _position, ref _formatter);
+            _flightHandler.Received().Extract(_parser.Parse(_argList[0]));
         }
 
         [Test]
@@ -64,30 +71,22 @@ namespace AirTrafficMonitoring.Test.Unit
             _argList.Add("ADE458;78942;14520;1400;20111106213456459");
             RaiseFakeEvent();
 
-            _flightHandler.Received().Distribute(_parser.Parse(_argList[1]), out var tag, ref _position, ref _formatter);
+            _flightHandler.Received().Extract(_parser.Parse(_argList[1]));
         }
 
-        [Test]
-        public void TrackObjectifier_FlighthandlerDistributeWithWrongPosition_DidNotReceive()
-        {
-            IPosition fake = Substitute.For<IPosition>();
-            RaiseFakeEvent();
-
-            _flightHandler.DidNotReceive().Distribute(_parser.Parse(_argList[0]), out var tag, ref fake, ref _formatter);
-        }
 
         [Test]
         public void TrackObjectifier_MonitoredAreaInsideMonitoredArea_ReceivedCorrectPosition()
         {
             RaiseFakeEvent();
 
-            _monitoredArea.Received().InsideMonitoredArea(_position);
+            _monitoredArea.Received().InsideMonitoredArea(_flightHandler.Position);
         }
 
         [Test]
         public void TrackObjectifier_FormatterFormateTimestamp_ReceivedCall()
         {
-            _monitoredArea.InsideMonitoredArea(_position).Returns(true);
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
 
             RaiseFakeEvent();
 
@@ -97,7 +96,7 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void TrackObjectifier_FormatterFormateTimestamp_DidNotReceiveCall()
         {
-            _monitoredArea.InsideMonitoredArea(_position).Returns(false);
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(false);
 
             RaiseFakeEvent();
 
@@ -105,13 +104,43 @@ namespace AirTrafficMonitoring.Test.Unit
         }
 
         [Test]
-        public void TrackObjectifier_ITrackEventRaised_ReceivedList()
+        public void TrackObjectifier_ITrackEventRaised_ReceivedEvent()
         {
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            ManualResetEvent received = new ManualResetEvent(false);
+
+            _uut.TrackListReady += (sender, updatedArgs) => received.Set();
+
             RaiseFakeEvent();
 
-
+            Assert.That(received.WaitOne());
         }
 
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedList()
+        {
+            ManualResetEvent received = new ManualResetEvent(false);
+            _flightHandler.Extract(_parser.Parse(_argList[0]));
 
+
+            //_flightHandler.When(x => x.Distribute())
+            //_position.XCoor.Returns(39045);
+            //_position.YCoor.Returns(45120);
+            //_position.Altitude.Returns(4500);
+
+
+            _uut.TrackListReady += (sender, updatedArgs) => received.Set();
+
+            string expectedTag = "ATR234";
+
+            _monitoredArea.InsideMonitoredArea(_position).Returns(true);
+
+            RaiseFakeEvent();
+
+            //received.WaitOne();
+
+            Assert.That(tag, Is.EqualTo("hh"));
+        }
     }
 }

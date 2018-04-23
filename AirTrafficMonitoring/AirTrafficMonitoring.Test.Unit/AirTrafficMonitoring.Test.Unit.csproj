@@ -63,7 +63,7 @@
     <Compile Include="VelocityTest.cs" />
     <Compile Include="TimestampFormatterTest.cs" />
     <Compile Include="DistanceTest.cs" />
-    <Compile Include="FlightDataHandlerTest.cs" />
+    <Compile Include="FlightExtractorTest.cs" />
     <Compile Include="PositionTest.cs" />
     <Compile Include="SeparationTest.cs" />
     <Compile Include="TrackObjectifierTest.cs" />

@@ -7,29 +7,25 @@ using NUnit.Framework;
 namespace AirTrafficMonitoring.Test.Unit
 {
     [TestFixture]
-    class FlightDataHandlerTest
+    class FlightExtractorTest
     {
         /*
         * UNIT TEST DESCRIPTION
         * Unit tests on FlightDataHandler that test that the
         * flight data is extracted correctly from the string and given back to classes
         */
-        private IFlightDataHandler _uut;
-
-        private IPosition _position;
-        private ITimestampFormatter _timestampObj;
+        private IFlightExtractor _uut;
 
         private List<string> _flightList;
 
         [SetUp]
         public void Setup()
         {
-            _uut = new FlightDataHandler();
-
-            _position = Substitute.For<IPosition>();
-            _timestampObj = Substitute.For<ITimestampFormatter>();
+            _uut = new FlightExtractor();
 
             _flightList = new List<string> { "TAGGGG", "50000", "50032", "4000", "20181111111111111" };
+
+            _uut.Extract(_flightList);
         }
 
         [Test]
@@ -37,33 +33,26 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             // Define tag and check correct tag returned
             string expectedTag = "TAGGGG";
-            _uut.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
 
-            Assert.AreEqual(expectedTag, tag);
+            Assert.AreEqual(expectedTag, _uut.Tag);
         }
 
 
         [Test]
         public void Flight_SetX_ReturnsX()
         {
+            int expectedX = 50000;
             // Define x coordinate and check correct x coordinate returned
-
-            int expectedXCoor = 50000;
-
-            _uut.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
-
-            _position.Received().SetPosition(expectedXCoor, 50032, 4000);
+            Assert.That(expectedX, Is.EqualTo(_uut.Position.XCoor));
         }
 
         [Test]
         public void Flight_SetY_ReturnsY()
         {
             // Define y coordinate and check correct y coordinate returned
-            int expectedYCoor = 50000;
+            int expectedYCoor = 50032;
 
-            _uut.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
-
-            _position.Received().SetPosition(expectedYCoor, 50032, 4000);
+            Assert.That(expectedYCoor, Is.EqualTo(_uut.Position.YCoor));
         }
 
         [Test]
@@ -71,9 +60,8 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             // Define altitude and check correct altitude returned
             int expectedAltitude = 4000;
-            _uut.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
 
-            _position.Received().SetPosition(50000, 50032, expectedAltitude);
+            Assert.That(expectedAltitude, Is.EqualTo(_uut.Position.Altitude));
         }
 
         [Test]
@@ -82,9 +70,8 @@ namespace AirTrafficMonitoring.Test.Unit
             // Define timestamp and check correct timestamp returned
             string expectedTimestamp = "20181111111111111";
 
-            _uut.Distribute(_flightList, out var tag, ref _position, ref _timestampObj);
+            Assert.That(expectedTimestamp, Is.EqualTo(_uut.RawTimestamp));
 
-            _timestampObj.Received().Unformatted = expectedTimestamp;
         }
     }
 }
