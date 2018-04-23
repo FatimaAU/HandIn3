@@ -22,7 +22,7 @@ namespace AirTrafficMonitoring.Application
         public static readonly IParseTrackInfo Parser = new ParseTrackInfo();
         public static IPosition Position = new Position();
         public static ITimestampFormatter Formatter = new TimestampFormatter();
-        public static IFlightDataHandler Handler = new FlightDataHandler();
+        public static IFlightExtractor Handler = new FlightDataHandler();
         public static ICourse CourseCalc = new Course();
         public static IVelocity VelocityCalc = new Velocity();
         public static IDistance Distance = new Distance();
