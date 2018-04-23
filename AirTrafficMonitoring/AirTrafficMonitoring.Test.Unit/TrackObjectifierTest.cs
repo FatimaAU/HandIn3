@@ -97,9 +97,19 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void TrackObjectifier_FormatterFormateTimestamp_DidNotReceiveCall()
         {
+            _monitoredArea.InsideMonitoredArea(_position).Returns(false);
+
             RaiseFakeEvent();
 
-           // _uut.TrackListReady += 
+            _formatter.DidNotReceive().FormatTimestamp();
+        }
+
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedList()
+        {
+            RaiseFakeEvent();
+
+
         }
 
 

@@ -16,62 +16,95 @@ namespace AirTrafficMonitoring.Test.Unit
     [TestFixture]
     class TrackObjectTest
     {
-        private List<string> _flightList;
+        private ITrackObject _uut;
+
         private string _tag;
-        private int _x;
-        private int _y;
-        private int _altitude;
-        private string _timestamp;
-
         private IPosition _position;
-        private ITrackObject _trackObject;
+        private string _time;
         private DateTime _dateTime;
-
+        
         [SetUp]
         public void Setup()
         {
-            _flightList = new List<string> {"TAGGGG", "50000", "40000", "5000", "20181111111111111" };
+            _position = Substitute.For<IPosition>();
+            _position.XCoor.Returns(50456);
+            _position.YCoor.Returns(78455);
+            _position.Altitude.Returns(7852);
 
-            _tag = _flightList[0];
-            _x = int.Parse(_flightList[1]);
-            _y = int.Parse(_flightList[2]);
-            _altitude = int.Parse(_flightList[3]);
-            _timestamp = _flightList[4];
+            _time = "December 1st, 2018, at 11:11:11 and 111 milliseconds";
+            _dateTime = new DateTime(2018, 11, 11, 11, 11, 11, 111);
 
-            _position = new Position();
-            _position.SetPosition(_x, _y, _altitude);
-            _dateTime = new DateTime();
-            _trackObject = new TrackObject(_tag, _position, _timestamp, _dateTime);
+            _uut = new TrackObject("KVK7896", _position, _time, _dateTime);
         }
 
         [Test]
         public void Track_SetTag_ReturnsTag()
         {
-            Assert.AreEqual(_tag, _trackObject.Tag);
+            string expectedTag = "KVK7896";
+            Assert.AreEqual(expectedTag, _uut.Tag);
         }
 
         [Test]
         public void Track_SetXCoordinate_ReturnsXCoordinate()
         {
-            Assert.AreEqual(_x, _trackObject.Position.XCoor);
+            int expectedXCoor = 50456;
+            Assert.AreEqual(expectedXCoor, _uut.Position.XCoor);
         }
 
         [Test]
         public void Track_SetYCoordinate_ReturnYCoordinate()
         {
-            Assert.AreEqual(_y, _trackObject.Position.YCoor);
+            int expectedYCoor = 78455;
+            Assert.AreEqual(expectedYCoor, _uut.Position.YCoor);
         }
 
         [Test]
         public void Track_SetAltitude_ReturnAltitude()
         {
-            Assert.AreEqual(_altitude, _trackObject.Position.Altitude);
+            int altitude = 7852;
+            Assert.AreEqual(altitude, _uut.Position.Altitude);
         }
 
         [Test]
         public void Track_SetTimestamp_ReturnTimestamp()
         {
-            Assert.AreEqual(_timestamp, _trackObject.Timestamp);
+            string expectedTimestamp = "December 1st, 2018, at 11:11:11 and 111 milliseconds";
+            Assert.AreEqual(expectedTimestamp, _uut.Timestamp);
+        }
+
+        [Test]
+        public void Track_DateTime_ReturnCorrect()
+        {
+            DateTime expectedDateTime = new DateTime(2018, 11, 11, 11, 11, 11, 111);
+            Assert.AreEqual(expectedDateTime, _uut.InDateTime);
+        }
+
+        [Test]
+        public void Track_CourseIsZero_ReturnDefault()
+        {
+            int expectedCourse = 0;
+            Assert.AreEqual(expectedCourse, _uut.Course);
+        }
+
+        [Test]
+        public void Track_CourseIsNotSet_NotEqual()
+        {
+            int expectedCourse = 100;
+            Assert.AreNotEqual(expectedCourse, _uut.Course);
+        }
+
+        [Test]
+        public void Track_VelocityIsZero_ReturnDefault()
+        {
+            int expectedVelocity = 0;
+            Assert.AreEqual(expectedVelocity, _uut.Velocity);
+        }
+
+        [Test]
+        public void Track_VelocityIsNotSet_NotEqual()
+        {
+            int expectedVelocity = 200;
+            Assert.AreNotEqual(expectedVelocity, _uut.Velocity);
         }
     }
 }
