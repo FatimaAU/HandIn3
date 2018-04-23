@@ -19,120 +19,265 @@ namespace AirTrafficMonitoring.Test.Unit
     [TestFixture]
     class ListHandlerTest
     {
-        private List<ITrackObject> _currentTracks;
+        private IListHandler _uut;
+
+        private List<ITrackObject> _newTracks;
+
         private IVelocity _velocity;
         private ICourse _course;
         private ISeparation _separation;
         private IDistance _distance;
-        private IPosition _position;
-        private DateTime _inDateTime;
-        private ListHandler _uut;
 
         [SetUp]
         public void Setup()
         {
-            _currentTracks = Substitute.For<List<ITrackObject>>();
+            _newTracks = new List<ITrackObject>();
+
             _velocity = Substitute.For<IVelocity>();
             _course = Substitute.For<ICourse>();
             _separation = Substitute.For<ISeparation>();
             _distance = Substitute.For<IDistance>();
-            _position = Substitute.For<IPosition>();
-            _inDateTime = new DateTime();
 
             _uut = new ListHandler(_velocity,_course,_separation,_distance);
             
         }
 
-        [Test]
-        public void ListHandler_CurrentTracks_InitiateReturnsfalse()
+        public void InitiateNewList()
         {
-            TrackObject _TrackObject = new TrackObject("BBB111", _position, "20181111111111111", _inDateTime);
+            ITrackObject trackOne = Substitute.For<ITrackObject>();
+            trackOne.Tag.Returns("HDJ232");
 
-            _currentTracks.Add(_TrackObject);
+            ITrackObject trackTwo = Substitute.For<ITrackObject>();
+            trackTwo.Tag.Returns("HAJ232");
 
-            _uut.Renew(_currentTracks);
-
-            Assert.AreEqual(_uut.Initiate(_currentTracks),false);
+            _newTracks.Add(trackOne);
+            _newTracks.Add(trackTwo);
         }
 
         [Test]
-        public void ListHandler_NoCurrentTracks_InitiateReturnstrue()
+        public void ListHandler_NoCurrentTracks_InitiateReturnsTrue()
         {
-            Assert.AreEqual(_uut.Initiate(_currentTracks), true);
+            bool expectedReturn = true;
+
+            Assert.AreEqual(expectedReturn, _uut.Initiate(_newTracks));
         }
 
         [Test]
-        public void ListHandler_NoCurrentTracks_AddCurrentTracks()
+        public void ListHandler_CurrentTracksAlreadyInitialized_InitiateReturnsFalse()
         {
-            ITrackObject _Track = Substitute.For<ITrackObject>();
-            _currentTracks.Received().Add(_Track);
+            bool expectedReturn = false;
+
+            InitiateNewList();
+            _uut.Initiate(_newTracks);
+
+            Assert.AreEqual(expectedReturn, _uut.Initiate(_newTracks));
         }
+
+        [Test]
+        public void ListHandler_Renew_ListIsEqualToNewList()
+        {
+
+            _newTracks.Add(Substitute.For<ITrackObject>());
+
+            _uut.Renew(_newTracks);
+
+            Assert.AreEqual(_newTracks, _uut.CurrentTracks);
+        }
+
+        [Test]
+        public void ListHandler_DoesNotRenew_ListIsNotEqualToNewList()
+        {
+            _uut.Renew(_newTracks);
+
+            _newTracks.Add(Substitute.For<ITrackObject>());
+
+            Assert.AreNotEqual(_newTracks, _uut.CurrentTracks);
+        }
+
+        //[Test]
+        //public void ListHandler_NoCurrentTracks_AddCurrentTracks()
+        //{
+        //    _newTracks.Add(Substitute.For<ITrackObject>());
+
+
+        //    CurrentTracks.Received().Add(_Track);
+        //}
+
 
         [Test]
         public void ListHandler_UpdateVelocity_ReceivedCorrect()
         {
-            ITrackObject _currentTrack = Substitute.For<ITrackObject>();
-            ITrackObject _oldTracks = Substitute.For<ITrackObject>();
-           
-            _uut.Update(_currentTracks);
+            _newTracks.Add(Substitute.For<ITrackObject>());
 
-            _velocity.Received().CurrentVelocity(_currentTrack, _oldTracks, _distance);
+            ITrackObject trackOne = Substitute.For<ITrackObject>();
+            trackOne.Tag.Returns("HDJ232");
+
+            // Renew to update
+            _uut.Renew(_newTracks);
+            _uut.Update(_newTracks);
+
+            _velocity.Received().CurrentVelocity(_newTracks[0], _uut.CurrentTracks[0], _distance);
+        }
+
+        [Test]
+        public void ListHandler_UpdateVelocity_UpdatedCorrect()
+        {
+            InitiateNewList();
+
+            _uut.Initiate(_newTracks);
+
+            _velocity.CurrentVelocity(_newTracks[0], _uut.CurrentTracks[0], _distance).Returns(200);
+
+            _uut.Update(_newTracks);
+
+            Assert.That(_uut.CurrentTracks[0].Velocity, Is.EqualTo(200));
+        }
+
+        [Test]
+        public void ListHandler_UpdateVelocity_NotEqualTagsNotUpdating()
+        {
+            InitiateNewList();
+
+            _uut.Initiate(_newTracks);
+            _uut.Update(_newTracks);
+
+            _velocity.DidNotReceive().CurrentVelocity(_newTracks[0], _uut.CurrentTracks[1], _distance);
         }
 
         [Test]
         public void ListHandler_UpdateCourse_ReceivedCorrect()
         {
-            IPosition _currentPosition = Substitute.For<IPosition>();
-            IPosition _oldPosition = Substitute.For<IPosition>();
+            _newTracks.Add(Substitute.For<ITrackObject>());
 
-            _uut.Update(_currentTracks);
+            ITrackObject trackOne = Substitute.For<ITrackObject>();
+            trackOne.Tag.Returns("HDJ232");
 
-            _course.Received().CurrentCourse(_currentPosition, _oldPosition, _distance);
+            // Renew to update
+            _uut.Renew(_newTracks);
+            _uut.Update(_newTracks);
+
+            _course.Received().CurrentCourse(_newTracks[0].Position, _uut.CurrentTracks[0].Position, _distance);
         }
 
         [Test]
-        public void ListHandler_Renew_ReceivedCorrect()
+        public void ListHandler_UpdateCourse_NotEqualTagsNotUpdating()
         {
-            TrackObject _TrackObject = new TrackObject("BBB111", _position, "20181111111111111", _inDateTime);
+            InitiateNewList();
 
-            _currentTracks.Add(_TrackObject);
+            _uut.Initiate(_newTracks);
+            _uut.Update(_newTracks);
 
-            _uut.Renew(_currentTracks);
-
-            _currentTracks.Received().Add(_TrackObject);
+            _course.DidNotReceive().CurrentCourse(_newTracks[0].Position, _uut.CurrentTracks[1].Position, _distance);
         }
 
         [Test]
-        public void ListHandler_PrintSeparationEvent_ReceivedCorrect()
+        public void ListHandler_UpdateCourse_UpdatedCorrect()
         {
-           
+            InitiateNewList();
+
+            _uut.Initiate(_newTracks);
+
+            _course.CurrentCourse(_newTracks[0].Position, _uut.CurrentTracks[0].Position, _distance).Returns(150);
+
+            _uut.Update(_newTracks);
+
+            Assert.That(_uut.CurrentTracks[0].Course, Is.EqualTo(150));
         }
 
         [Test]
-        public void ListHandler_LogSeparationEvent_ReceivedCorrect()
+        public void ListHandler_CurrentSeperationEvents_Received()
         {
-            _uut.LogSeperationEvent("hej","du");
-            Assert.AreEqual("hej", File.AppendText("du"));
+            InitiateNewList();
+
+            ITrackObject trackThree = Substitute.For<ITrackObject>();
+            trackThree.Tag.Returns("HAJ232");
+
+            _newTracks.Add(trackThree);
+
+            _uut.Initiate(_newTracks);
+
+            _uut.CurrentSeperationEvents();
+
+            _separation.Received().IsConflicting(_uut.CurrentTracks[0], _uut.CurrentTracks[1], _distance);
         }
 
         [Test]
-        public void ListHandler_CurrentTracksEmpty_ReturnsEmptyList()
+        public void ListHandler_CheckOnSameObject_DoesNotReceive()
         {
-            Assert.AreEqual(_uut.ToString(), "Current list is empty\n");
+            InitiateNewList();
+
+            _uut.Initiate(_newTracks);
+
+            _uut.CurrentSeperationEvents();
+
+            _separation.DidNotReceive().IsConflicting(_uut.CurrentTracks[1], _uut.CurrentTracks[1], _distance);
         }
 
         [Test]
-        public void ListHandler_ToString_Returns()
+        public void ListHandler_CurrentSeperationEvents_NoEventsDetected()
         {
-            TrackObject _TrackObject = new TrackObject("BBB111", _position, "20181111111111111", _inDateTime);
+            string expectedReturn = "Current separation events:\nNo current events detected\n";
 
-            _currentTracks.Add(_TrackObject);
+            InitiateNewList();
 
-            _uut.Renew(_currentTracks);
+            ITrackObject trackThree = Substitute.For<ITrackObject>();
+            trackThree.Tag.Returns("HAJ232");
 
-            Assert.AreNotEqual(_uut, "Current list is empty\n");
+            _newTracks.Add(trackThree);
+
+            _uut.Initiate(_newTracks);
+
+            _separation.IsConflicting(_uut.CurrentTracks[0], _uut.CurrentTracks[1], _distance).Returns(false);
+
+            Assert.AreEqual(expectedReturn, _uut.CurrentSeperationEvents());
         }
 
-        
+        [Test]
+        public void ListHandler_CurrentSeperationEvents_EventsDetected()
+        {
+            string expectedReturn = "Current separation events:\nNo current events detected\n";
+
+            InitiateNewList();
+
+            ITrackObject trackThree = Substitute.For<ITrackObject>();
+            trackThree.Tag.Returns("HAJ232");
+            trackThree.Timestamp.Returns("April 23rd, 2018, at 23:55:32 and 339 milliseconds");
+
+            _newTracks.Add(trackThree);
+
+            _uut.Initiate(_newTracks);
+
+            _separation.IsConflicting(_uut.CurrentTracks[2], _uut.CurrentTracks[1], _distance).Returns(true);
+
+            Assert.AreEqual(expectedReturn, _uut.CurrentSeperationEvents());
+        }
+
+
+        //[Test]
+        //public void ListHandler_LogSeparationEvent_ReceivedCorrect()
+        //{
+        //    _uut.LogSeperationEvent("hej","du");
+        //    Assert.AreEqual("hej", File.AppendText("du"));
+        //}
+
+        //[Test]
+        //public void ListHandler_CurrentTracksEmpty_ReturnsEmptyList()
+        //{
+        //    Assert.AreEqual(_uut.ToString(), "Current list is empty\n");
+        //}
+
+        //[Test]
+        //public void ListHandler_ToString_Returns()
+        //{
+        //    TrackObject _TrackObject = new TrackObject("BBB111", _position, "20181111111111111", _inDateTime);
+
+        //    CurrentTracks.Add(_TrackObject);
+
+        //    _uut.Renew(CurrentTracks);
+
+        //    Assert.AreNotEqual(_uut, "Current list is empty\n");
+        //}
+
+
     }
 }

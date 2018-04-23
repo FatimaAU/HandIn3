@@ -11,7 +11,7 @@ namespace AirTrafficMonitoring.Classes.UpdateAndCheck
 {
     public class ListHandler : IListHandler
     {
-        private List<ITrackObject> _currentTracks;
+        public List<ITrackObject> CurrentTracks { get; }
         private IVelocity _velocity;
         private ICourse _course;
         private ISeparation _separation;
@@ -23,7 +23,7 @@ namespace AirTrafficMonitoring.Classes.UpdateAndCheck
             ISeparation separation, 
             IDistance distance)
         {
-            _currentTracks = new List<ITrackObject>();
+            CurrentTracks = new List<ITrackObject>();
             _velocity = vel;
             _course = cou;
             _separation = separation;
@@ -31,22 +31,31 @@ namespace AirTrafficMonitoring.Classes.UpdateAndCheck
         }
         public bool Initiate(List<ITrackObject> newList)
         {
-            if (!_currentTracks.Any())
+            // Populate list if empty
+            if (!CurrentTracks.Any()) // Returns false when empty
             {
                 foreach (var track in newList)
-                    _currentTracks.Add(track);
+                    CurrentTracks.Add(track);
 
                 return true;
             }
 
+            // Returns false if not empty (already populated list)
             return false;
+        }
+        public void Renew(List<ITrackObject> newList)
+        {
+            CurrentTracks.Clear();
+
+            foreach (var track in newList)
+                CurrentTracks.Add(track);
         }
 
         public void Update(List<ITrackObject> newList)
         {
             foreach (var newTrack in newList)
             {
-                foreach (var currtrack in _currentTracks)
+                foreach (var currtrack in CurrentTracks)
                 {
                     // Update when found and break immediately
                     if (currtrack.Tag == newTrack.Tag)
@@ -59,39 +68,38 @@ namespace AirTrafficMonitoring.Classes.UpdateAndCheck
             }
         }
 
-        public void Renew(List<ITrackObject> newList)
+
+
+        public string CurrentSeperationEvents(string filenameToLogTo = "separationlog.txt")
         {
-            _currentTracks.Clear();
+            string title = "Current separation events:";
 
-            foreach (var track in newList)
+            StringBuilder info = new StringBuilder();
+
+            for (int i = 0; i < CurrentTracks.Count; i++)
             {
-                _currentTracks.Add(track);
-            }
-        }
+                var trackOne = CurrentTracks[i];
 
-
-        public void PrintSeperationEvent(string filenameToLogTo = "separationlog.txt")
-        {
-            Console.WriteLine("Current separation events:");
-
-            for (int i = 0; i < _currentTracks.Count; i++)
-            {
-                var trackOne = _currentTracks[i];
-
-                for (int j = i + 1; j < _currentTracks.Count; j++)
+                for (int j = i + 1; j < CurrentTracks.Count; j++)
                 {
-                    var trackTwo = _currentTracks[j];
+                    var trackTwo = CurrentTracks[j];
 
                     if (_separation.IsConflicting(trackOne, trackTwo, _distance))
                     {
-                        string info =
+                        string trackInfo =
                             $"{trackOne.Tag} and {trackTwo.Tag} at {trackOne.Timestamp}";
 
-                        LogSeperationEvent(info, filenameToLogTo);
-                    }
+                        info.Append(trackInfo + "\n");
 
+                        LogSeperationEvent(trackInfo, filenameToLogTo);
+                    }
                 }
             }
+
+            if (info.Length == 0)
+                return title + "\n" + "No current events detected\n";
+
+            return title + "\n" + info;
         }
 
         public void LogSeperationEvent(string info, string filename)
@@ -104,17 +112,17 @@ namespace AirTrafficMonitoring.Classes.UpdateAndCheck
 
         public override string ToString()
         {
-            if (_currentTracks.Count == 0)
+            if (CurrentTracks.Count == 0)
             {
                 return "Current list is empty\n";
             }
 
             StringBuilder allTracks = new StringBuilder();
 
-            foreach (var track in _currentTracks)
+            foreach (var track in CurrentTracks)
                 allTracks.Append(track + "\n");
 
-            allTracks.Append($"Amount of flights currently being monitored: {_currentTracks.Count}");
+            allTracks.Append($"Amount of flights currently being monitored: {CurrentTracks.Count}");
 
             return allTracks.ToString();
         }
