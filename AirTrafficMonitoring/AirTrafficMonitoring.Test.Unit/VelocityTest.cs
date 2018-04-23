@@ -25,12 +25,12 @@ namespace AirTrafficMonitoring.Test.Unit
         [SetUp]
         public void Setup()
         {
-            /****************************
-            // THIS MUST BE SUB - NEED FIX - ELSE OK
-             *****************************/
             _testCalculateVelocity = new Velocity();
 
             _distance = new Distance();
+            /****************************
+            // THIS MUST BE SUB - NEED FIX - ELSE OK
+             *****************************/
 
             _oldObj = Substitute.For<ITrackObject>();
             _newObj = Substitute.For<ITrackObject>();

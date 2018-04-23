@@ -24,12 +24,12 @@ namespace AirTrafficMonitoring.Test.Unit
         [SetUp]
         public void Setup()
         {
-            /****************************
-            // THIS MUST BE SUB - NEED FIX - ELSE OK
-             *****************************/
             _uut = new Course();
 
             _distance = new Distance();
+            /****************************
+            // THIS MUST BE SUB - NEED FIX - ELSE OK
+             *****************************/
 
             _oldPosition = Substitute.For<IPosition>();
             _newPosition = Substitute.For<IPosition>();

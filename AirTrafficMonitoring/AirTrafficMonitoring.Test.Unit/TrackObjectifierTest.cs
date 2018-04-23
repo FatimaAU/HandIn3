@@ -99,7 +99,7 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             RaiseFakeEvent();
 
-            _uut.TrackListReady += 
+           // _uut.TrackListReady += 
         }
 
 

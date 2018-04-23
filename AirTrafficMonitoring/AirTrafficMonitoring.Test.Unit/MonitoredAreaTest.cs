@@ -20,8 +20,8 @@ namespace AirTrafficMonitoring.Test.Unit
         [SetUp]
         public void Setup()
         {
-            _position = Substitute.For<IPosition>();
             _uut = new MonitoredArea(90000, 10000, 20000, 500);
+            _position = Substitute.For<IPosition>();
         }
 
         [Test]
