@@ -56,7 +56,7 @@
     <Compile Include="Calculators\Course.cs" />
     <Compile Include="Calculators\Velocity.cs" />
     <Compile Include="ATMSystem.cs" />
-    <Compile Include="UpdateAndCheck\HandleLists.cs" />
+    <Compile Include="UpdateAndCheck\ListHandler.cs" />
     <Compile Include="UpdateAndCheck\Interfaces\IListHandler.cs" />
     <Compile Include="UpdateAndCheck\Interfaces\ISeparation.cs" />
     <Compile Include="UpdateAndCheck\Separation.cs" />

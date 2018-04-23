@@ -7,7 +7,7 @@ using AirTrafficMonitoring.Classes.Calculators.Interfaces;
 using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using AirTrafficMonitoring.Classes.UpdateAndCheck.Interfaces;
 
-namespace AirTrafficMonitoring.Classes
+namespace AirTrafficMonitoring.Classes.UpdateAndCheck
 {
     public class ListHandler : IListHandler
     {

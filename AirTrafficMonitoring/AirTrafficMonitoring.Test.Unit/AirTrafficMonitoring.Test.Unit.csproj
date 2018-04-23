@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CourseTest.cs" />
+    <Compile Include="ListHandlerTest.cs" />
     <Compile Include="VelocityTest.cs" />
     <Compile Include="TimestampFormatterTest.cs" />
     <Compile Include="DistanceTest.cs" />
