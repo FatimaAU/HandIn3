@@ -124,5 +124,10 @@ namespace AirTrafficMonitoring.Test.Unit
             Assert.AreEqual(expectedDateTime, _uut.InDateTime);
         }
 
+        [Test]
+        public void TimestampFormatter_UnformattedStringIsNull_ReturnsException()
+        {
+            Assert.Throws<NullReferenceException>(() => _uut.FormatTimestamp());
+        }
     }
 }

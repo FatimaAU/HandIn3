@@ -13,7 +13,7 @@ namespace AirTrafficMonitoring.Classes.Objectifier
         public void FormatTimestamp(string format = "yyyyMMddHHmmssfff")
         {
             if (Unformatted == null)
-                throw new Exception("Exception trhwon in FormatTimestamp: Unformatted is null");
+                throw new NullReferenceException("Exception thrwon in FormatTimestamp: Unformatted is null");
 
             InDateTime = DateTime.ParseExact(Unformatted, format, CultureInfo.CreateSpecificCulture("en-US"));
             

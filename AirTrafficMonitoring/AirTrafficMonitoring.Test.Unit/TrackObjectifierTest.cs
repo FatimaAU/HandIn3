@@ -52,7 +52,7 @@ namespace AirTrafficMonitoring.Test.Unit
             };
         }
 
-        public void RaiseFakeEvent()
+        public void RaiseFakeTransponderEvent()
         {
             _receiver.TransponderDataReady += Raise.EventWith(_args);
         }
@@ -60,7 +60,7 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void TrackObjectifier_FlighthandlerDistribute_ReceivedCorrect()
         {
-            RaiseFakeEvent();
+            RaiseFakeTransponderEvent();
 
             _flightHandler.Received().Extract(_parser.Parse(_argList[0]));
         }
@@ -69,7 +69,7 @@ namespace AirTrafficMonitoring.Test.Unit
         public void TrackObjectifier_FlighthandlerDistribute_ReceivedSecondString()
         {
             _argList.Add("ADE458;78942;14520;1400;20111106213456459");
-            RaiseFakeEvent();
+            RaiseFakeTransponderEvent();
 
             _flightHandler.Received().Extract(_parser.Parse(_argList[1]));
         }
@@ -78,7 +78,7 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void TrackObjectifier_MonitoredAreaInsideMonitoredArea_ReceivedCorrectPosition()
         {
-            RaiseFakeEvent();
+            RaiseFakeTransponderEvent();
 
             _monitoredArea.Received().InsideMonitoredArea(_flightHandler.Position);
         }
@@ -88,7 +88,7 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
 
-            RaiseFakeEvent();
+            RaiseFakeTransponderEvent();
 
             _formatter.Received().FormatTimestamp();
         }
@@ -98,7 +98,7 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(false);
 
-            RaiseFakeEvent();
+            RaiseFakeTransponderEvent();
 
             _formatter.DidNotReceive().FormatTimestamp();
         }
@@ -112,35 +112,171 @@ namespace AirTrafficMonitoring.Test.Unit
 
             _uut.TrackListReady += (sender, updatedArgs) => received.Set();
 
-            RaiseFakeEvent();
+            RaiseFakeTransponderEvent();
 
             Assert.That(received.WaitOne());
         }
 
         [Test]
-        public void TrackObjectifier_ITrackEventRaised_ReceivedList()
+        public void TrackObjectifier_ITrackEventRaised_ReceivedTag()
         {
-            ManualResetEvent received = new ManualResetEvent(false);
-            _flightHandler.Extract(_parser.Parse(_argList[0]));
-
-
-            //_flightHandler.When(x => x.Distribute())
-            //_position.XCoor.Returns(39045);
-            //_position.YCoor.Returns(45120);
-            //_position.Altitude.Returns(4500);
-
-
-            _uut.TrackListReady += (sender, updatedArgs) => received.Set();
-
             string expectedTag = "ATR234";
 
-            _monitoredArea.InsideMonitoredArea(_position).Returns(true);
+            _flightHandler.Tag.Returns(expectedTag);
 
-            RaiseFakeEvent();
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
 
-            //received.WaitOne();
+            RaiseFakeTransponderEvent();
 
-            Assert.That(tag, Is.EqualTo("hh"));
+            Assert.That(expectedTag, Is.EqualTo(_trackList[0].Tag));
         }
+
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedXCoordinate()
+        {
+            int expectedXCoor = 39045;
+
+            _flightHandler.Position.XCoor.Returns(expectedXCoor);
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            Assert.That(expectedXCoor, Is.EqualTo(_trackList[0].Position.XCoor));
+        }
+
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedYCoordinate()
+        {
+            int expectedYCoor = 12932;
+
+            _flightHandler.Position.YCoor.Returns(expectedYCoor);
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            Assert.That(expectedYCoor, Is.EqualTo(_trackList[0].Position.YCoor));
+        }
+
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedAltitude()
+        {
+            int expectedAltitude = 14000;
+
+            _flightHandler.Position.Altitude.Returns(expectedAltitude);
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            Assert.That(expectedAltitude, Is.EqualTo(_trackList[0].Position.Altitude));
+        }
+
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedTimestamp()
+        {
+            string formattedTimestamp = "February 10, 2016, at 15:23:23 and 324 milliseconds";
+
+            _formatter.InPretty = formattedTimestamp;
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            Assert.That(formattedTimestamp, Is.EqualTo(_trackList[0].Timestamp));
+        }
+
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedDateTime()
+        {
+            DateTime inDateTime = new DateTime(2016, 02, 10, 15, 23, 23, 324);
+
+            _formatter.InDateTime = inDateTime;
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            Assert.That(inDateTime, Is.EqualTo(_trackList[0].InDateTime));
+        }
+
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedCourseIsZero()
+        {
+            int expectedCourse = 0;
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            Assert.That(expectedCourse, Is.EqualTo(_trackList[0].Course));
+        }
+
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedVelocityIsZero()
+        {
+            int expectedVelocity = 0;
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            Assert.That(expectedVelocity, Is.EqualTo(_trackList[0].Velocity));
+        }
+
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedFullTrack()
+        {
+            string expectedTrackOutput = "Tag:\t\t" + "HAJ7852" + "\n" +
+                                         "X coordinate:\t" + 45623 + " meters \n" +
+                                         "Y coordinate:\t" + 78452 + " meters\n" +
+                                         "Altitide:\t" + 4562 + " meters\n" +
+                                         "Timestamp:\t" + "October 16th, 2008, at 13:10:12 and 326 milliseconds" + "\n" +
+                                         "Velocity:\t" + 0 + " m/s\n" +
+                                         "Course:\t\t" + 0 + " degrees\n";
+
+            _flightHandler.Tag.Returns("HAJ7852");
+            _flightHandler.Position.XCoor.Returns(45623);
+            _flightHandler.Position.YCoor.Returns(78452);
+            _flightHandler.Position.Altitude.Returns(4562);
+
+            _formatter.InPretty = "October 16th, 2008, at 13:10:12 and 326 milliseconds";
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            Assert.That(expectedTrackOutput, Is.EqualTo(_trackList[0].ToString()));
+        }
+
+        [Test]
+        public void TrackObjectifier_ITrackEventRaised_ReceivedFullSecondTrack()
+        {
+            _argList.Add("ADS7850;74105;90000;19000;20120509103456459");
+
+            string expectedTrackOutput = "Tag:\t\t" + "ADS7850" + "\n" +
+                                         "X coordinate:\t" + 74105 + " meters \n" +
+                                         "Y coordinate:\t" + 90000 + " meters\n" +
+                                         "Altitide:\t" + 19000 + " meters\n" +
+                                         "Timestamp:\t" + "May 9th, 2012, at 10:34:56 and 459 milliseconds" + "\n" +
+                                         "Velocity:\t" + 0 + " m/s\n" +
+                                         "Course:\t\t" + 0 + " degrees\n";
+
+            _flightHandler.Tag.Returns("ADS7850");
+            _flightHandler.Position.XCoor.Returns(74105);
+            _flightHandler.Position.YCoor.Returns(90000);
+            _flightHandler.Position.Altitude.Returns(19000);
+
+            _formatter.InPretty = "May 9th, 2012, at 10:34:56 and 459 milliseconds";
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            Assert.That(expectedTrackOutput, Is.EqualTo(_trackList[1].ToString()));
+        }
+
+
     }
 }

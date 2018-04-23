@@ -7,7 +7,6 @@ namespace AirTrafficMonitoring.Classes.Objectifier
     {
         public string Tag { get; set; }
         public IPosition Position { get; set; }
-        public int Altitude { get; set; }
         public string RawTimestamp { get; set; }
 
         public void Extract(List<string> data)

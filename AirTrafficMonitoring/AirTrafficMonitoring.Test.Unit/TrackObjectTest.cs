@@ -106,5 +106,20 @@ namespace AirTrafficMonitoring.Test.Unit
             int expectedVelocity = 200;
             Assert.AreNotEqual(expectedVelocity, _uut.Velocity);
         }
+
+        [Test]
+        public void Track_ToString_ReturnsToString()
+        {
+            string expectedString = "Tag:\t\t" + "KVK7896" + "\n" +
+                                    "X coordinate:\t" + 50456 + " meters \n" +
+                                    "Y coordinate:\t" + 78455 + " meters\n" +
+                                    "Altitide:\t" + 7852 + " meters\n" +
+                                    "Timestamp:\t" + "December 1st, 2018, at 11:11:11 and 111 milliseconds" + "\n" +
+                                    "Velocity:\t" + 0 + " m/s\n" +
+                                    "Course:\t\t" + 0 + " degrees\n";
+
+            Assert.AreEqual(expectedString, _uut.ToString());
+        }
+
     }
 }

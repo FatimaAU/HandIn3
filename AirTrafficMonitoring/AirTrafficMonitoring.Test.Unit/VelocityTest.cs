@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AirTrafficMonitoring.Classes;
 using AirTrafficMonitoring.Classes.Calculators;
 using AirTrafficMonitoring.Classes.Calculators.Interfaces;
 using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
@@ -53,7 +48,7 @@ namespace AirTrafficMonitoring.Test.Unit
             2018, 04, 19, 15, 29, 29, 100,
             2018, 04, 19, 16, 29, 29, 800,
             35)]
-        public void CalculateVelocity_Velocity_ReturnsVelocity(
+        public void Velocity_CurrentVelocity_ReturnsVelocity(
             int xOld, int yOld, int xNew, int yNew, 
             int yearOld, int monthOld, int dayOld, int hoursOld, int minutesOld, int secondsOld, int milliOld,
             int yearNew, int monthNew, int dayNew, int hoursNew, int minutesNew, int secondsNew, int milliNew,
@@ -74,6 +69,20 @@ namespace AirTrafficMonitoring.Test.Unit
             _newObj.InDateTime = newTimestamp;
 
             Assert.AreEqual(velocity, _testCalculateVelocity.CurrentVelocity(_newObj, _oldObj, _distance));
+        }
+
+        [Test]
+        public void Velocity_NoTimeDifference_ReturnsZeroVelocity()
+        {
+            int expectedTimeDifference = 0;
+
+            DateTime oldTimestamp = new DateTime(2015, 12, 12, 15, 10, 14, 150);
+            DateTime newTimestamp = oldTimestamp;
+
+            _oldObj.InDateTime = oldTimestamp;
+            _newObj.InDateTime = newTimestamp;
+
+            Assert.AreEqual(expectedTimeDifference, _testCalculateVelocity.CurrentVelocity(_newObj, _oldObj, _distance));
         }
     }
 }
