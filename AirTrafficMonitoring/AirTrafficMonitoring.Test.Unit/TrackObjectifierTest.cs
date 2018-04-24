@@ -96,7 +96,6 @@ namespace AirTrafficMonitoring.Test.Unit
         public void TrackObjectifier_FormatterFormateTimestamp_ReceivedCall()
         {
             _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
-
             RaiseFakeTransponderEvent();
 
             _formatter.Received().FormatTimestamp();
