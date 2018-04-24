@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ATMSystemTest.cs" />
     <Compile Include="CourseTest.cs" />
     <Compile Include="ListHandlerTest.cs" />
     <Compile Include="VelocityTest.cs" />
