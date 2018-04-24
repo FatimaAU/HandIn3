@@ -4,11 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Classes;
-using AirTrafficMonitoring.Classes.Calculators;
-using AirTrafficMonitoring.Classes.Calculators.Interfaces;
 using AirTrafficMonitoring.Classes.Objectifier;
 using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
-using AirTrafficMonitoring.Classes.UpdateAndCheck;
 using AirTrafficMonitoring.Classes.UpdateAndCheck.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
@@ -16,8 +13,10 @@ using TransponderReceiver;
 
 namespace AirTrafficMonitoring.Test.Integration
 {
-    class IT9_TrackObject
+    class IT10_ListHandler
     {
+        private ATMSystem ATM;
+
         private IMonitoredArea _monitoredArea;
         private TrackObjectifier _trackObjectifier;
         private IPosition _position;
@@ -27,13 +26,16 @@ namespace AirTrafficMonitoring.Test.Integration
         private ITimestampFormatter _timestampFormatter;
         private ISeparation _seperationEvent;
 
-        private IList<ITrackObject> _trackList;
+        private IListHandler _listHandler;
+
+        private List<ITrackObject> _trackList;
         private List<string> _argList;
         private RawTransponderDataEventArgs _args;
 
         [SetUp]
         public void Setup()
         {
+            _listHandler = Substitute.For<IListHandler>();
             _monitoredArea = new MonitoredArea(90000, 10000, 20000, 500);
 
             _transponderReceiver = Substitute.For<ITransponderReceiver>();
@@ -43,11 +45,14 @@ namespace AirTrafficMonitoring.Test.Integration
 
             _trackObjectifier = new TrackObjectifier(_transponderReceiver, _monitoredArea, _parseTrackInfo, _flightExtractor, _timestampFormatter);
 
+            ATM = new ATMSystem(_trackObjectifier, _listHandler);
+
             _argList = new List<string>
             {
                 "ATR423;39045;12932;14000;20151006213456789",
                 "DSD323;40000;12930;15000;20151006213456789"
             };
+
             _args = new RawTransponderDataEventArgs(_argList);
 
             _trackObjectifier.TrackListReady += (sender, updatedArgs) =>
@@ -57,22 +62,35 @@ namespace AirTrafficMonitoring.Test.Integration
         }
 
         [Test]
-        public void TrackObject_CreateTrackList_ReceivedCorrect()
+        public void Listhandler_RaiseEvent_ReceivedInitiate()
         {
-            string expectedTrack = "Tag:\t\t" + "ATR423" + "\n" +
-                                  "X coordinate:\t" + 39045 + " meters \n" +
-                                  "Y coordinate:\t" + 12932 + " meters\n" +
-                                  "Altitide:\t" + 14000 + " meters\n" +
-                                  "Timestamp:\t" + "October 6th, 2015, at 21:34:56 and 789 milliseconds" + "\n" +
-                                  "Velocity:\t" + 0 + " m/s\n" +
-                                  "Course:\t\t" + 0 + " degrees\n";
-
-
             _transponderReceiver.TransponderDataReady += Raise.EventWith(_args);
 
-            Assert.AreEqual(expectedTrack, _trackList[0].ToString());
+            _listHandler.Received().Initiate(_trackList);
         }
 
+        [Test]
+        public void Listhandler_RaiseEvent_ReceivedUpdate()
+        {
+            _transponderReceiver.TransponderDataReady += Raise.EventWith(_args);
 
+            _listHandler.Received().Update(_trackList);
+        }
+
+        [Test]
+        public void Listhandler_RaiseEvent_ReceivedCurrentSeperationEvents()
+        {
+            _transponderReceiver.TransponderDataReady += Raise.EventWith(_args);
+
+            _listHandler.Received().CurrentSeperationEvents();
+        }
+
+        [Test]
+        public void Listhandler_RaiseEvent_ReceivedRenew()
+        {
+            _transponderReceiver.TransponderDataReady += Raise.EventWith(_args);
+
+            _listHandler.Received().Renew(_trackList);
+        }
     }
 }

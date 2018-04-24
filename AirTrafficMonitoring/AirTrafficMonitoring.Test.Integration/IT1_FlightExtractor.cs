@@ -16,7 +16,6 @@ namespace AirTrafficMonitoring.Test.Integration
 
         private IMonitoredArea _monitoredArea;
         private ITrackList _trackObjectifier;
-        private IPosition _position;
         private ITransponderReceiver _transponderReceiver;
         private IParseTrackInfo _parseTrackInfo;
         private ITimestampFormatter _timestampFormatter;
@@ -29,9 +28,8 @@ namespace AirTrafficMonitoring.Test.Integration
         public void Setup()
         {
             _uut = new FlightExtractor();
-            _parseTrackInfo = new ParseTrackInfo();
+            _parseTrackInfo = Substitute.For<IParseTrackInfo>();
 
-            _position = Substitute.For<IPosition>();
             _monitoredArea = Substitute.For<IMonitoredArea>();
             _transponderReceiver = Substitute.For<ITransponderReceiver>();
 

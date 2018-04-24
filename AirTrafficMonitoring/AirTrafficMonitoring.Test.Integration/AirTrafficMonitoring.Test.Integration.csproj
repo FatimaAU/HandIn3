@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IT10_ListHandler.cs" />
     <Compile Include="IT1_FlightExtractor.cs" />
     <Compile Include="IT2_MonitoredArea.cs" />
     <Compile Include="IT4_TrackObject.cs" />
