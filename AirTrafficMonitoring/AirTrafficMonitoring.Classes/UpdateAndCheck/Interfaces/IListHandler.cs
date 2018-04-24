@@ -11,5 +11,6 @@ namespace AirTrafficMonitoring.Classes.UpdateAndCheck.Interfaces
         void Renew(List<ITrackObject> newList);
         string CurrentSeperationEvents(string filenameToLogTo = "separationlog.txt");
         void LogSeperationEvent(string info, string filename);
+        string ToString();
     }
 }

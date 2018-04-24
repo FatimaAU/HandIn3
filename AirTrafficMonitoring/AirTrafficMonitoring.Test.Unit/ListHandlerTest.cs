@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AirTrafficMonitoring.Classes.Calculators;
 using AirTrafficMonitoring.Classes.Calculators.Interfaces;
-using AirTrafficMonitoring.Classes.Objectifier;
 using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using AirTrafficMonitoring.Classes.UpdateAndCheck;
 using AirTrafficMonitoring.Classes.UpdateAndCheck.Interfaces;
@@ -70,7 +64,6 @@ namespace AirTrafficMonitoring.Test.Unit
             trackTwo.Timestamp.Returns("April 23rd, 2018, at 23:55:32 and 339 milliseconds");
             trackTwo.Velocity.Returns(300);
             trackTwo.Course.Returns(300);
-
             trackTwo.ToString()
                 .Returns
                 ("Tag:\t\t" + "DSO0458" + "\n" +
@@ -124,15 +117,6 @@ namespace AirTrafficMonitoring.Test.Unit
 
             Assert.AreNotEqual(_newTracks, _uut.CurrentTracks);
         }
-
-        //[Test]
-        //public void ListHandler_NoCurrentTracks_AddCurrentTracks()
-        //{
-        //    _newTracks.Add(Substitute.For<ITrackObject>());
-
-
-        //    CurrentTracks.Received().Add(_Track);
-        //}
 
 
         [Test]
@@ -287,13 +271,84 @@ namespace AirTrafficMonitoring.Test.Unit
             Assert.AreEqual(expectedReturn, _uut.CurrentSeperationEvents());
         }
 
+        [Test]
+        public void ListHandler_InsertedInLogSeparationEvent_ReceivedCorrect()
+        {
+            string expectedLog = "seperationLoggingTest\r\n";
+            string filename = "test.txt";
 
-        //[Test]
-        //public void ListHandler_LogSeparationEvent_ReceivedCorrect()
-        //{
-        //    _uut.LogSeperationEvent("hej","du");
-        //    Assert.AreEqual("hej", File.AppendText("du"));
-        //}
+            StreamWriter strm = File.CreateText(filename);
+            strm.Flush();
+            strm.Close();
+
+            _uut.LogSeperationEvent("seperationLoggingTest", "test.txt");
+
+            string contents = File.ReadAllText(filename);
+            Assert.AreEqual(expectedLog, contents);
+        }
+
+
+        [Test]
+        public void ListHandler_LogSeparationEvent_ReceivedCorrect()
+        {
+            string filename = "test.txt";
+
+            string expectedOutput = "HDJ232 and DSO458 at April 23rd, 2018, at 23:55:32 and 339 milliseconds\r\n";
+
+            StreamWriter strm = File.CreateText(filename);
+            strm.Flush();
+            strm.Close();
+
+            InitiateNewList();
+
+            _uut.Initiate(_newTracks);
+
+            _separation.IsConflicting(_uut.CurrentTracks[0], _uut.CurrentTracks[1], _distance).Returns(true);
+
+            _uut.CurrentSeperationEvents(filename);
+            string contents = File.ReadAllText(filename);
+
+            Assert.AreEqual(expectedOutput, contents);
+        }
+
+        [Test]
+        public void ListHandler_LogTwoEvents_ReceivedEventTwoCorrect()
+        {
+            string filename = "test.txt";
+
+            string expectedOutput = "HDJ232 and DSO458 at April 23rd, 2018, at 23:55:32 and 339 milliseconds\r\n" +
+                "HDJ232 and UDS323 at April 23rd, 2018, at 23:55:32 and 339 milliseconds\r\n";
+
+            StreamWriter strm = File.CreateText(filename);
+            strm.Flush();
+            strm.Close();
+
+            InitiateNewList();
+
+            ITrackObject trackThree = Substitute.For<ITrackObject>();
+            trackThree.Tag.Returns("UDS323");
+
+            //trackThree.ToString()
+            //    .Returns
+            //    ("Tag:\t\t" + "UDS2322" + "\n" +
+            //     "X coordinate:\t" + 45300 + " meters \n" +
+            //     "Y coordinate:\t" + 78450 + " meters\n" +
+            //     "Altitide:\t" + 7895 + " meters\n" +
+            //     "Timestamp:\t" + "April 23rd, 2018, at 23:55:32 and 339 milliseconds" + "\n" +
+            //     "Velocity:\t" + 300 + " m/s\n" +
+            //     "Course:\t\t" + 300 + " degrees\n");
+
+            _newTracks.Add(trackThree);
+            _uut.Initiate(_newTracks);
+
+            _separation.IsConflicting(_uut.CurrentTracks[0], _uut.CurrentTracks[1], _distance).Returns(true);
+            _separation.IsConflicting(_uut.CurrentTracks[0], _uut.CurrentTracks[2], _distance).Returns(true);
+
+            _uut.CurrentSeperationEvents(filename);
+            string contents = File.ReadAllText(filename);
+
+            Assert.AreEqual(expectedOutput, contents);
+        }
 
         [Test]
         public void ListHandler_CurrentTracksEmpty_ReturnsEmptyList()
@@ -317,10 +372,12 @@ namespace AirTrafficMonitoring.Test.Unit
                                     "Altitide:\t" + 7895 + " meters\n" +
                                     "Timestamp:\t" + "April 23rd, 2018, at 23:55:32 and 339 milliseconds" + "\n" +
                                     "Velocity:\t" + 300 + " m/s\n" +
-                                    "Course:\t\t" + 300 + " degrees\n";
+                                    "Course:\t\t" + 300 + " degrees\n" +
+                                    "Amount of flights currently being monitored: 2\n";
+            InitiateNewList();
             _uut.Initiate(_newTracks);
 
-            Assert.AreEqual(_uut.ToString(), "Current list is empty\n");
+            Assert.AreEqual(expectedReturn, _uut.ToString());
         }
 
 
