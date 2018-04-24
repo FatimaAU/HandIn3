@@ -21,19 +21,17 @@ namespace AirTrafficMonitoring.Test.Integration
         private ICourse _course;
         private ISeparation _separation;
         private IDistance _uut;
-        private IDistance _distance;
         private List<ITrackObject> _newTracks;
 
         [SetUp]
         public void Setup()
         {
             _uut = new Distance();
-            _distance = Substitute.For<IDistance>();
             _newTracks = new List<ITrackObject>();
             _velocity = Substitute.For<IVelocity>();
             _course = Substitute.For<ICourse>();
             _separation = Substitute.For<ISeparation>();
-            _listHandler = new ListHandler(_velocity, _course, _separation, _distance);
+            _listHandler = new ListHandler(_velocity, _course, _separation, _uut);
         }
 
         [Test]

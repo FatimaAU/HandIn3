@@ -20,7 +20,6 @@ namespace AirTrafficMonitoring.Test.Integration
         private ICourse _uut;
         private IListHandler _listHandler;
         private IVelocity _velocity;
-        private ICourse _course;
         private ISeparation _separation;
         private IDistance _distance;
         private List<ITrackObject> _newTracks;
@@ -31,10 +30,9 @@ namespace AirTrafficMonitoring.Test.Integration
             _uut = new Course();
             _newTracks = new List<ITrackObject>();
             _velocity = Substitute.For<IVelocity>();
-            _course = Substitute.For<ICourse>();
             _separation = Substitute.For<ISeparation>();
             _distance = Substitute.For<IDistance>();
-            _listHandler = new ListHandler(_velocity, _course, _separation, _distance);
+            _listHandler = new ListHandler(_velocity, _uut, _separation, _distance);
         }
 
         [Test]
