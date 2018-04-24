@@ -9,7 +9,7 @@ namespace AirTrafficMonitoring.Classes.Objectifier
         public IPosition Position { get; set; }
         public string RawTimestamp { get; set; }
 
-        public void Extract(List<string> data, IPositionFactory posFac)
+        public void Extract(List<string> data)
         {
             Tag = data[0];
 
@@ -17,7 +17,7 @@ namespace AirTrafficMonitoring.Classes.Objectifier
             var y = int.Parse(data[2]);
             var al = int.Parse(data[3]);
 
-            Position = posFac.CreatePosition(x, y, al);
+            Position = new Position(x, y, al);
 
             RawTimestamp = data[4];
         }

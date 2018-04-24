@@ -26,12 +26,11 @@ namespace AirTrafficMonitoring.Test.Unit
         private IParseTrackInfo _parser;
         private IFlightExtractor _flightHandler;
         private ITimestampFormatter _formatter;
-        private IPositionFactory _positionFactory;
-        private ITrackObjectFactory _trackObjectFactory;
 
         private IPosition _position;
+        private ITrackObject _trackObject;
 
-        private List<ITrackObject> _trackList;
+        private IList<ITrackObject> _trackList;
         private List<string> _argList;
         private RawTransponderDataEventArgs _args;
 
@@ -43,20 +42,15 @@ namespace AirTrafficMonitoring.Test.Unit
             _parser = Substitute.For<IParseTrackInfo>();
             _flightHandler = Substitute.For<IFlightExtractor>();
             _formatter = Substitute.For<ITimestampFormatter>();
-            _positionFactory = Substitute.For<IPositionFactory>();
-            _trackObjectFactory = Substitute.For<ITrackObjectFactory>();
 
             _position = Substitute.For<IPosition>();
-            //TrackList = new List<ITrackObject>();
 
             _uut = new TrackObjectifier(
                 _receiver, 
                 _monitoredArea, 
                 _parser, 
                 _flightHandler, 
-                _formatter, 
-                _positionFactory, 
-                _trackObjectFactory);
+                _formatter);
 
             _argList = new List<string> { "ATR423;39045;12932;14000;20151006213456789" };
             _args = new RawTransponderDataEventArgs(_argList);
@@ -72,12 +66,25 @@ namespace AirTrafficMonitoring.Test.Unit
             _receiver.TransponderDataReady += Raise.EventWith(_args);
         }
 
+        public void InitValues(string inPretty, DateTime inDateTime)
+        {
+            //string inPretty = "October 6th, at 2015, at 21:34:56 and 789 milliseconds";
+            //DateTime inDateTime = new DateTime(2015, 10, 06, 21, 34, 56, 789);
+
+            _flightHandler.Tag.Returns("ATR423");
+            _position.XCoor.Returns(39045);
+            _position.YCoor.Returns(12932);
+            _position.Altitude.Returns(14000);
+            _formatter.InPretty.Returns(inPretty);
+            _formatter.InDateTime.Returns(inDateTime);
+        }
+
         [Test]
         public void TrackObjectifier_FlighthandlerDistribute_ReceivedCorrect()
         {
             RaiseFakeTransponderEvent();
 
-            _flightHandler.Received().Extract(_parser.Parse(_argList[0]), _positionFactory);
+            _flightHandler.Received().Extract(_parser.Parse(_argList[0]));
         }
 
         [Test]
@@ -86,7 +93,7 @@ namespace AirTrafficMonitoring.Test.Unit
             _argList.Add("ADE458;78942;14520;1400;20111106213456459");
             RaiseFakeTransponderEvent();
 
-            _flightHandler.Received().Extract(_parser.Parse(_argList[1]), _positionFactory);
+            _flightHandler.Received().Extract(_parser.Parse(_argList[1]));
         }
 
 
@@ -118,41 +125,6 @@ namespace AirTrafficMonitoring.Test.Unit
             _formatter.DidNotReceive().FormatTimestamp();
         }
 
-        [Test]
-        public void TrackObjectifier_CreatePosition_ReceivedCall()
-        {
-            _flightHandler.Position.XCoor.Returns(39045);
-            _flightHandler.Position.YCoor.Returns(12932);
-            _flightHandler.Position.Altitude.Returns(14000);
-
-            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
-
-            RaiseFakeTransponderEvent();
-
-            _positionFactory.Received().CreatePosition(39045, 12932, 14000);
-        }
-
-        [Test]
-        public void TrackObjectifier_CreateTrack_ReceivedCall()
-        {
-            string inPretty = "October 6th, at 2015, at 21:34:56 and 789 milliseconds";
-            DateTime inDateTime = new DateTime(2015, 10, 06, 21, 34, 56, 789);
-
-            _flightHandler.Tag.Returns("ATR423");
-            _position.XCoor.Returns(39045);
-            _position.YCoor.Returns(12932);
-            _position.Altitude.Returns(14000);
-            _formatter.InPretty.Returns(inPretty);
-            _formatter.InDateTime.Returns(inDateTime);
-
-            _positionFactory.CreatePosition(39045, 12932, 14000).Returns(_position);
-
-            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
-
-            RaiseFakeTransponderEvent();
-
-            _trackObjectFactory.Received().CreateTrackObject("ATR423", _position, inPretty, inDateTime);
-        }
 
         [Test]
         public void TrackObjectifier_ITrackEventRaised_ReceivedEvent()
@@ -175,13 +147,11 @@ namespace AirTrafficMonitoring.Test.Unit
 
             _flightHandler.Tag.Returns(expectedTag);
 
-            //_trackObjectFactory.CreateTrackObject("ATR234", _position, "", new DateTime()).Returns();
-
             _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
 
             RaiseFakeTransponderEvent();
 
-            Assert.That(expectedTag, Is.EqualTo(_trackList[0].Tag));
+            Assert.AreEqual(expectedTag, _trackList[0].Tag);
         }
 
         [Test]

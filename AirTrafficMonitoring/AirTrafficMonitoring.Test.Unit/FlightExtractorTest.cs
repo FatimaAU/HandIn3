@@ -15,8 +15,6 @@ namespace AirTrafficMonitoring.Test.Unit
         * flight data is extracted correctly from the string
         */
         private IFlightExtractor _uut;
-        private IPositionFactory _positionFactory;
-        private IPosition _position;
 
         private List<string> _flightList;
 
@@ -25,18 +23,9 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             _uut = new FlightExtractor();
 
-            _position = Substitute.For<IPosition>();
-            _positionFactory = Substitute.For<IPositionFactory>();
-
-            _position.XCoor.Returns(50000);
-            _position.YCoor.Returns(50032);
-            _position.Altitude.Returns(4000);
-
-            //_positionFactory.CreatePosition(50000, 500032, 4000).Returns(_position);
-
             _flightList = new List<string> { "TAGGGG", "50000", "50032", "4000", "20181111111111111" };
 
-            _uut.Extract(_flightList, _positionFactory);
+            _uut.Extract(_flightList);
         }
 
         [Test]
@@ -52,22 +41,25 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void Flight_SetX_ReturnsX()
         {
-            _positionFactory.Received().CreatePosition(50000, 50032, 4000);
-            _uut.Position.XCoor.Returns(5000);
+            int expectedXCoor = 50000;
+
+            Assert.AreEqual(expectedXCoor, _uut.Position.XCoor);
         }
 
         [Test]
         public void Flight_SetY_ReturnsY()
         {
-            _positionFactory.Received().CreatePosition(50000, 50032, 4000);
-            _uut.Position.YCoor.Returns(50032);
+            int expectedYCoor = 50032;
+
+            Assert.AreEqual(expectedYCoor, _uut.Position.YCoor);
         }
 
         [Test]
         public void Flight_SetAltitude_ReturnsAltitude()
         {
-            _positionFactory.Received().CreatePosition(50000, 50032, 4000);
-            _uut.Position.Altitude.Returns(4000);
+            int expectedAltitude = 4000;
+
+            Assert.AreEqual(expectedAltitude, _uut.Position.Altitude);
         }
 
         [Test]

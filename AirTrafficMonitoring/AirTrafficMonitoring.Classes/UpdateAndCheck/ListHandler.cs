@@ -68,8 +68,6 @@ namespace AirTrafficMonitoring.Classes.UpdateAndCheck
             }
         }
 
-
-
         public string CurrentSeperationEvents(string filenameToLogTo = "separationlog.txt")
         {
             string title = "Current separation events:";
