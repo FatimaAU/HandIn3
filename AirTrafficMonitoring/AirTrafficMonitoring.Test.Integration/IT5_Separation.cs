@@ -1,34 +1,35 @@
-﻿using AirTrafficMonitoring.Classes.Calculators.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitoring.Classes.Calculators;
+using AirTrafficMonitoring.Classes.Calculators.Interfaces;
+using AirTrafficMonitoring.Classes.Objectifier;
 using AirTrafficMonitoring.Classes.Objectifier.Interfaces;
 using AirTrafficMonitoring.Classes.UpdateAndCheck;
 using AirTrafficMonitoring.Classes.UpdateAndCheck.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
-
+using NUnit.Framework.Internal;
 
 namespace AirTrafficMonitoring.Test.Integration
 {
     [TestFixture]
-    class IT7_Course
+    class IT5_Separation
     {
-        private ICourse _uut;
         private IListHandler _listHandler;
         private IVelocity _velocity;
         private ICourse _course;
         private ISeparation _separation;
         private IDistance _distance;
+        private ISeparation _uut;
         private List<ITrackObject> _newTracks;
 
         [SetUp]
         public void Setup()
         {
-            _uut = new Course();
+            _uut = new Separation();
             _newTracks = new List<ITrackObject>();
             _velocity = Substitute.For<IVelocity>();
             _course = Substitute.For<ICourse>();
@@ -38,29 +39,42 @@ namespace AirTrafficMonitoring.Test.Integration
         }
 
         [Test]
-        public void CurrentCourse_PositionXCoor_ReceivedCorrect()
+        public void IsConflicting_PositionXCoor_ReceivedCorrect()
         {
             _newTracks.Add(Substitute.For<ITrackObject>());
 
             _listHandler.Renew(_newTracks);
             _listHandler.Update(_newTracks);
 
-            _uut.CurrentCourse(_newTracks[0].Position, _listHandler.CurrentTracks[0].Position, _distance);
+            _uut.IsConflicting(_newTracks[0], _listHandler.CurrentTracks[0], _distance);
 
             var temp = _newTracks[0].Position.Received().XCoor;
         }
 
         [Test]
-        public void CurrentCourse_PositionYCoor_ReceivedCorrect()
+        public void IsConflicting_PositionYCoor_ReceivedCorrect()
         {
             _newTracks.Add(Substitute.For<ITrackObject>());
 
             _listHandler.Renew(_newTracks);
             _listHandler.Update(_newTracks);
 
-            _uut.CurrentCourse(_newTracks[0].Position, _listHandler.CurrentTracks[0].Position, _distance);
+            _uut.IsConflicting(_newTracks[0], _listHandler.CurrentTracks[0], _distance);
 
             var temp = _newTracks[0].Position.Received().YCoor;
+        }
+
+        [Test]
+        public void IsConflicting_PositionAltitude_ReceivedCorrect()
+        {
+            _newTracks.Add(Substitute.For<ITrackObject>());
+
+            _listHandler.Renew(_newTracks);
+            _listHandler.Update(_newTracks);
+
+            _uut.IsConflicting(_newTracks[0], _listHandler.CurrentTracks[0], _distance);
+
+            var temp = _newTracks[0].Position.Received().Altitude;
         }
     }
 }
