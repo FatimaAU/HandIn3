@@ -12,7 +12,7 @@ namespace AirTrafficMonitoring.Test.Unit
         /*
         * UNIT TEST DESCRIPTION
         * Unit tests on FlightDataHandler that test that the
-        * flight data is extracted correctly from the string and given back to classes
+        * flight data is extracted correctly from the string
         */
         private IFlightExtractor _uut;
         private IPositionFactory _positionFactory;
@@ -32,7 +32,7 @@ namespace AirTrafficMonitoring.Test.Unit
             _position.YCoor.Returns(50032);
             _position.Altitude.Returns(4000);
 
-            _positionFactory.CreatePosition(50000, 500032, 4000).Returns(_position);
+            //_positionFactory.CreatePosition(50000, 500032, 4000).Returns(_position);
 
             _flightList = new List<string> { "TAGGGG", "50000", "50032", "4000", "20181111111111111" };
 
@@ -52,29 +52,22 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void Flight_SetX_ReturnsX()
         {
-            _position.XCoor.Returns(50000);
-
-            int expectedX = 50000;
-            // Define x coordinate and check correct x coordinate returned
-            Assert.That(expectedX, Is.EqualTo(_uut.Position.XCoor));
+            _positionFactory.Received().CreatePosition(50000, 50032, 4000);
+            _uut.Position.XCoor.Returns(5000);
         }
 
         [Test]
         public void Flight_SetY_ReturnsY()
         {
-            // Define y coordinate and check correct y coordinate returned
-            int expectedYCoor = 50032;
-
-            Assert.That(expectedYCoor, Is.EqualTo(_uut.Position.YCoor));
+            _positionFactory.Received().CreatePosition(50000, 50032, 4000);
+            _uut.Position.YCoor.Returns(50032);
         }
 
         [Test]
         public void Flight_SetAltitude_ReturnsAltitude()
         {
-            // Define altitude and check correct altitude returned
-            int expectedAltitude = 4000;
-
-            Assert.That(expectedAltitude, Is.EqualTo(_uut.Position.Altitude));
+            _positionFactory.Received().CreatePosition(50000, 50032, 4000);
+            _uut.Position.Altitude.Returns(4000);
         }
 
         [Test]

@@ -29,6 +29,8 @@ namespace AirTrafficMonitoring.Test.Unit
         private IPositionFactory _positionFactory;
         private ITrackObjectFactory _trackObjectFactory;
 
+        private IPosition _position;
+
         private List<ITrackObject> _trackList;
         private List<string> _argList;
         private RawTransponderDataEventArgs _args;
@@ -44,6 +46,7 @@ namespace AirTrafficMonitoring.Test.Unit
             _positionFactory = Substitute.For<IPositionFactory>();
             _trackObjectFactory = Substitute.For<ITrackObjectFactory>();
 
+            _position = Substitute.For<IPosition>();
             //TrackList = new List<ITrackObject>();
 
             _uut = new TrackObjectifier(
@@ -116,6 +119,42 @@ namespace AirTrafficMonitoring.Test.Unit
         }
 
         [Test]
+        public void TrackObjectifier_CreatePosition_ReceivedCall()
+        {
+            _flightHandler.Position.XCoor.Returns(39045);
+            _flightHandler.Position.YCoor.Returns(12932);
+            _flightHandler.Position.Altitude.Returns(14000);
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            _positionFactory.Received().CreatePosition(39045, 12932, 14000);
+        }
+
+        [Test]
+        public void TrackObjectifier_CreateTrack_ReceivedCall()
+        {
+            string inPretty = "October 6th, at 2015, at 21:34:56 and 789 milliseconds";
+            DateTime inDateTime = new DateTime(2015, 10, 06, 21, 34, 56, 789);
+
+            _flightHandler.Tag.Returns("ATR423");
+            _position.XCoor.Returns(39045);
+            _position.YCoor.Returns(12932);
+            _position.Altitude.Returns(14000);
+            _formatter.InPretty.Returns(inPretty);
+            _formatter.InDateTime.Returns(inDateTime);
+
+            _positionFactory.CreatePosition(39045, 12932, 14000).Returns(_position);
+
+            _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
+
+            RaiseFakeTransponderEvent();
+
+            _trackObjectFactory.Received().CreateTrackObject("ATR423", _position, inPretty, inDateTime);
+        }
+
+        [Test]
         public void TrackObjectifier_ITrackEventRaised_ReceivedEvent()
         {
             _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
@@ -135,6 +174,8 @@ namespace AirTrafficMonitoring.Test.Unit
             string expectedTag = "ATR234";
 
             _flightHandler.Tag.Returns(expectedTag);
+
+            //_trackObjectFactory.CreateTrackObject("ATR234", _position, "", new DateTime()).Returns();
 
             _monitoredArea.InsideMonitoredArea(_flightHandler.Position).Returns(true);
 
