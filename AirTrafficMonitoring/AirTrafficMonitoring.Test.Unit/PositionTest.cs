@@ -23,7 +23,7 @@ namespace AirTrafficMonitoring.Test.Unit
         [SetUp]
         public void Setup()
         {
-            _uut = new Position();
+            _uut = new Position(5000, 3000, 2000);
         }
 
         [Test]

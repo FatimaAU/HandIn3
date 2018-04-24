@@ -46,9 +46,40 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             ITrackObject trackOne = Substitute.For<ITrackObject>();
             trackOne.Tag.Returns("HDJ232");
+            trackOne.Position.XCoor.Returns(45201);
+            trackOne.Position.YCoor.Returns(78452);
+            trackOne.Position.Altitude.Returns(4500);
+            trackOne.Timestamp.Returns("April 23rd, 2018, at 23:55:32 and 339 milliseconds");
+            trackOne.Velocity.Returns(150);
+            trackOne.Course.Returns(90);
+            trackOne.ToString()
+                .Returns
+                ("Tag:\t\t" + "HDJ232" + "\n" +
+                 "X coordinate:\t" + 45201 + " meters \n" +
+                 "Y coordinate:\t" + 78452 + " meters\n" +
+                 "Altitide:\t" + 4500 + " meters\n" +
+                 "Timestamp:\t" + "April 23rd, 2018, at 23:55:32 and 339 milliseconds" + "\n" +
+                 "Velocity:\t" + 150 + " m/s\n" +
+                 "Course:\t\t" + 90 + " degrees\n");
 
             ITrackObject trackTwo = Substitute.For<ITrackObject>();
-            trackTwo.Tag.Returns("HAJ232");
+            trackTwo.Tag.Returns("DSO458");
+            trackTwo.Position.XCoor.Returns(45300);
+            trackTwo.Position.YCoor.Returns(78450);
+            trackTwo.Position.Altitude.Returns(7895);
+            trackTwo.Timestamp.Returns("April 23rd, 2018, at 23:55:32 and 339 milliseconds");
+            trackTwo.Velocity.Returns(300);
+            trackTwo.Course.Returns(300);
+
+            trackTwo.ToString()
+                .Returns
+                ("Tag:\t\t" + "DSO0458" + "\n" +
+                 "X coordinate:\t" + 45300 + " meters \n" +
+                 "Y coordinate:\t" + 78450 + " meters\n" +
+                 "Altitide:\t" + 7895 + " meters\n" +
+                 "Timestamp:\t" + "April 23rd, 2018, at 23:55:32 and 339 milliseconds" + "\n" +
+                 "Velocity:\t" + 300 + " m/s\n" +
+                 "Course:\t\t" + 300 + " degrees\n");
 
             _newTracks.Add(trackOne);
             _newTracks.Add(trackTwo);
@@ -229,25 +260,29 @@ namespace AirTrafficMonitoring.Test.Unit
 
             _separation.IsConflicting(_uut.CurrentTracks[0], _uut.CurrentTracks[1], _distance).Returns(false);
 
+            _uut.CurrentSeperationEvents();
+
             Assert.AreEqual(expectedReturn, _uut.CurrentSeperationEvents());
         }
 
         [Test]
         public void ListHandler_CurrentSeperationEvents_EventsDetected()
         {
-            string expectedReturn = "Current separation events:\nNo current events detected\n";
+            string expectedReturn = "Current separation events:\n" +
+                                    "HDJ232 and KDS328 at April 23rd, 2018, at 23:55:32 and 339 milliseconds\n";
 
             InitiateNewList();
 
             ITrackObject trackThree = Substitute.For<ITrackObject>();
-            trackThree.Tag.Returns("HAJ232");
-            trackThree.Timestamp.Returns("April 23rd, 2018, at 23:55:32 and 339 milliseconds");
+            trackThree.Tag.Returns("KDS328");
 
             _newTracks.Add(trackThree);
 
             _uut.Initiate(_newTracks);
 
-            _separation.IsConflicting(_uut.CurrentTracks[2], _uut.CurrentTracks[1], _distance).Returns(true);
+            _separation.IsConflicting(_uut.CurrentTracks[0], _uut.CurrentTracks[2], _distance).Returns(true);
+
+            _uut.CurrentSeperationEvents();
 
             Assert.AreEqual(expectedReturn, _uut.CurrentSeperationEvents());
         }
@@ -260,23 +295,33 @@ namespace AirTrafficMonitoring.Test.Unit
         //    Assert.AreEqual("hej", File.AppendText("du"));
         //}
 
-        //[Test]
-        //public void ListHandler_CurrentTracksEmpty_ReturnsEmptyList()
-        //{
-        //    Assert.AreEqual(_uut.ToString(), "Current list is empty\n");
-        //}
+        [Test]
+        public void ListHandler_CurrentTracksEmpty_ReturnsEmptyList()
+        {
+            Assert.AreEqual(_uut.ToString(), "Current list is empty\n");
+        }
 
-        //[Test]
-        //public void ListHandler_ToString_Returns()
-        //{
-        //    TrackObject _TrackObject = new TrackObject("BBB111", _position, "20181111111111111", _inDateTime);
+        [Test]
+        public void ListHandler_ToString_Returns()
+        {
+            string expectedReturn = "Tag:\t\t" + "HDJ232" + "\n" +
+                                    "X coordinate:\t" + 45201 + " meters \n" +
+                                    "Y coordinate:\t" + 78452 + " meters\n" +
+                                    "Altitide:\t" + 4500 + " meters\n" +
+                                    "Timestamp:\t" + "April 23rd, 2018, at 23:55:32 and 339 milliseconds" + "\n" +
+                                    "Velocity:\t" + 150 + " m/s\n" +
+                                    "Course:\t\t" + 90 + " degrees\n" +
+                                    "Tag:\t\t" + "DSO0458" + "\n" +
+                                    "X coordinate:\t" + 45300 + " meters \n" +
+                                    "Y coordinate:\t" + 78450 + " meters\n" +
+                                    "Altitide:\t" + 7895 + " meters\n" +
+                                    "Timestamp:\t" + "April 23rd, 2018, at 23:55:32 and 339 milliseconds" + "\n" +
+                                    "Velocity:\t" + 300 + " m/s\n" +
+                                    "Course:\t\t" + 300 + " degrees\n";
+            _uut.Initiate(_newTracks);
 
-        //    CurrentTracks.Add(_TrackObject);
-
-        //    _uut.Renew(CurrentTracks);
-
-        //    Assert.AreNotEqual(_uut, "Current list is empty\n");
-        //}
+            Assert.AreEqual(_uut.ToString(), "Current list is empty\n");
+        }
 
 
     }

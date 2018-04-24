@@ -34,6 +34,4 @@ namespace AirTrafficMonitoring.Classes.Objectifier
                 "Course:\t\t" + Course + " degrees\n";
         }
     }
-
-
 }

@@ -18,7 +18,6 @@ namespace AirTrafficMonitoring.Test.Unit
     {
         private ITrackObject _uut;
 
-        private string _tag;
         private IPosition _position;
         private string _time;
         private DateTime _dateTime;

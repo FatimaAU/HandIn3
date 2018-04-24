@@ -56,6 +56,10 @@
     <Compile Include="Calculators\Course.cs" />
     <Compile Include="Calculators\Velocity.cs" />
     <Compile Include="ATMSystem.cs" />
+    <Compile Include="Objectifier\Interfaces\IPositionFactory.cs" />
+    <Compile Include="Objectifier\Interfaces\ITrackObjectFactory.cs" />
+    <Compile Include="Objectifier\PositionFactory.cs" />
+    <Compile Include="Objectifier\TrackObjectFactory.cs" />
     <Compile Include="UpdateAndCheck\ListHandler.cs" />
     <Compile Include="UpdateAndCheck\Interfaces\IListHandler.cs" />
     <Compile Include="UpdateAndCheck\Interfaces\ISeparation.cs" />

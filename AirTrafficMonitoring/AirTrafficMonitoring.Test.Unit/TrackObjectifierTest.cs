@@ -26,6 +26,8 @@ namespace AirTrafficMonitoring.Test.Unit
         private IParseTrackInfo _parser;
         private IFlightExtractor _flightHandler;
         private ITimestampFormatter _formatter;
+        private IPositionFactory _positionFactory;
+        private ITrackObjectFactory _trackObjectFactory;
 
         private List<ITrackObject> _trackList;
         private List<string> _argList;
@@ -39,9 +41,19 @@ namespace AirTrafficMonitoring.Test.Unit
             _parser = Substitute.For<IParseTrackInfo>();
             _flightHandler = Substitute.For<IFlightExtractor>();
             _formatter = Substitute.For<ITimestampFormatter>();
+            _positionFactory = Substitute.For<IPositionFactory>();
+            _trackObjectFactory = Substitute.For<ITrackObjectFactory>();
+
             //TrackList = new List<ITrackObject>();
 
-            _uut = new TrackObjectifier(_receiver, _monitoredArea, _parser, _flightHandler, _formatter);
+            _uut = new TrackObjectifier(
+                _receiver, 
+                _monitoredArea, 
+                _parser, 
+                _flightHandler, 
+                _formatter, 
+                _positionFactory, 
+                _trackObjectFactory);
 
             _argList = new List<string> { "ATR423;39045;12932;14000;20151006213456789" };
             _args = new RawTransponderDataEventArgs(_argList);
@@ -62,7 +74,7 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             RaiseFakeTransponderEvent();
 
-            _flightHandler.Received().Extract(_parser.Parse(_argList[0]));
+            _flightHandler.Received().Extract(_parser.Parse(_argList[0]), _positionFactory);
         }
 
         [Test]
@@ -71,7 +83,7 @@ namespace AirTrafficMonitoring.Test.Unit
             _argList.Add("ADE458;78942;14520;1400;20111106213456459");
             RaiseFakeTransponderEvent();
 
-            _flightHandler.Received().Extract(_parser.Parse(_argList[1]));
+            _flightHandler.Received().Extract(_parser.Parse(_argList[1]), _positionFactory);
         }
 
 

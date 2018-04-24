@@ -10,5 +10,6 @@ namespace AirTrafficMonitoring.Classes.Objectifier.Interfaces
         int Course { get; set; }
         int Velocity { get; set; }
         DateTime InDateTime { get; set; }
+        //ITrackObject CreateTrackObject(string tag, IPosition pos, string time, DateTime inDateTime);
     }
 }

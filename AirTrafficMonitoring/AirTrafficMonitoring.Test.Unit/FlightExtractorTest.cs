@@ -15,6 +15,8 @@ namespace AirTrafficMonitoring.Test.Unit
         * flight data is extracted correctly from the string and given back to classes
         */
         private IFlightExtractor _uut;
+        private IPositionFactory _positionFactory;
+        private IPosition _position;
 
         private List<string> _flightList;
 
@@ -23,9 +25,18 @@ namespace AirTrafficMonitoring.Test.Unit
         {
             _uut = new FlightExtractor();
 
+            _position = Substitute.For<IPosition>();
+            _positionFactory = Substitute.For<IPositionFactory>();
+
+            _position.XCoor.Returns(50000);
+            _position.YCoor.Returns(50032);
+            _position.Altitude.Returns(4000);
+
+            _positionFactory.CreatePosition(50000, 500032, 4000).Returns(_position);
+
             _flightList = new List<string> { "TAGGGG", "50000", "50032", "4000", "20181111111111111" };
 
-            _uut.Extract(_flightList);
+            _uut.Extract(_flightList, _positionFactory);
         }
 
         [Test]
@@ -41,6 +52,8 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void Flight_SetX_ReturnsX()
         {
+            _position.XCoor.Returns(50000);
+
             int expectedX = 50000;
             // Define x coordinate and check correct x coordinate returned
             Assert.That(expectedX, Is.EqualTo(_uut.Position.XCoor));

@@ -7,6 +7,6 @@ namespace AirTrafficMonitoring.Classes.Objectifier.Interfaces
         string Tag { get; set; }
         IPosition Position { get; set; }
         string RawTimestamp { get; set; }
-        void Extract(List<string> data);
+        void Extract(List<string> data, IPositionFactory posFac);
     }
 }
