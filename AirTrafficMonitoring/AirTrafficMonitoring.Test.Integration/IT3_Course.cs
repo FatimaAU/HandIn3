@@ -15,7 +15,7 @@ using NUnit.Framework;
 namespace AirTrafficMonitoring.Test.Integration
 {
     [TestFixture]
-    class IT7_Course
+    class IT3_Course
     {
         private ICourse _uut;
         private IListHandler _listHandler;

@@ -65,7 +65,10 @@
     <Compile Include="IT4_TrackObject.cs" />
     <Compile Include="IT5_Separation.cs" />
     <Compile Include="IT6_Distance.cs" />
-    <Compile Include="IT7_Course.cs" />
+    <Compile Include="IT3_Course.cs" />
+    <Compile Include="IT7_TimestampFormatter.cs" />
+    <Compile Include="IT8_ParseTrackInfo.cs" />
+    <Compile Include="IT9_TrackObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
