@@ -40,6 +40,7 @@ namespace AirTrafficMonitoring.Application
 
             ATMSystem system = new ATMSystem(objectifier, TrackListHandler);
 
+
             Console.ReadKey();
         }
     }

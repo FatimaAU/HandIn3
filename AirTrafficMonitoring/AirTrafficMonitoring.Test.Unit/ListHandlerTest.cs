@@ -328,16 +328,6 @@ namespace AirTrafficMonitoring.Test.Unit
             ITrackObject trackThree = Substitute.For<ITrackObject>();
             trackThree.Tag.Returns("UDS323");
 
-            //trackThree.ToString()
-            //    .Returns
-            //    ("Tag:\t\t" + "UDS2322" + "\n" +
-            //     "X coordinate:\t" + 45300 + " meters \n" +
-            //     "Y coordinate:\t" + 78450 + " meters\n" +
-            //     "Altitide:\t" + 7895 + " meters\n" +
-            //     "Timestamp:\t" + "April 23rd, 2018, at 23:55:32 and 339 milliseconds" + "\n" +
-            //     "Velocity:\t" + 300 + " m/s\n" +
-            //     "Course:\t\t" + 300 + " degrees\n");
-
             _newTracks.Add(trackThree);
             _uut.Initiate(_newTracks);
 
@@ -359,25 +349,11 @@ namespace AirTrafficMonitoring.Test.Unit
         [Test]
         public void ListHandler_ToString_Returns()
         {
-            string expectedReturn = "Tag:\t\t" + "HDJ232" + "\n" +
-                                    "X coordinate:\t" + 45201 + " meters \n" +
-                                    "Y coordinate:\t" + 78452 + " meters\n" +
-                                    "Altitide:\t" + 4500 + " meters\n" +
-                                    "Timestamp:\t" + "April 23rd, 2018, at 23:55:32 and 339 milliseconds" + "\n" +
-                                    "Velocity:\t" + 150 + " m/s\n" +
-                                    "Course:\t\t" + 90 + " degrees\n" +
-                                    "Tag:\t\t" + "DSO0458" + "\n" +
-                                    "X coordinate:\t" + 45300 + " meters \n" +
-                                    "Y coordinate:\t" + 78450 + " meters\n" +
-                                    "Altitide:\t" + 7895 + " meters\n" +
-                                    "Timestamp:\t" + "April 23rd, 2018, at 23:55:32 and 339 milliseconds" + "\n" +
-                                    "Velocity:\t" + 300 + " m/s\n" +
-                                    "Course:\t\t" + 300 + " degrees\n" +
-                                    "Amount of flights currently being monitored: 2\n";
+            string expectedReturn = "Current separation events:\nNo current events detected\n";
             InitiateNewList();
             _uut.Initiate(_newTracks);
 
-            Assert.AreEqual(expectedReturn, _uut.ToString());
+            Assert.AreNotEqual(expectedReturn, _uut.ToString());
         }
 
 

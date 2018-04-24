@@ -66,19 +66,6 @@ namespace AirTrafficMonitoring.Test.Unit
             _receiver.TransponderDataReady += Raise.EventWith(_args);
         }
 
-        public void InitValues(string inPretty, DateTime inDateTime)
-        {
-            //string inPretty = "October 6th, at 2015, at 21:34:56 and 789 milliseconds";
-            //DateTime inDateTime = new DateTime(2015, 10, 06, 21, 34, 56, 789);
-
-            _flightHandler.Tag.Returns("ATR423");
-            _position.XCoor.Returns(39045);
-            _position.YCoor.Returns(12932);
-            _position.Altitude.Returns(14000);
-            _formatter.InPretty.Returns(inPretty);
-            _formatter.InDateTime.Returns(inDateTime);
-        }
-
         [Test]
         public void TrackObjectifier_FlighthandlerDistribute_ReceivedCorrect()
         {

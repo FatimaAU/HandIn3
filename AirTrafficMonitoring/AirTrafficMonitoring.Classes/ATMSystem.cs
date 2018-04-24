@@ -20,8 +20,6 @@ namespace AirTrafficMonitoring.Classes
 
         private void MonitorSystem(object sender, TrackListUpdatedArgs trackListUpdatedArgs)
         {
-            Console.Clear();
-            
             List<ITrackObject> newTrackList = trackListUpdatedArgs.TrackList;
 
             if (ListHandler.Initiate(newTrackList))
